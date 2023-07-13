@@ -42,7 +42,7 @@ function Login() {
 
       <div className="flex items-center justify-center w-screen ">
         <div className="max-w-sm w-full mx-auto px-4 border rounded-lg shadow-md bg-white">
-          <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center mt-3">Login</h2>
           <form onSubmit={handleSubmit}>
             <label htmlFor="email" className="block mb-2 font-light">
               Email:

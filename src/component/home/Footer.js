@@ -6,7 +6,7 @@ const Footer = () => {
         
 
 
-    <footer className="bg-gray-800 py-6">
+    <footer className="bg-[#788F69] py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap justify-center">
           <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 text-white text-center mb-4">

@@ -36,7 +36,8 @@ function Signup() {
       }}
     >
 
-      <div className="bg-white border-s p-8 rounded shadow-md max-w-lg w-11/12 backdrop-blur-lg">
+      <div className="bg-white border-s p-8 rounded-xl shadow-md max-w-lg w-11/12 backdrop-blur-lg">
+      <h2 className="text-2xl font-semibold mb-4 text-center">Signup</h2>
         <div className="flex justify-between mb-4">
           <button
             type="button"
@@ -197,24 +198,10 @@ function Signup() {
                   required
                 >
                   {/* Options for the category dropdown */}
+                  
                 </select>
               </div>
-              <div className="mb-4">
-                <label htmlFor="subcategory" className="block mb-1">
-                  Subcategory
-                </label>
-                <select
-                  id="subcategory"
-                  name
-                  value={subcategory}
-                  onChange={(e) => setSubcategory(e.target.value)}
-                  className="w-full px-3 py-2 border rounded"
-                  required
-                >
-    
-                  {/* Options for the subcategory dropdown */}
-                </select>
-              </div>
+              
               <div className="flex justify-between">
                 <button
                   type="button"

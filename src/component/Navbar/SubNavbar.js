@@ -1,37 +1,53 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SubNavbar = () => {
+
+
+
+
   return (
-    <div>
-      <nav className="bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-white mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-            </div>
-            
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <button className="p-2 bg-gray-800 rounded-full focus:outline-none"></button>
-            </div>
+    <div class="bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex py-2 overflow-x-auto no-scrollbar overflow-y-auto">
+          <div class="flex w-full space-x-4">
+            <Link to='/'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap  transition-transform transform hover:scale-110 active:scale-100">Home</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Post</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]   hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">News</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Solution</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Farmers</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100" >Employees</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Merchants</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Fertilizers</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]   hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Equipments</p></Link>
+
+            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+           focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Professionals</p>
+            </Link>
           </div>
         </div>
-      </nav>
+      </div>
     </div>
+
+
   );
-}
+};
 
 export default SubNavbar;
