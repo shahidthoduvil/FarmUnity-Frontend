@@ -39,13 +39,13 @@ const UserMenu = () => {
                             Your Profile
                         </p>
                         </Link>
-                        <a
+                       <Link to='signup'> <a
                           
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                         >
-                            Settings
-                        </a>
+                            signup
+                        </a></Link>
                         <a
                             
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

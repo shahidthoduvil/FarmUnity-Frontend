@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import background2 from '../../images/try.jpg'
+import {Link} from 'react-router-dom'
+import { BASE_URL } from '../../utils/config'
+import { toast,Toaster } from 'react-hot-toast'
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 function Signup() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [first_name, setFirstName] = useState('');
+  const [ last_name, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
   const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
+
   const [step, setStep] = useState(1);
 
   const nextStep = () => {
@@ -19,12 +25,44 @@ function Signup() {
 
   const prevStep = () => {
     setStep((prevStep) => prevStep - 1);
-  };
+  }
+  const data={
+    first_name,
+    last_name,
+    email,
+    username,
+    phone_number,
+    password,
+  }
 
-  const handleStep1Submit = (e) => {
+  const handleStep1Submit = async(e)=> {
     e.preventDefault();
     // Perform validation or any other necessary checks
     // If validation is successful, proceed to the next step
+    if (password==confirmPassword){
+
+      try {
+        const response = await axios.post(BASE_URL + '/api/register/', data);
+        console.log(response);
+        if (response.status) {
+          toast.success('Registration successful! Check your email to activate your account', { duration: 5000 });
+          
+           
+        } 
+        else {
+          toast.error('Something went wrong');
+        }
+      } catch (error) {
+        toast.error('An error occurred while registering');
+        console.error(error);
+      }
+
+    }
+    else{
+      Swal.fire('oops','password mismatch','error')
+    }
+
+
     nextStep();
   };
 
@@ -35,6 +73,7 @@ function Signup() {
         backgroundImage: `url(${background2})` // Replace with the path to your image
       }}
     >
+      <Toaster position='top-center' reverseOrder='false'  ></Toaster>
 
       <div className="bg-white border-s p-8 rounded-xl shadow-md max-w-lg w-11/12 backdrop-blur-lg">
       <h2 className="text-2xl font-semibold mb-4 text-center">Signup</h2>
@@ -69,7 +108,7 @@ function Signup() {
                     type="text"
                     id="firstname"
                     name="firstname"
-                    value={firstName}
+                    value={first_name}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="w-full px-3 py-2 border rounded"
                     placeholder="Enter your first name"
@@ -84,7 +123,7 @@ function Signup() {
                     type="text"
                     id="lastname"
                     name="lastname"
-                    value={lastName}
+                    value={last_name}
                     onChange={(e) => setLastName(e.target.value)}
                     className="w-full px-3 py-2 border rounded"
                     placeholder="Enter your last name"
@@ -116,7 +155,7 @@ function Signup() {
                     type="tel"
                     id="phonenumber"
                     name="phonenumber"
-                    value={phoneNumber}
+                    value={phone_number}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     className="w-full px-3 py-2 border rounded"
                     placeholder="Enter your phone number"
@@ -195,7 +234,7 @@ function Signup() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-3 py-2 border rounded"
-                  required
+                 
                 >
                   {/* Options for the category dropdown */}
                   
@@ -211,7 +250,7 @@ function Signup() {
                   Previous
                 </button>
                 <button
-                  type="button"
+                  type="submit"
                   className="bg-green-500 text-white px-4 py-2 rounded"
                 >
                   Signup
