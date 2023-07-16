@@ -1,5 +1,7 @@
 import React from 'react';
 import UserMenu from '../Profile/UserMenu';
+import Notification from './Notification';
+
 
 function Navbar() {
     return (
@@ -13,11 +15,11 @@ function Navbar() {
                         <div className="flex space-x-4">
                             <a
                                 href="#"
-                                className="bg-white text-black rounded-md px-3 py-2 text-sm font-medium  hover:bg-[#788F69]  focus:-outline-offset-8"
+                                className=" text-white rounded-md px-3 py-2   w- text-sm  font-medium  hover:bg-blue-gray-800  focus:-outline-offset-8"
                                 aria-current="page"
                             >
                                 <svg
-                                    class="h-6 w-6  hover:text-white"
+                                    class="h-6 w-6 "
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 576 512">
 
@@ -42,26 +44,7 @@ function Navbar() {
                                     </svg>
                                 </button>
                             </div>
-                            <button
-                                type="button"
-                                className="ml-2 rounded-full bg-white p-1 text-black hover:bg-[#788F69] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                            >
-                                <span className="sr-only">View notifications</span>
-                                <svg
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                                    />
-                                </svg>
-                            </button>
+                            <Notification/>
                             <UserMenu />
                         </div>
                     </div>

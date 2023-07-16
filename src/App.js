@@ -11,6 +11,10 @@ import ProfilePage from './pages/ProfilePage';
 import AdminPanelPage from './component/AdminPages/AdminPanelPage';
 import UserListPage from './component/AdminPages/UserListPage';
 import BannerLIstPage from './component/AdminPages/BannerLIstPage';
+import ForgotPassword from './component/Account/ForgotPassword';
+import ResetPassword from './component/Account/ResetPassword';
+import Private_Router from './utils/Private_Router';
+import PageNotFound from './pages/PageNotFound';
 
 
 
@@ -20,6 +24,11 @@ function App() {
     <Fragment>
       <Router>
         <Routes>
+
+
+         <Route exact path='*' Component={PageNotFound}></Route>
+         <Route  path='/' exact  element={<Private_Router/>}></Route>
+         
           <Route exact path='/' element={<HomePage/>}></Route>
           <Route Component={AdminPanelPage} path='adm'></Route>
           <Route Component={UserListPage} path='adm/user-list'></Route>
@@ -27,6 +36,8 @@ function App() {
 
           <Route Component={LoginPage} path='login'></Route>
           <Route Component={SigupPage} path='signup'></Route>
+          <Route Component={ForgotPassword} path='forgot-password'></Route>
+          <Route Component={ResetPassword} path='reset-password'></Route> 
           <Route Component={ProfilePage} path='profile'></Route>
         
           

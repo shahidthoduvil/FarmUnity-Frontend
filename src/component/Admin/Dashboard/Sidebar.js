@@ -1,52 +1,71 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const Sidebar = () => {
-    return (
-        <div className="bg-white text-gray-800 w-full sm:w-64 flex-none flex flex-col rounded-lg shadow-md  h-screen">
-        <div className="p-4">
-          <h1 className="text-lg font-bold">Admin Panel</h1>
-        </div>
-        <ul className="flex-grow group">
-          <li className="p-4">
-            <a
-              href="#"
-              className="block rounded-lg shadow-md px-4 py-2 transition duration-300 focus:outline-none focus:ring 
-              focus:ring-[#788F69] group-hover:text-black active:bg-[#788F69] active:text-black"
-            >
-              Dashboard
-            </a>
-          </li>
-          <li className="p-4">
-            <a
-              href="/adm/user-list"
-              className="block rounded-lg shadow-md px-4 py-2 transition duration-300 focus:outline-none focus:ring
-                focus:ring-[#788F69] group-hover:text-black active:bg-[#788F69] active:text-black"
-              >
-                Users
-              </a>
-          </li>
-          <li className="p-4">
-            <a
-              href="#"
-              className="block rounded-lg shadow-md px-4 py-2 transition duration-300 focus:outline-none focus:ring 
-              focus:ring-[#788F69] group-hover:text-black active:bg-[#788F69] active:text-black"
-            >
-              Banner
-            </a>
-          </li>
-          <li className="p-4">
-            <a
-              href="#"
-              className="block rounded-lg shadow-md px-4 py-2 transition duration-300 focus:outline-none focus:ring 
-              focus:ring-[#788F69] group-hover:text-black active:bg-[#788F69] active:text-black"
-            >
-              Settings
-            </a>
-          </li>
-        </ul>
+import {
+  Card,
+  Typography,
+  List,
+  ListItem,
+  ListItemPrefix,
+  ListItemSuffix,
+  Chip,
+} from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import {
+  PresentationChartBarIcon,
+  ShoppingBagIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+} from "@heroicons/react/24/solid";
+ 
+export default function Example() {
+  return (
+    <Card className=" top-4 left-4 h-[calc(100vh-2rem)] max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+      <div className="mb-2 p-4">
+        <Typography variant="h5" color="blue-gray">
+          Sidebar
+        </Typography>
       </div>
-    );
-};
-
-export default Sidebar;
+      <List>
+        <ListItem>
+          <ListItemPrefix>
+            <PresentationChartBarIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          <Link to='/adm'>Dashboard </Link>
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <ShoppingBagIcon className="h-5 w-5" />
+          </ListItemPrefix>
+            <Link to='/adm/user-list'>User  </Link>
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <InboxIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          <Link to='/adm/banner-list'>Banner  </Link>
+          <ListItemSuffix>
+            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+          </ListItemSuffix>
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <UserCircleIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Profile
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <Cog6ToothIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Settings
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <PowerIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Log Out
+        </ListItem>
+      </List>
+    </Card>
+  );
+}

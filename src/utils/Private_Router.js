@@ -1,5 +1,4 @@
 import React from 'react'
-import { getLocal } from '../helpers/auth';
 import jwt_decode from "jwt-decode"
 import { useNavigate } from 'react-router-dom';
 import AdminPanelPage from '../component/AdminPages/AdminPanelPage';
@@ -8,8 +7,10 @@ import LoginPage from '../pages/LoginPage';
 
 
 const Private_Router = ({ children, ...rest }) => {
-    const response = getLocal('authToken');
-    const history = useNavigate("")
+
+    const response = localStorage.getItem('authToken');
+
+    const navigate = useNavigate("")
 
     if (response) {
         const decoded = jwt_decode(response)
@@ -31,7 +32,7 @@ const Private_Router = ({ children, ...rest }) => {
             return <LoginPage/>
         }
     }else{
-        return history('/')
+        return <LoginPage/>
     }
    
 }

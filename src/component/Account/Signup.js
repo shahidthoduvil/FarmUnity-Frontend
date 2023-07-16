@@ -1,21 +1,22 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import background2 from '../../images/try.jpg'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { BASE_URL } from '../../utils/config'
-import { toast,Toaster } from 'react-hot-toast'
+import { toast, Toaster } from 'react-hot-toast'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 
 function Signup() {
   const [first_name, setFirstName] = useState('');
-  const [ last_name, setLastName] = useState('');
+  const [last_name, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [category, setCategory] = useState('');
+  // const passwordRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
 
   const [step, setStep] = useState(1);
 
@@ -26,7 +27,7 @@ function Signup() {
   const prevStep = () => {
     setStep((prevStep) => prevStep - 1);
   }
-  const data={
+  const data = {
     first_name,
     last_name,
     email,
@@ -35,20 +36,27 @@ function Signup() {
     password,
   }
 
-  const handleStep1Submit = async(e)=> {
+  const handleStep1Submit = async (e) => {
     e.preventDefault();
-    // Perform validation or any other necessary checks
-    // If validation is successful, proceed to the next step
-    if (password==confirmPassword){
+
+   
+  
+    
+    // if (!passwordRegex.test(password)) {
+    //   toast.error('Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number');
+    //   return;
+    // }
+    
+    if (password == confirmPassword) {
 
       try {
         const response = await axios.post(BASE_URL + '/api/register/', data);
         console.log(response);
         if (response.status) {
           toast.success('Registration successful! Check your email to activate your account', { duration: 5000 });
-          
-           
-        } 
+
+
+        }
         else {
           toast.error('Something went wrong');
         }
@@ -58,12 +66,30 @@ function Signup() {
       }
 
     }
-    else{
-      Swal.fire('oops','password mismatch','error')
+    else {
+      Swal.fire('oops', 'password mismatch', 'error')
     }
+    if (!username.trim('') || !first_name.trim('') || !last_name.trim('') || !phone_number.trim('') || !email.trim('') || !password.trim('') || !confirmPassword.trim('')) {
+      toast.error('Please fill all fields');
+      
+    }
+    if (!category.trim('')) {
+      toast.error('Please select a category');
+     
+    }
+
+  
+  
+    
+    // if (!passwordRegex.test(password)) {
+    //   toast.error('Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number');
+    //   return;
+    // }
+
 
 
     nextStep();
+    
   };
 
   return (
@@ -76,7 +102,8 @@ function Signup() {
       <Toaster position='top-center' reverseOrder='false'  ></Toaster>
 
       <div className="bg-white border-s p-8 rounded-xl shadow-md max-w-lg w-11/12 backdrop-blur-lg">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Signup</h2>
+      <form onSubmit={handleStep1Submit}>
+        <h2 className="text-2xl font-semibold mb-4 text-center">Signup</h2>
         <div className="flex justify-between mb-4">
           <button
             type="button"
@@ -98,7 +125,7 @@ function Signup() {
         </div>
         {step === 1 && (
           <div className="step1">
-            <form onSubmit={handleStep1Submit}>
+         
               <div className="flex flex-wrap -mx-2 mb-4">
                 <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
                   <label htmlFor="firstname" className="block mb-1">
@@ -210,57 +237,63 @@ function Signup() {
                   />
                 </div>
               </div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                  Next
-                </button>
-              </div>
-            </form>
+
+
           </div>
         )}
         {step === 2 && (
           <div className="step2">
-            <form>
-              <div className="mb-4">
-                <label htmlFor="category" className="block mb-1">
-                  Category
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2 border rounded"
-                 
-                >
-                  {/* Options for the category dropdown */}
-                  
-                </select>
-              </div>
-              
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                  Previous
-                </button>
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                  Signup
-                </button>
-              </div>
-            </form>
+
+            <div className="mb-4">
+              <label htmlFor="category" className="block mb-1">
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={category}
+                required
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-3 py-2 border rounded"
+
+              >
+                <option value="">Select Category</option>
+                <option value="brazil">Brazil</option>
+                <option value="bucharest">Bucharest</option>
+                <option value="london">London</option>
+                <option value="washington">Washington</option>
+
+
+              </select>
+            </div>
+
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-green-500 text-white px-4 py-2 rounded"
+              >
+                Previous
+              </button>
+              <button
+                type="submit"
+                className="bg-green-500 text-white px-4 py-2 rounded"
+              >
+                Signup
+              </button>
+            </div>
+            <p className="mt-4 text-center text-gray-600">
+                Already have an account?{' '}
+                <Link to="/login" className="text-green-600">
+                  Please login.
+                </Link>
+              </p>
           </div>
         )}
-      </div>
+        </form>
     </div>
+     
+    </div >
 
 
   );

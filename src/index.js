@@ -4,10 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+
+
+import { ThemeProvider } from "@material-tailwind/react";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { client_id } from './utils/config';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <GoogleOAuthProvider clientId={client_id} >
+    <ThemeProvider>
     <App />
+    </ThemeProvider>
+    </GoogleOAuthProvider >
   </React.StrictMode>
 );
 
