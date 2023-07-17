@@ -84,8 +84,9 @@ function Login() {
       })
         .then((res) => {
           const userProfile = res.data
+          console.log('user profile is:', userProfile);
           GoogleAuthentication(userProfile).then((res) => {
-            console.log('final result :', jwtDecode(JSON.stringify(res.data.token)));
+            // console.log('final result :', jwtDecode(JSON.stringify(res.data.token)));
             if (res.data.status === 200) {
               localStorage.setItem('authToken', JSON.stringify(res.data.token));
               toast.success(res.data.msg)

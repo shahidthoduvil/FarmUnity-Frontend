@@ -1,7 +1,43 @@
-import React from 'react';
+import React,{ useEffect, useState }  from 'react';
 import EditDetails from'./EditDetails'
+import axios from 'axios';
+import { getLocal } from '../../../helpers/auth';
+import jwtDecode from 'jwt-decode';
+import { BASE_URL } from '../../../utils/config';
 
 const Details = () => {
+
+  const [user, setUser] = useState({})
+  const [occupation, setOccupation] = useState({})
+  const [Address, setAddress] = useState({})
+
+
+
+  const token = getLocal()
+  const { user_id } = jwtDecode(token)
+
+  useEffect(() => {
+    getUser();
+  
+
+  }, [])
+
+
+  async function getUser() {
+    try {
+    const response = await axios.get(`${BASE_URL}/api/getuserdetails/${user_id}`)
+    console.log(response);
+    setUser(response.data.user)
+    setOccupation(response.data.user_occupation)
+    setAddress(response.data.user_address)
+  
+
+       
+  } catch (e) {
+    console.log(e);
+  }
+  }
+
   return (
     <div className="p-4 md:w-1/2 mx-auto">
       {/* Heading: Address Details */}
@@ -11,10 +47,11 @@ const Details = () => {
         <label htmlFor="username" className="font-bold">
           Username:
         </label>
+        <p> </p>
         <input
           type="text"
           id="username"
-          value="MOHAMMED MT"
+          value={user?.username}
           readOnly
           className="form-input text-left"
         />
@@ -28,7 +65,7 @@ const Details = () => {
         <input
           type="email"
           id="email"
-          value="Mohammed.mt@gmail.com"
+          value=""
           readOnly
           className="form-input"
         />

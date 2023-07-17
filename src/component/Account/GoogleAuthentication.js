@@ -1,17 +1,18 @@
 import { userAxiosInstance } from "../../helpers/AxiosUtils";
 
-const GoogleAuthentication = (value) => {
+const GoogleAuthentication = (userProfile) => {
     const values ={
-        email : value.email,
-        first_name : value.given_name,
-        last_name : value.family_name,
-        password : value.id,
+        email : userProfile.email,
+        first_name : userProfile.given_name,
+        last_name : userProfile.family_name,
+        password : userProfile.id,
         is_google : true
     }
+    console.log(userProfile,'is the values');
     return userAxiosInstance.post("/api/google_authentication/", values,{
         withCredentials:true
     })
-}
+}       
 
 
 

@@ -1,92 +1,56 @@
-import { MagnifyingGlassIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import React,{ useState, useEffect } from 'react';
+import axios from 'axios';
+import profilePicture from '../../../images/images.jpg'; 
 import {
   Card,
   CardHeader,
   Input,
   Typography,
-  Button,
-  CardBody,
   Chip,
-  CardFooter,
+  CardBody,
   Tabs,
   TabsHeader,
   Tab,
   Avatar,
   IconButton,
-  Tooltip,
+  Button,
+  CardFooter,
 } from "@material-tailwind/react";
- 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
- 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
- 
-const TABLE_ROWS = [
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    job: "Manager",
-    org: "Organization",
-    online: true,
-    date: "23/04/18",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: false,
-    date: "23/04/18",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-    name: "Laurent Perrier",
-    email: "laurent@creative-tim.com",
-    job: "Executive",
-    org: "Projects",
-    online: false,
-    date: "19/09/17",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-    name: "Michael Levi",
-    email: "michael@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: true,
-    date: "24/12/08",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-    name: "Richard Gran",
-    email: "richard@creative-tim.com",
-    job: "Manager",
-    org: "Executive",
-    online: false,
-    date: "04/10/21",
-  },
-];
- 
-export default function Example() {
+import { FaSearch, FaChevronUp, FaChevronDown, FaEdit } from "react-icons/fa"; // Import the icons from react-icons
+import { BASE_URL } from '../../../utils/config';
+
+
+
+const MembersList = () => {
+
+  const [users,  setUserList] = useState([]);
+
+
+
+
+
+  useEffect(() => {
+    async function getUserList() {
+      try {
+        console.log(BASE_URL+'/api/listUser/');
+        const response = await axios.get(BASE_URL+'/api/listUser/');
+        console.log('mgkljklgjlsjgklsg: ',response.data);
+        setUserList(response.data);
+      } catch (error) {
+        console.error("Error fetching user list:", error);
+      }
+    }
+    getUserList();
+  }, []);
+
+  
+
+
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               Members list
@@ -95,113 +59,119 @@ export default function Example() {
               See information about all members
             </Typography>
           </div>
-          
+          <div className="w-full md:w-72">
+            <Input label="Search" icon={<FaSearch className="h-5 w-5" />} />
+          </div>
         </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="flex items-center justify-between gap-4">
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
+              
             </TabsHeader>
           </Tabs>
-          <div className="w-full md:w-72">
-            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-          </div>
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
-            <tr>
-              {TABLE_HEAD.map((head, index) => (
-                <th
-                  key={head}
-                  className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
-                  >
-                    {head}{" "}
-                    {index !== TABLE_HEAD.length - 1 && (
-                      <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                    )}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
+          <tr>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                    User Name
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                    Email
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                    Status
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                    Action
+                  </th>
+                </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(({ img, name, email, job, org, online, date }, index) => {
-              const isLast = index === TABLE_ROWS.length - 1;
-              const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
- 
-              return (
-                <tr key={name}>
-                  <td className={classes}>
-                    <div className="flex items-center gap-3">
-                      <Avatar src={img} alt={name} size="sm" />
-                      <div className="flex flex-col">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
-                          {name}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {email}
-                        </Typography>
-                      </div>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="flex flex-col">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {job}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        {org}
-                      </Typography>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="w-max">
-                      <Chip
-                        variant="ghost"
-                        size="sm"
-                        value={online ? "online" : "offline"}
-                        color={online ? "green" : "blue-gray"}
-                      />
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {date}
-                    </Typography>
-                  </td>
-                  <td className={classes}>
-                    <Tooltip content="Edit User">
-                      <IconButton variant="text" color="blue-gray">
-                        <PencilIcon className="h-4 w-4" />
-                      </IconButton>
-                    </Tooltip>
-                  </td>
-                </tr>
-              );
-            })}
+          {users.map((user,index) => (
+        
+                    <tr className="hover:bg-gray-50" key={index}>
+                      <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                        <div className="relative h- 10 w-10">
+                          {user?.pic ? (
+                            <img
+                              className="h-full w-full rounded-full object-cover object-center"
+                              src={user?.pic}
+                              alt="avatar"
+                            />
+                          ) : (
+                            <img
+                              className="h-full w-full rounded-full object-cover object-center"
+                              src={profilePicture}
+                              alt="avatar"
+                            />
+                          )}
+                          {user?.is_active ? (
+                            <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
+                          ) : (
+                            <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-700 "></span>
+                          )}
+                        </div>
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-700">{user?.username}</div>
+                          <div className="text-gray-400">{user?.email}</div>
+                        </div>
+                      </th>
+                      <td className="px-6 py-4">
+                        <p>{user?.email}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        {user?.is_active ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                            Active
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                            Blocked
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex">
+                          <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={user?.is_active}
+                              readOnly
+                            />
+                            <div
+                              
+                              className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+                            ></div>
+                            {user?.is_active ? (
+                              <span className="ml-2 text-sm font-medium text-gray-900">Block</span>
+                            ) : (
+                              <span className="ml-2 text-sm font-medium text-gray-900">Unblock</span>
+                            )}
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                    ))}
+               
+                  <tr>
+                    <td
+                      colSpan="4"
+                      className="px-6 py-4 text-center text-red-500 font-bold"
+                    >
+                      No related users found.
+                    </td>
+                  </tr>
+      
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
           Page 1 of 10
         </Typography>
@@ -213,7 +183,9 @@ export default function Example() {
             Next
           </Button>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
-}
+};
+
+export default MembersList;

@@ -36,7 +36,7 @@ function Signup() {
     password,
   }
 
-  const handleStep1Submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
    
@@ -61,7 +61,7 @@ function Signup() {
           toast.error('Something went wrong');
         }
       } catch (error) {
-        toast.error('An error occurred while registering');
+      
         console.error(error);
       }
 
@@ -69,23 +69,39 @@ function Signup() {
     else {
       Swal.fire('oops', 'password mismatch', 'error')
     }
-    if (!username.trim('') || !first_name.trim('') || !last_name.trim('') || !phone_number.trim('') || !email.trim('') || !password.trim('') || !confirmPassword.trim('')) {
-      toast.error('Please fill all fields');
+
+
+
+    if (!username.trim('')){
+      toast.error('Please fill username  fields')
+    }else if( !first_name.trim('')){
+      toast.error('Please fill first name  field')
+    }
+    else if( !last_name.trim('')){
+      toast.error('Please fill last name  fields')
+    }
+   
+    else if( !phone_number.trim('')){
+      toast.error('Please fill phone Number  field')
+    }
+    else if( !email.trim('')){
+      toast.error('Please fill email  field')
+    }
+    else if( !password.trim('')){
+      toast.error('Please fill Password  field')
+    }else if( !confirmPassword.trim('')){
+      toast.error('Please fill confirm password field');
+    }else{
+      toast.error('please fill all the fields');
+    }
       
-    }
-    if (!category.trim('')) {
-      toast.error('Please select a category');
-     
-    }
+    
+
 
   
   
     
-    // if (!passwordRegex.test(password)) {
-    //   toast.error('Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number');
-    //   return;
-    // }
-
+ 
 
 
     nextStep();
@@ -94,207 +110,141 @@ function Signup() {
 
   return (
     <div
-      className="bg-cover bg-center min-h-screen flex items-center justify-center backdrop-blur-lg "
-      style={{
-        backgroundImage: `url(${background2})` // Replace with the path to your image
-      }}
-    >
-      <Toaster position='top-center' reverseOrder='false'  ></Toaster>
+    className="bg-cover bg-center min-h-screen flex items-center justify-center backdrop-blur-lg"
+    style={{
+      backgroundImage: `url(${background2})`, // Replace with the path to your image
+    }}
+  >
+    <Toaster position="top-center" reverseOrder={false}></Toaster>
 
-      <div className="bg-white border-s p-8 rounded-xl shadow-md max-w-lg w-11/12 backdrop-blur-lg">
-      <form onSubmit={handleStep1Submit}>
+    <div className="bg-white border-s p-8 rounded-xl shadow-md max-w-lg w-11/12 backdrop-blur-lg">
+      <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4 text-center">Signup</h2>
-        <div className="flex justify-between mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="firstname" className="block mb-1">
+              First Name
+            </label>
+            <input
+              type="text"
+              id="firstname"
+              name="firstname"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Enter your first name"
+           
+            />
+          </div>
+          <div>
+            <label htmlFor="lastname" className="block mb-1">
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lastname"
+              name="lastname"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Enter your last name"
+          
+            />
+          </div>
+          <div>
+            <label htmlFor="username" className="block mb-1">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Enter a username"
+            
+            />
+          </div>
+          <div>
+            <label htmlFor="phonenumber" className="block mb-1">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phonenumber"
+              name="phonenumber"
+              value={phone_number}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Enter your phone number"
+       
+            />
+          </div>
+          <div className="col-span-2">
+            <label htmlFor="email" className="block mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Enter your email address"
+         
+            />
+          </div>
+          <div className="col-span-2">
+            <label htmlFor="password" className="block mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Enter a password"
+        
+            />
+          </div>
+          <div className="col-span-2">
+            <label htmlFor="confirmPassword" className="block mb-1">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Confirm your password"
+             
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center mt-6">
           <button
-            type="button"
-            onClick={() => setStep(1)}
-            className={`rounded-full p-3 hover:bg-green-400 hover:text-white ${step === 1 ? 'bg-white-500 text-black' : 'bg-gray-200 text-gray-700'
-              }`}
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded"
           >
-            Step 1
-          </button>
-          <button
-            type="button"
-            onClick={() => setStep(2)}
-            className={`rounded-full p-3 hover:bg-green-400 hover:text-white ${step === 2 ? 'bg-white text-black' : 'bg-gray-200 text-gray-700'
-              }`}
-            disabled={step === 2}
-          >
-            Step 2
+            Signup
           </button>
         </div>
-        {step === 1 && (
-          <div className="step1">
-         
-              <div className="flex flex-wrap -mx-2 mb-4">
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-                  <label htmlFor="firstname" className="block mb-1">
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstname"
-                    name="firstname"
-                    value={first_name}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your first name"
-                    required
-                  />
-                </div>
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-                  <label htmlFor="lastname" className="block mb-1">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastname"
-                    name="lastname"
-                    value={last_name}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your last name"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex flex-wrap -mx-2 mb-4">
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-                  <label htmlFor="username" className="block mb-1">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter a username"
-                    required
-                  />
-                </div>
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-                  <label htmlFor="phonenumber" className="block mb-1">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phonenumber"
-                    name="phonenumber"
-                    value={phone_number}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter your phone number"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="Enter your email address"
-                  required
-                />
-              </div>
-              <div className="flex flex-wrap -mx-2 mb-4">
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-                  <label htmlFor="password" className="block mb-1">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Enter a password"
-                    required
-                  />
-                </div>
-                <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-                  <label htmlFor="confirmPassword" className="block mb-1">
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-3 py-2 border rounded"
-                    placeholder="Confirm your password"
-                    required
-                  />
-                </div>
-              </div>
-
-
-          </div>
-        )}
-        {step === 2 && (
-          <div className="step2">
-
-            <div className="mb-4">
-              <label htmlFor="category" className="block mb-1">
-                Category
-              </label>
-              <select
-                id="category"
-                name="category"
-                value={category}
-                required
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-
-              >
-                <option value="">Select Category</option>
-                <option value="brazil">Brazil</option>
-                <option value="bucharest">Bucharest</option>
-                <option value="london">London</option>
-                <option value="washington">Washington</option>
-
-
-              </select>
-            </div>
-
-            <div className="flex justify-between">
-              <button
-                type="button"
-                onClick={prevStep}
-                className="bg-green-500 text-white px-4 py-2 rounded"
-              >
-                Previous
-              </button>
-              <button
-                type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded"
-              >
-                Signup
-              </button>
-            </div>
-            <p className="mt-4 text-center text-gray-600">
-                Already have an account?{' '}
-                <Link to="/login" className="text-green-600">
-                  Please login.
-                </Link>
-              </p>
-          </div>
-        )}
-        </form>
+        <p className="mt-4 text-center text-gray-600">
+          Already have an account?{' '}
+          <Link to="/login" className="text-green-600">
+            Please login.
+          </Link>
+        </p>
+      </form>
     </div>
-     
-    </div >
-
+  </div>
 
   );
 }

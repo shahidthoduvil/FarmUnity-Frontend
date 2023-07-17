@@ -2,10 +2,10 @@ import axios from 'axios';
 import { BASE_URL } from '../utils/config';
 
 
-const createAxiosClient = (BASE_URL ) => {
-    console.log('reached here also :', BASE_URL );
+const createAxiosClient = (baseUrl) => {
+    console.log('reached here also :', baseUrl);
     const client = axios.create({
-        BASE_URL,
+        baseUrl,
         timeout: 8000,
         timeoutErrorMessage: "Request timeout Please Try Again!!!"
     })
@@ -20,11 +20,14 @@ const attachToken = (req, tokenName) => {
     return req
 }
 
-const userAxiosInstance = createAxiosClient(BASE_URL )
+const userAxiosInstance = createAxiosClient(BASE_URL)
+
+
 userAxiosInstance.interceptors.request.use(async (req) => {
+
     const modifiedReq = attachToken(req, "authToken")
-    console.log('Ennem vilichu :' ,modifiedReq);
+    console.log('Modified req is :', modifiedReq);
     return modifiedReq;
 })
 
-export {userAxiosInstance}
+export { userAxiosInstance }
