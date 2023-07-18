@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
+import PrivateRouter from './utils/PrivateRouter';
 
 
 import AdminPanelPage from './component/AdminPages/AdminPanelPage';
@@ -13,8 +14,11 @@ import UserListPage from './component/AdminPages/UserListPage';
 import BannerLIstPage from './component/AdminPages/BannerLIstPage';
 import ForgotPassword from './component/Account/ForgotPassword';
 import ResetPassword from './component/Account/ResetPassword';
-import Private_Router from './utils/Private_Router';
+
 import PageNotFound from './pages/PageNotFound';
+import ProfileSetupPage from './pages/ProfileSetupPage';
+import QuotesPage from './pages/QuotesPage';
+
 
 
 
@@ -25,20 +29,26 @@ function App() {
       <Router>
         <Routes>
 
+        <Route exact path='*' Component={PageNotFound}></Route>
+        <Route  path='/' exact  element={<PrivateRouter/>}></Route>
 
-         <Route exact path='*' Component={PageNotFound}></Route>
-         <Route  path='/' exact  element={<Private_Router/>}></Route>
+        
          
           <Route exact path='/' element={<HomePage/>}></Route>
           <Route Component={AdminPanelPage} path='adm'></Route>
           <Route Component={UserListPage} path='adm/user-list'></Route>
           <Route Component={BannerLIstPage} path='adm/banner-list'></Route>
+          <Route Component={QuotesPage} path='adm/quotes'></Route>
 
           <Route Component={LoginPage} path='login'></Route>
           <Route Component={SigupPage} path='signup'></Route>
           <Route Component={ForgotPassword} path='forgot-password'></Route>
           <Route Component={ResetPassword} path='reset-password'></Route> 
           <Route Component={ProfilePage} path='profile'></Route>
+          <Route Component={ProfileSetupPage} path='profile-setup'></Route>
+       
+   
+    
         
           
 

@@ -13,13 +13,13 @@ import { client_id } from './utils/config';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <>
     <GoogleOAuthProvider clientId={client_id} >
     <ThemeProvider>
     <App />
     </ThemeProvider>
     </GoogleOAuthProvider >
-  </React.StrictMode>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

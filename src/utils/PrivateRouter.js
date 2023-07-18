@@ -6,7 +6,7 @@ import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 
 
-const Private_Router = ({ children, ...rest }) => {
+const PrivateRouter = ({ children, ...rest }) => {
 
     const response = localStorage.getItem('authToken');
 
@@ -37,4 +37,4 @@ const Private_Router = ({ children, ...rest }) => {
    
 }
 
-export default Private_Router
+export default PrivateRouter

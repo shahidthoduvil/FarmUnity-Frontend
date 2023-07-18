@@ -84,7 +84,7 @@ const ProfilePage = () => {
                   <h1 className="text-4xl font-medium text-gray-700">{user?.username} <span class="font-light text-gray-500"></span></h1>
                   <p className="font-light text-gray-600 mt-3">{Address?.city}</p>
 
-                  <p className="mt-8 text-gray-500">{category?.Category_name}</p>
+                  <p className="mt-8 text-gray-500">{category?.Category_nam}</p>
                   <p className="mt-2 text-gray-500">{occupation?.titile}</p>
                 </div>
                 <div className="flex items-center justify-center mt-10">
