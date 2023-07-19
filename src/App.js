@@ -17,6 +17,7 @@ import ResetPassword from './component/Account/ResetPassword';
 
 import PageNotFound from './pages/PageNotFound';
 import ProfileSetupPage from './pages/ProfileSetupPage';
+
 import QuotesPage from './pages/QuotesPage';
 
 
@@ -45,6 +46,7 @@ function App() {
           <Route Component={ForgotPassword} path='forgot-password'></Route>
           <Route Component={ResetPassword} path='reset-password'></Route> 
           <Route Component={ProfilePage} path='profile'></Route>
+ 
           <Route Component={ProfileSetupPage} path='profile-setup'></Route>
        
    

@@ -17,7 +17,7 @@ const Example = () => {
 
       {/* Edit Dialog */}
       <Dialog open={size === 'lg'} size={size || 'md'} handler={() => handleOpen(null)}>
-        <DialogHeader>EDIT YOUR PROFILE</DialogHeader>
+        <DialogHeader>EDIT YOUR Details</DialogHeader>
         <DialogBody className="dialog-content"  style={{
           'height': '400px',
           'overflow-y': 'auto'
