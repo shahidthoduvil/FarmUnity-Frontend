@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import profileBackground from '../../images/profile-pic.jpg';
+import profileBackground from '../../images/images.jpg';
 
 import {
     Menu,

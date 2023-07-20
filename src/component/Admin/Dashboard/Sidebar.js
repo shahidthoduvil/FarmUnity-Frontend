@@ -51,19 +51,25 @@ export default function Example() {
           <ListItemPrefix>
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Profile
+           <Link to='/adm/quotes'> Quotes</Link> 
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <Cog6ToothIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Settings
+         <Link to='/adm/memberlist'>MemberList</Link> 
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <Cog6ToothIcon className="h-5 w-5" />
+          </ListItemPrefix>
+         <Link to='/adm/notification'>Notification Message</Link> 
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Log Out
+             Log Out
         </ListItem>
       </List>
     </Card>

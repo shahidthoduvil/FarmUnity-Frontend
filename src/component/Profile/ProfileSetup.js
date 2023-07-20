@@ -4,7 +4,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoIosAdd } from 'react-icons/io';
-import profilePicture from '../../images/images.jpg'; // Replace with your default profile picture
 import profileBackground from '../../images/images.jpg'; // Replace with your default background picture
 import { BASE_URL } from '../../utils/config';
 import axios from 'axios';
@@ -24,6 +23,8 @@ const ProfileSetup = () => {
   const [pincode, setPincode] = useState('');
   const [address, setAddress] = useState('');
   const [isStep1Complete, setIsStep1Complete] = useState(false);
+  const [isStep2Complete, setIsStep2Complete] = useState(false);
+  
 
   const handleProfileImageChange = (event) => {
     const file = event.target.files[0];
@@ -38,37 +39,51 @@ const ProfileSetup = () => {
   const handleStep1Submit = (event) => {
     event.preventDefault();
     // Handle Step 1 form submission here, set isStep1Complete to true
-    setIsStep1Complete(true);
+    if (category && subcategory && profileBackground&& profileImage ) {
+      setIsStep1Complete(true);
+    } else {
+      setIsStep1Complete(false);
+    }
+  };
+  const handlePreviousStep = (event) => {
+    event.preventDefault();
+    // Navigate back to Step 1
+    setIsStep1Complete(false);
   };
 
   const handleStep2Submit = async (event) => {
     event.preventDefault();
-
-    // Send form data and uploaded images to the server for setup
-    try {
-      const formData = new FormData();
-      formData.append('profileImage', profileImage);
-      formData.append('backgroundImage', backgroundImage);
-      formData.append('username', username);
-      formData.append('city', city);
-      formData.append('category', category);
-      formData.append('subcategory', subcategory);
-      formData.append('country', country);
-      formData.append('state', state);
-      formData.append('district', district);
-      formData.append('place', place);
-      formData.append('pincode', pincode);
-      formData.append('address', address);
-
-      // Make an API call to the server to save the profile setup data
-      await axios.post(`${BASE_URL}/api/profile-setup`, formData);
-
-      // Redirect to the profile page after successful setup
-      navigate.push('/profile');
-    } catch (error) {
-      console.log(error);
-      // Handle error case if needed
+    if (country && state && district && place && pincode && address) {
+      setIsStep2Complete(true);
+    } else {
+      setIsStep2Complete(false);
     }
+   
+    // Send form data and uploaded images to the server for setup
+    // try {
+    //   const formData = new FormData();
+    //   formData.append('profileImage', profileImage);
+    //   formData.append('backgroundImage', backgroundImage);
+    //   formData.append('username', username);
+    //   formData.append('city', city);
+    //   formData.append('category', category);
+    //   formData.append('subcategory', subcategory);
+    //   formData.append('country', country);
+    //   formData.append('state', state);
+    //   formData.append('district', district);
+    //   formData.append('place', place);
+    //   formData.append('pincode', pincode);
+    //   formData.append('address', address);
+
+    //   // Make an API call to the server to save the profile setup data
+    //   await axios.post(`${BASE_URL}/api/profile-setup`, formData);
+
+    //   // Redirect to the profile page after successful setup
+    //   navigate.push('/profile');
+    // } catch (error) {
+    //   console.log(error);
+    //   // Handle error case if needed
+    // }
   };
 
   return (
@@ -172,7 +187,7 @@ const ProfileSetup = () => {
               <input
                 id="country"
                 type="text"
-                required
+            
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
@@ -185,7 +200,7 @@ const ProfileSetup = () => {
               <input
                 id="state"
                 type="text"
-                required
+       
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
@@ -198,7 +213,7 @@ const ProfileSetup = () => {
               <input
                 id="district"
                 type="text"
-                required
+              
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
@@ -211,7 +226,7 @@ const ProfileSetup = () => {
               <input
                 id="place"
                 type="text"
-                required
+     
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={place}
                 onChange={(e) => setPlace(e.target.value)}
@@ -224,7 +239,7 @@ const ProfileSetup = () => {
               <input
                 id="pincode"
                 type="text"
-                required
+
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value)}
@@ -237,18 +252,28 @@ const ProfileSetup = () => {
               <input
                 id="address"
                 type="text"
-                required
+      
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
             </div>
-            <div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className=" w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+               onClick={handlePreviousStep}
+              >
+                Previous 
+              </button>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              
+                // disabled={isStep2Complete}
+
+                className={`w-full flex justify-center py-2 px-4 border border-transparent ML-5 rounded-md shadow-sm text-sm font-medium text-white ${isStep2Complete ? 'bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed'}`}
               >
-                Save Profile Setup 
+                Save Profile Setup
               </button>
             </div>
           </form>

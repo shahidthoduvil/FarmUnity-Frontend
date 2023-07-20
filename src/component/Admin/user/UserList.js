@@ -18,7 +18,8 @@ import {
 } from "@material-tailwind/react";
 import { FaSearch, FaChevronUp, FaChevronDown, FaEdit } from "react-icons/fa"; // Import the icons from react-icons
 import { BASE_URL } from '../../../utils/config';
-
+import { getLocal } from '../../../helpers/auth';
+import jwtDecode from 'jwt-decode';
 
 
 const MembersList = () => {
@@ -28,20 +29,52 @@ const MembersList = () => {
 
 
 
-
   useEffect(() => {
+    getUserList();
+   
+  }, []);
+
+
     async function getUserList() {
       try {
         console.log(BASE_URL+'/api/listUser/');
         const response = await axios.get(BASE_URL+'/api/listUser/');
         console.log('mgkljklgjlsjgklsg: ',response.data);
         setUserList(response.data);
+      
       } catch (error) {
         console.error("Error fetching user list:", error);
       }
     }
+
+
+
+
+  async function changeStatus(id){
+    try{
+      const response=await axios.get(`${BASE_URL}/api/blockUser/${id}`);
     getUserList();
-  }, []);
+ 
+   
+    }catch(error){
+      console.error('Error blocking.unblocking user:',error)
+    
+    }
+
+    }
+    async function serachUser(keyword) {
+      const request = await axios.get(`${BASE_URL}/api/adminsearchUser/?search=${keyword}`)
+      console.log(request.data);
+      if (request.data.length === 0) {
+
+      }
+      setUserList(request.data)
+  }
+
+
+
+
+
 
   
 
@@ -60,7 +93,8 @@ const MembersList = () => {
             </Typography>
           </div>
           <div className="w-full md:w-72">
-            <Input label="Search" icon={<FaSearch className="h-5 w-5" />} />
+            <Input onChange={e=>serachUser(e.target.value)}
+            label="Search" icon={<FaSearch className="h-5 w-5" />} />
           </div>
         </div>
         <div className="flex items-center justify-between gap-4">
@@ -73,14 +107,18 @@ const MembersList = () => {
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
-          <thead>
+          <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
           <tr>
                   <th scope="col" className="px-6 py-4 font-large text-gray-900">
                     User Name
                   </th>
                   <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                    Email
+                   category
                   </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                  subcategory
+                  </th>
+                  
                   <th scope="col" className="px-6 py-4 font-large text-gray-900">
                     Status
                   </th>
@@ -120,7 +158,10 @@ const MembersList = () => {
                         </div>
                       </th>
                       <td className="px-6 py-4">
-                        <p>{user?.email}</p>
+                        <p></p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p></p>
                       </td>
                       <td className="px-6 py-4">
                         {user?.is_active ? (
@@ -145,7 +186,7 @@ const MembersList = () => {
                               readOnly
                             />
                             <div
-                              
+                              onClick={()=>changeStatus(user?.id)}
                               className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
                             ></div>
                             {user?.is_active ? (
@@ -164,14 +205,15 @@ const MembersList = () => {
                       colSpan="4"
                       className="px-6 py-4 text-center text-red-500 font-bold"
                     >
-                      No related users found.
+                      {/* No related users found. */}
                     </td>
                   </tr>
+                 
       
           </tbody>
         </table>
       </CardBody>
-      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
           Page 1 of 10
         </Typography>
@@ -183,9 +225,9 @@ const MembersList = () => {
             Next
           </Button>
         </div>
-      </CardFooter> */}
+      </CardFooter> 
     </Card>
   );
-};
+}
 
 export default MembersList;

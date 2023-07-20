@@ -19,21 +19,17 @@ export default function Example() {
     <Fragment>
       <Link to="">
         <div className="absolute right-0 bottom-0 bg-white rounded-full p-2 cursor-pointer"
-        onClick={()=>handleOpen('lg')}
+        onClick={()=>handleOpen("md")}
          >
           <FaEdit size={20} variant="gradient" />
 
         </div>
       </Link>
 
-      <Dialog open={size === "lg"} size={size || "md"} handler={handleOpen} >
+      <Dialog open={size === "md"} size={size || "md"} handler={handleOpen} >
         <DialogHeader>EDIT YOUR PROFILE</DialogHeader>
         <DialogBody  >
-          <div className="dialog-content">
-           
-              {/* Profile header */}
-              <div className="relative bg-cover bg-center h-40 md:h-96">
-                <div className="p-16">
+       
                   <div className="p-8 bg-white shadow mt-24">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="md:col-span-1 flex flex-col">
@@ -91,10 +87,7 @@ export default function Example() {
                     </div>
 
                   </div>
-                </div>
-              </div>
-           
-          </div>
+            
         </DialogBody>
 
         <DialogFooter>
@@ -109,3 +102,8 @@ export default function Example() {
     </Fragment>
   );
 }
+
+
+
+
+
