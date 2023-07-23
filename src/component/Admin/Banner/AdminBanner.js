@@ -1,57 +1,60 @@
-import { MagnifyingGlassIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import React,{ useState, useEffect } from 'react';
+import axios from 'axios';
+import profilePicture from '../../../images/images.jpg'; 
 import {
   Card,
   CardHeader,
   Input,
   Typography,
-  Button,
-  CardBody,
   Chip,
-  CardFooter,
+  CardBody,
   Tabs,
   TabsHeader,
   Tab,
   Avatar,
   IconButton,
-  Tooltip,
+  Button,
+  CardFooter,
 } from "@material-tailwind/react";
- 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
- 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
- 
-const TABLE_ROWS = [
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    job: "Manager",
-    org: "Organization",
-    online: true,
-    date: "23/04/18",
-  },
- 
-];
- 
-export default function Example() {
+import { FaSearch, FaChevronUp, FaChevronDown, FaEdit,FaTrash,FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
+import { BASE_URL } from '../../../utils/config';
+import {Editbanner} from './Editbanner';
+
+
+
+const  BannerList = () => {
+  const [banners, setBanners] = useState([]);
+
+
+
+
+  useEffect(() => {
+    // Fetch the list of banners from the backend API
+      getAdminBanner()
+  }, []);
+
+  async function getAdminBanner() {
+    try {
+      console.log(BASE_URL+'/home/banner-list/');
+      const response = await axios.get(BASE_URL+'/home/banner-list/');
+      console.log('mgkljklgjlsjgklsg: ',response.data);
+      setBanners(response.data);
+    
+    } catch (error) {
+      console.error("Error fetching user list:", error);
+    }
+  }
+
+
+
+  
+
+
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               Members list
@@ -60,109 +63,148 @@ export default function Example() {
               See information about all members
             </Typography>
           </div>
-          
+        
         </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="flex items-center justify-between gap-4">
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
+              
             </TabsHeader>
           </Tabs>
-          <div className="w-full md:w-72">
-            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-          </div>
         </div>
       </CardHeader>
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head, index) => (
-                <th
-                  key={head}
-                  className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
-                  >
-                    {head}{" "}
-                    {index !== TABLE_HEAD.length - 1 && (
-                      <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                    )}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
+          <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
+          <tr>
+                
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                  image
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                   titile
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                  list
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                    Action
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                   Delete
+                  </th>
+                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                    Edit
+                  </th>
+                </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(({ img, name, email, job, org, online, date }, index) => {
-              const isLast = index === TABLE_ROWS.length - 1;
-              const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
- 
-              return (
-                <tr key={name}>
-                  <td className={classes}>
-                    <div className="flex items-center gap-3">
-                      <Avatar src={img} alt={name} size="sm" />
-                      <div className="flex flex-col">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
-                          {name}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {email}
-                        </Typography>
-                      </div>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="flex flex-col">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        {job}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        {org}
-                      </Typography>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="w-max">
-                      <Chip
-                        variant="ghost"
-                        size="sm"
-                        value={online ? "online" : "offline"}
-                        color={online ? "green" : "blue-gray"}
-                      />
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {date}
-                    </Typography>
-                  </td>
-                  <td className={classes}>
-                    <Tooltip content="Edit User">
-                      <IconButton variant="text" color="blue-gray">
-                        <PencilIcon className="h-4 w-4" />
-                      </IconButton>
-                    </Tooltip>
-                  </td>
-                </tr>
-              );
-            })}
+          {banners.map((banner) => (
+        
+                    <tr className="hover:bg-gray-50" key={banner.id}>
+                      <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                        <div className="relative h- 10 w-10">
+                          {banner.img ? (
+                            <img
+                              className="h-full w-full  object-cover object-center"
+                              src={BASE_URL+ banner.img}
+                              alt="avatar"
+                            />
+                          ) : ( " "
+                          )}
+                          {banner.is_list ? (
+                            <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
+                          ) : (
+                            <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-700 "></span>
+                          )}
+                        </div>
+                      
+                      </th>
+                      <td className="px-6 py-4">
+                        <p> {banner.title}</p>
+                      </td>
+                    
+                      <td className="px-6 py-4">
+                        {banner.is_list ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                            List
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                           UnList
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex">
+                          <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                            
+                              readOnly
+                            />
+                            <div
+                            
+                              className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+                            ></div>
+                          
+                              <span className="ml-2 text-sm font-medium text-gray-900">List</span>
+                        
+                              <span className="ml-2 text-sm font-medium text-gray-900">UnList</span>
+                       
+                          </label>
+                        </div>
+                     
+                      
+                      </td>
+                      <td className="px-6 py-4">
+                  <div className="flex gap-2">
+              
+                    {/* Delete button */}
+                    <Button
+                      color="red"
+                      size="sm"
+                      ripple="light"
+                      onClick={() => {
+                        // Handle delete action here
+                      }}
+                    >
+                      <FaTrash className="mr-1" /> 
+                    </Button>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex gap-2">
+                    {/* Edit button */}
+                    <Button
+                      color="lightBlue"
+                      size="sm"
+                      ripple="light"
+                      onClick={() => {
+                        // Handle edit action here
+                      }}
+                    >
+                      <FaEdit className="mr-1" /> 
+                    </Button>
+                
+                  </div>
+                </td>
+                    </tr>
+                    ))}
+               
+                  <tr>
+                    <td
+                      colSpan="4"
+                      className="px-6 py-4 text-center text-red-500 font-bold"
+                    >
+                      {/* No related users found. */}
+                    </td>
+                  </tr>
+                 
+      
           </tbody>
         </table>
       </CardBody>
@@ -178,7 +220,11 @@ export default function Example() {
             Next
           </Button>
         </div>
+        <Editbanner/>
       </CardFooter>
+      
     </Card>
   );
 }
+
+export default BannerList;

@@ -9,7 +9,7 @@ const SubNavbar = () => {
   return (
     <div class="bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex py-2 overflow-x-auto no-scrollbar overflow-y-auto">
+        <div class="flex py-2 overflow-x-auto  overflow-y-auto">
           <div class="flex w-full space-x-4">
             <Link to='/'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
            focus:outline-none whitespace-nowrap  transition-transform transform hover:scale-110 active:scale-100">Home</p></Link>

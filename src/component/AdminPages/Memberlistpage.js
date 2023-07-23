@@ -1,8 +1,14 @@
 import React from 'react'
+import NavbarAdmin from '../Admin/Dashboard/NavbarAdmin'
+import Sidebar from '../Admin/Dashboard/Sidebar'
 
 const Memberlistpage = () => {
   return (
-    <div>Memberlistpage</div>
+    <>
+    <NavbarAdmin/>
+    <Sidebar/>
+    
+    </>
   )
 }
 
