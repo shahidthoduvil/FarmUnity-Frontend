@@ -13,6 +13,7 @@ const BannerLIstPage = () => {
       <div className="order-1 lg:order-2 flex-1">
         <AdminBanner />
       </div>
+      
     </div>
   </>
   )

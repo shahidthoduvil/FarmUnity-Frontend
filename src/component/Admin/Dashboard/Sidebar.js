@@ -44,7 +44,7 @@ export default function Example() {
           </ListItemPrefix>
           <Link to='/adm/banner-list'>Banner  </Link>
           <ListItemSuffix>
-            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+            {/* <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" /> */}
           </ListItemSuffix>
         </ListItem>
         <ListItem>

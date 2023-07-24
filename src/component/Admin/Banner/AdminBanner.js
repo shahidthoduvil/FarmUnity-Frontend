@@ -1,5 +1,6 @@
 import React,{ useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'
 import profilePicture from '../../../images/images.jpg'; 
 import {
   Card,
@@ -18,7 +19,7 @@ import {
 } from "@material-tailwind/react";
 import { FaSearch, FaChevronUp, FaChevronDown, FaEdit,FaTrash,FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
 import { BASE_URL } from '../../../utils/config';
-import {Editbanner} from './Editbanner';
+import {Addbanner} from './Addbanner';
 
 
 
@@ -47,7 +48,41 @@ const  BannerList = () => {
 
 
 
-  
+//   const handleDeleteBanner=async(bannerId)=>{
+//     try{
+//       await axios.delete(`${BASE_URL}/home/banner/delete/${bannerId}/`)
+//       getAdminBanner()
+
+//     }
+//     catch(error){
+// console.log('error deleting banner ',error)
+//     }
+//   }
+
+
+
+  const handleDeleteBanner= (id) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const banner = axios.delete(`${BASE_URL}/home/banner/delete/${id}/`).then(
+                async function   getAdminBanner() {
+                    const request = await axios.get(BASE_URL+'/home/banner-list/')
+
+                    setBanners(request.data)
+                }
+            )
+
+        }
+    })
+}
 
 
 
@@ -57,7 +92,7 @@ const  BannerList = () => {
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Members list
+             Banner
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
               See information about all members
@@ -110,7 +145,11 @@ const  BannerList = () => {
                               src={BASE_URL+ banner.img}
                               alt="avatar"
                             />
-                          ) : ( " "
+                          ) : ( <img
+                            className="h-full w-full object-cover object-center"
+                            src={profilePicture}
+                            alt="placeholder"
+                          />
                           )}
                           {banner.is_list ? (
                             <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
@@ -169,8 +208,8 @@ const  BannerList = () => {
                       size="sm"
                       ripple="light"
                       onClick={() => {
-                        // Handle delete action here
-                      }}
+                        handleDeleteBanner(banner.id)
+                       }}
                     >
                       <FaTrash className="mr-1" /> 
                     </Button>
@@ -184,7 +223,7 @@ const  BannerList = () => {
                       size="sm"
                       ripple="light"
                       onClick={() => {
-                        // Handle edit action here
+                       handleDeleteBanner(banner.id)
                       }}
                     >
                       <FaEdit className="mr-1" /> 
@@ -220,7 +259,7 @@ const  BannerList = () => {
             Next
           </Button>
         </div>
-        <Editbanner/>
+        <Addbanner/>
       </CardFooter>
       
     </Card>
