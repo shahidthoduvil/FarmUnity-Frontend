@@ -10,7 +10,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/config";
 
-export function AddQuote() {
+export function AddQuote({action}) {
   const [size, setSize] = React.useState(null);
 
   const handleOpen = () => setSize("sm");
@@ -45,8 +45,11 @@ export function AddQuote() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+       
       });
-      handleClose(); // Close the dialog after successful submission.
+  
+      handleClose(); 
+      action()// Close the dialog after successful submission.
     } catch (error) {
       console.error("Error creating quote:", error);
       // Handle the error and show an error message if needed.

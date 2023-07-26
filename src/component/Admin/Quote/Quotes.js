@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 
@@ -13,64 +13,84 @@ import {
   Button,
   CardFooter,
 } from "@material-tailwind/react";
-import { FaSearch, FaChevronUp, FaChevronDown, FaEdit,FaTrash,FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
+import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
 import { BASE_URL } from '../../../utils/config';
-import {AddQuote} from './AddQuote';
+import { AddQuote } from './AddQuote';
 import EditQuote from './EditQuote';
 
 
 
-const  Quotes = () => {
-  const [quotes, setQuotes] = useState([]);
+const Quotes = () => {
+  const [quotes, setQuotes] = useState([{
+    is_list: false,
+  }]);
 
-const quoteId =1
 
 
   useEffect(() => {
     // Fetch the list of banners from the backend API
-      getAdminQuotes()
+    getAdminQuotes()
   }, []);
+
 
   async function getAdminQuotes() {
     try {
-      console.log(BASE_URL+'/home/quote-list/');
-      const response = await axios.get(BASE_URL+'/home/quote-list/');
-      console.log('mgkljklgjlsjgklsg: ',response.data);
+      console.log(BASE_URL + '/home/Admin-quote/');
+      const response = await axios.get(BASE_URL + '/home/Admin-quote/');
+      console.log('mgkljklgjlsjgklsg: ', response.data);
       setQuotes(response.data);
-    
+      
+
     } catch (error) {
       console.error("Error fetching quote-list:", error);
     }
   }
 
 
+  
+
+
+
+  const handleListUnlist = (quoteId, isList) => {
+    axios.patch(`${BASE_URL}/home/quote/${quoteId}/list_unlist/`, { is_list: isList })
+      .then((response) => {
+        console.log('Quote listed/unlisted successfully:', response.data);
+        // Handle any success message or update the quoteData state
+            setQuotes(prevQuotes => prevQuotes.map(quote => quote.id === quoteId ? { ...quote, is_list: isList} : quote));
+      })
+      .catch((error) => {
+        console.error('Error listing/unlisting quote:', error);
+        // Handle any error message or error handling here
+      });
+  };
 
 
 
 
 
-  const handleDeleteQuotes= (id) => {
+
+  const handleDeleteQuotes = (id) => {
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
-        if (result.isConfirmed) {
-            const banner = axios.delete(`${BASE_URL}/home/quote/delete/${id}/`).then(
-                async function   getAdminQuotes() {
-                    const request = await axios.get(BASE_URL+'/home/quote-list/')
+      if (result.isConfirmed) {
+        const quote = axios.delete(`${BASE_URL}/home/quote/delete/${id}/`).then(
+          async function getAdminQuotes() {
+            const request = await axios.get(BASE_URL + '/home/Admin-quote/')
 
-                    setQuotes(request.data)
-                }
-            )
+            setQuotes(request.data)
+          }
+        )
 
-        }
+      }
     })
-}
+  }
 
 
 
@@ -80,18 +100,18 @@ const quoteId =1
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-             QUOTES
+              QUOTES
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
               See information about all members
             </Typography>
           </div>
-        
+
         </div>
         <div className="flex items-center justify-between gap-4">
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
-              
+
             </TabsHeader>
           </Tabs>
         </div>
@@ -99,79 +119,68 @@ const quoteId =1
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
-          <tr>
-                
-                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                 Content
-                  </th>
-                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                 Author
-                  </th>
-                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                  list
-                  </th>
-                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                    Action
-                  </th>
-                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                   Delete
-                  </th>
-                  <th scope="col" className="px-6 py-4 font-large text-gray-900">
-                    Edit
-                  </th>
-                </tr>
+            <tr>
+
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                Content
+              </th>
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                Author
+              </th>
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                list
+              </th>
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                Action
+              </th>
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                Delete
+              </th>
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                Edit
+              </th>
+            </tr>
           </thead>
           <tbody>
-          {quotes.map((quote) => (
-        
-                    <tr className="hover:bg-gray-50" key={quote.id}>
+            {quotes.map((quote) => (
+
+              <tr className="hover:bg-gray-50" key={quote.id}>
+
+                <td className="px-6 py-4">
+                  <p> {quote.content}</p>
+                </td>
+                <td className="px-6 py-4">
+                  <p> {quote.Author}</p>
+                </td>
+
+                <td className="px-6 py-4">
+                  {quote.is_list ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                      List
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                      <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                      UnList
+                    </span>
+                  )}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex">
                    
-                      <td className="px-6 py-4">
-                        <p> {quote.content}</p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <p> {quote.Author}</p>
-                      </td>
-                    
-                      <td className="px-6 py-4">
-                        {quote.is_list ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                            List
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                            <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                           UnList
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex">
-                          <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="sr-only peer"
-                            
-                              readOnly
-                            />
-                            <div
-                            
-                              className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
-                            ></div>
-                          
-                              <span className="ml-2 text-sm font-medium text-gray-900">List</span>
-                        
-                              <span className="ml-2 text-sm font-medium text-gray-900">UnList</span>
-                       
-                          </label>
-                        </div>
-                     
-                      
-                      </td>
-                      <td className="px-6 py-4">
+
+                  {quote.is_list ? (
+              <button onClick={() => handleListUnlist(quote.id, false)}>Unlist</button>
+            ) : (
+              <button onClick={() => handleListUnlist(quote.id, true)}>List</button>
+            )}
+                  </div>
+
+                </td>
+                <td className="px-6 py-4">
                   <div className="flex gap-2">
-              
+
                     {/* Delete button */}
                     <Button
                       color="red"
@@ -179,34 +188,34 @@ const quoteId =1
                       ripple="light"
                       onClick={() => {
                         handleDeleteQuotes(quote.id)
-                       }}
+                      }}
                     >
-                      <FaTrash className="mr-1" /> 
+                      <FaTrash className="mr-1" />
                     </Button>
                   </div>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
                     {/* Edit button */}
-                  <EditQuote id={quoteId}/>
-                 
-          
-                
+                    <EditQuote id={quote.id} action={getAdminQuotes} />
+
+
+
                   </div>
                 </td>
-                    </tr>
-                    ))}
-               
-                  <tr>
-                    <td
-                      colSpan="4"
-                      className="px-6 py-4 text-center text-red-500 font-bold"
-                    >
-                      {/* No related users found. */}
-                    </td>
-                  </tr>
-                 
-      
+              </tr>
+            ))}
+
+            <tr>
+              <td
+                colSpan="4"
+                className="px-6 py-4 text-center text-red-500 font-bold"
+              >
+                {/* No related users found. */}
+              </td>
+            </tr>
+
+
           </tbody>
         </table>
       </CardBody>
@@ -222,11 +231,13 @@ const quoteId =1
             Next
           </Button>
         </div>
-        <AddQuote/>
+        <AddQuote  action={getAdminQuotes}/>
       </CardFooter>
-      
+
     </Card>
   );
 }
 
 export default Quotes;
+
+

@@ -10,10 +10,11 @@ import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/config";
 
-export function AddMember() {
+export function AddMember({action}) {
   const [size, setSize] = React.useState(null);
 
-  const handleOpen = (value) => setSize(value);
+  const handleOpen = () => setSize("sm");
+  const handleClose = () => setSize(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -55,7 +56,8 @@ export function AddMember() {
         },
       });
 
-      handleOpen(null);
+     handleClose()
+      action()
     } catch (error) {
       console.error("Error add member:", error);
       // Handle the error and show an error message if needed.
@@ -65,7 +67,7 @@ export function AddMember() {
   return (
     <>
       <div className="mb-3 flex gap-3">
-        <Button onClick={() => handleOpen("sm")} variant="gradient">
+        <Button onClick={() => handleOpen()} variant="gradient">
           <FaPlusCircle />
         </Button>
       </div>
@@ -116,7 +118,7 @@ export function AddMember() {
             <Button
               variant="text"
               color="red"
-              onClick={() => handleOpen(null)}
+              onClick={() => handleClose()}
               className="mr-1"
             >
               <span>Cancel</span>

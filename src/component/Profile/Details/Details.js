@@ -1,42 +1,53 @@
-import React,{ useEffect, useState }  from 'react';
-import EditDetails from'./EditDetails'
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 import { BASE_URL } from '../../../utils/config';
+import { getLocal } from '../../../helpers/auth';
+import EditDetails from './EditDetails';
 
 const Details = () => {
+  const [user, setUser] = useState({});
+  const [occupation, setOccupation] = useState({});
+  const [address, setAddress] = useState({});
 
-  const [user, setUser] = useState({})
-  const [occupation, setOccupation] = useState({})
-  const [Address, setAddress] = useState({})
-
-
-
-  const token = getLocal()
-  const { user_id } = jwtDecode(token)
-
+  const token = getLocal();
+  const { user_id } = jwtDecode(token);
+  // const [isUserOnline, setIsUserOnline] = useState(false);
+  const isUserOnline = () => {
+    return user?.is_active ? "User is Online" : "User is Offline";
+  };
   useEffect(() => {
     getUser();
-  
-
-  }, [])
-
+  }, []);
 
   async function getUser() {
     try {
-    const response = await axios.get(`${BASE_URL}/api/getuserdetails/${user_id}`)
-    console.log(response);
-    setUser(response.data.user)
-    setOccupation(response.data.user_occupation)
-    setAddress(response.data.user_address)
+      const response = await axios.get(`${BASE_URL}/api/getuserdetails/${user_id}/`);
+      const { user, user_occupation, user_address } = response.data;
+      setUser(user);
+      setOccupation(user_occupation);
+      setAddress(user_address);
+
+      // // Set user online status using is_user_online function
+      // const userOnlineStatus = checkUserOnline(user.is_active, user.last_login);
+      // setIsUserOnline(userOnlineStatus);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
 
-       
-  } catch (e) {
-    console.log(e);
-  }
-  }
+  // Function to determine user online status
+  // const checkUserOnline = (isActive, lastLogin) => {
+  //   if (isActive && lastLogin) {
+  //     const now = new Date();
+  //     const lastActiveThreshold = new Date(lastLogin);
+  //     lastActiveThreshold.setMinutes(lastActiveThreshold.getMinutes() + 5); // Adding 5 minutes to lastLogin
+  //     return now <= lastActiveThreshold; // Return true if the current time is within 5 minutes of lastLogin
+  //   }
+  //   return false;
+  // };
+
 
   return (
     <div className="p-4 md:w-1/2 mx-auto">
@@ -47,188 +58,85 @@ const Details = () => {
         <label htmlFor="username" className="font-bold">
           Username:
         </label>
-        <p> </p>
-        <input
-          type="text"
-          id="username"
-          value={user?.username}
-          readOnly
-          className="form-input text-left"
-        />
+        <p className="mt-2 text-gray-500">{user?.username}</p>
       </div>
 
-      
       <div className="mb-4">
         <label htmlFor="email" className="font-bold">
           Email:
         </label>
-        <input
-          type="email"
-          id="email"
-          value=""
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{user?.email}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="phone" className="font-bold">
           Phone:
         </label>
-        <input
-          type="tel"
-          id="phone"
-          value="98756412356"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{user?.phone_number}</p>
       </div>
-
-      
 
       <div className="mb-4">
         <label htmlFor="address" className="font-bold">
           Address:
         </label>
-        <textarea
-          id="address"
-          rows="3"
-          readOnly
-          className="form-textarea"
-        >
-          Arinallur PO, Mattimal House, Palakkad
-        </textarea>
+        <p className="mt-2">{address?.landmark}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="country" className="font-bold">
           Country:
         </label>
-        <input
-          type="text"
-          id="country"
-          value="India"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{address?.country}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="state" className="font-bold">
           State:
         </label>
-        <input
-          type="text"
-          id="state"
-          value="Kerala"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{address?.state}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="district" className="font-bold">
           District:
         </label>
-        <input
-          type="text"
-          id="district"
-          value="Palakkad"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{address?.district}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="place" className="font-bold">
           Place:
         </label>
-        <input
-          type="text"
-          id="place"
-          value="Arinallur"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{address?.city}</p>
       </div>
-
-      <div className="mb-4">
-        <label htmlFor="pincode" className="font-bold">
-          Pincode:
-        </label>
-        <input
-          type="text"
-          id="pincode"
-          value="678941"
-          readOnly
-          className="form-input"
-        />
-      </div>
-
-
 
       {/* Heading: Occupation Details */}
-
       <h2 className="text-2xl font-bold my-4 text-center">Occupation Details</h2>
-
-      
 
       <div className="mb-4">
         <label htmlFor="category" className="font-bold">
           Category:
         </label>
-        <input
-          type="text"
-          id="category"
-          value="Farmer"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{/* Insert category data here */}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="typeOfFarming" className="font-bold">
-          Type of farming:
+          Type of category:
         </label>
-        <input
-          type="text"
-          id="typeOfFarming"
-          value="Mixed Farming"
-          readOnly
-          className="form-input"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="employee" className="font-bold">
-          Employee:
-        </label>
-        <input
-          type="text"
-          id="employee"
-          value="Nill"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{occupation?.titile}</p>
       </div>
 
       <div className="mb-4">
         <label htmlFor="available" className="font-bold">
           Available:
         </label>
-        <input
-          type="text"
-          id="available"
-          value="Nill"
-          readOnly
-          className="form-input"
-        />
+        <p className="mt-2">{isUserOnline()}</p>
       </div>
-
 
       {/* Edit button */}
       <div className="flex justify-end mt-4">
-        <EditDetails/>
+        <EditDetails />
       </div>
     </div>
   );

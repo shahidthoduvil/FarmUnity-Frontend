@@ -20,6 +20,7 @@ import {
 import { FaSearch, FaChevronUp, FaChevronDown, FaEdit,FaTrash,FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
 import { BASE_URL } from '../../../utils/config';
 import {Addbanner} from './Addbanner';
+import BannerEdit from './BannerEdit';
 
 
 
@@ -36,8 +37,8 @@ const  BannerList = () => {
 
   async function getAdminBanner() {
     try {
-      console.log(BASE_URL+'/home/banner-list/');
-      const response = await axios.get(BASE_URL+'/home/banner-list/');
+      console.log(BASE_URL+'/home/Admin-banner/');
+      const response = await axios.get(BASE_URL+'/home/Admin-banner/');
       console.log('mgkljklgjlsjgklsg: ',response.data);
       setBanners(response.data);
     
@@ -61,6 +62,22 @@ const  BannerList = () => {
 
 
 
+const handleListUnlist = (bannerId, isList) => {
+  axios.patch(`${BASE_URL}/home/banner/${bannerId}/list_unlist/`, { is_list: isList })
+    .then((response) => {
+      console.log('Quote listed/unlisted successfully:', response.data);
+      // Handle any success message or update the quoteData state
+      setBanners(prevBanners => prevBanners.map(banner => banner.id === bannerId ? { ...banner, is_list: isList} : banner));
+    })
+    .catch((error) => {
+      console.error('Error listing/unlisting quote:', error);
+      // Handle any error message or error handling here
+    });
+};
+
+
+
+
   const handleDeleteBanner= (id) => {
     Swal.fire({
         title: 'Are you sure?',
@@ -74,7 +91,7 @@ const  BannerList = () => {
         if (result.isConfirmed) {
             const banner = axios.delete(`${BASE_URL}/home/banner/delete/${id}/`).then(
                 async function   getAdminBanner() {
-                    const request = await axios.get(BASE_URL+'/home/banner-list/')
+                    const request = await axios.get(BASE_URL+'/home/Admin-banner/')
 
                     setBanners(request.data)
                 }
@@ -178,23 +195,12 @@ const  BannerList = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex">
-                          <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="sr-only peer"
-                            
-                              readOnly
-                            />
-                            <div
-                            
-                              className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
-                            ></div>
                           
-                              <span className="ml-2 text-sm font-medium text-gray-900">List</span>
-                        
-                              <span className="ml-2 text-sm font-medium text-gray-900">UnList</span>
-                       
-                          </label>
+                  {banner.is_list ? (
+              <button onClick={() => handleListUnlist(banner.id, false)}>Unlist</button>
+            ) : (
+              <button onClick={() => handleListUnlist(banner.id, true)}>List</button>
+            )}
                         </div>
                      
                       
@@ -217,17 +223,7 @@ const  BannerList = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    {/* Edit button */}
-                    <Button
-                      color="lightBlue"
-                      size="sm"
-                      ripple="light"
-                      onClick={() => {
-                       handleDeleteBanner(banner.id)
-                      }}
-                    >
-                      <FaEdit className="mr-1" /> 
-                    </Button>
+                 <BannerEdit id={banner.id} action={getAdminBanner} />
                 
                   </div>
                 </td>
@@ -259,7 +255,7 @@ const  BannerList = () => {
             Next
           </Button>
         </div>
-        <Addbanner/>
+        <Addbanner action={getAdminBanner}  />
       </CardFooter>
       
     </Card>

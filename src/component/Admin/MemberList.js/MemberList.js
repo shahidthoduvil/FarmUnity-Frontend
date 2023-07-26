@@ -20,6 +20,7 @@ import {
 import { FaSearch, FaChevronUp, FaChevronDown, FaEdit,FaTrash,FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
 import { BASE_URL } from '../../../utils/config';
 import {AddMember} from './AddMember';
+import MemberEdit from './MemberEdit';
 
 
 
@@ -37,8 +38,8 @@ const  MembersList = () => {
 
   async function  getAdminMember() {
     try {
-      console.log(BASE_URL+'/home/member-list/');
-      const response = await axios.get(BASE_URL+'/home/member-list/');
+      console.log(BASE_URL+'/home/Admin-member/');
+      const response = await axios.get(BASE_URL+'/home/Admin-member/');
       console.log('mgkljklgjlsjgklsg: ',response.data);
       setMembers(response.data);
     
@@ -49,6 +50,19 @@ const  MembersList = () => {
 
 
 
+  const handleListUnlist = (memberId, isList) => {
+    axios.patch(`${BASE_URL}/home/member/${memberId}/list_unlist/`, { is_list: isList })
+      .then((response) => {
+        console.log('Quote listed/unlisted successfully:', response.data);
+        // Handle any success message or update the quoteData state
+        setMembers(prevMembers => prevMembers.map(member => member.id === memberId ? { ...member, is_list: isList} : member));
+      })
+      .catch((error) => {
+        console.error('Error listing/unlisting quote:', error);
+        // Handle any error message or error handling here
+      });
+  };
+  
 //   const handleDeleteBanner=async(bannerId)=>{
 //     try{
 //       await axios.delete(`${BASE_URL}/home/banner/delete/${bannerId}/`)
@@ -175,23 +189,12 @@ const  MembersList = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex">
-                          <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              className="sr-only peer"
-                            
-                              readOnly
-                            />
-                            <div
-                            
-                              className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
-                            ></div>
-                          
-                              <span className="ml-2 text-sm font-medium text-gray-900">List</span>
-                        
-                              <span className="ml-2 text-sm font-medium text-gray-900">UnList</span>
-                       
-                          </label>
+                                    
+                  {member.is_list ? (
+                  <button onClick={() => handleListUnlist(member.id, false)}>Unlist</button>
+                ) : (
+                  <button onClick={() => handleListUnlist(member.id, true)}>List</button>
+                )}
                         </div>
                      
                       
@@ -215,17 +218,7 @@ const  MembersList = () => {
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
                     {/* Edit button */}
-                    <Button
-                      color="lightBlue"
-                      size="sm"
-                      ripple="light"
-                      onClick={() => {
-                   
-                      }}
-                    >
-                      <FaEdit className="mr-1" /> 
-                    </Button>
-                
+                   <MemberEdit id={member.id} action={getAdminMember}/> 
                   </div>
                 </td>
                     </tr>
@@ -256,7 +249,7 @@ const  MembersList = () => {
             Next
           </Button>
         </div>
-        <AddMember/>
+        <AddMember action={getAdminMember} />
       </CardFooter>
       
     </Card>

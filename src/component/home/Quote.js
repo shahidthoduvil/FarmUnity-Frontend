@@ -35,9 +35,9 @@ const Quote = () => {
          
           <div className="p-6 sm:p-8 md:p-10" key={quote.id}>
             <blockquote className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-center">
-              {quote?.content}
+              {quote.content}
             </blockquote>
-            <p className="mt-4 text-gray-600 text-center">- {quote?.Author}</p>
+            <p className="mt-4 text-gray-600 text-center">- {quote.Author}</p>
           </div>
     
 
