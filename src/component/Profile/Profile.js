@@ -21,20 +21,20 @@ const ProfilePage = () => {
   const token = getLocal()
   const { user_id } = jwtDecode(token)
 
-  const formatLastLogin = (dateTimeString) => {
-    const dateTime = new Date(dateTimeString);
-    console.log('DateTime:', dateTime);
+  // const formatLastLogin = (dateTimeString) => {
+  //   const dateTime = new Date(dateTimeString);
+  //   console.log('DateTime:', dateTime);
   
-    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+  //   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  //   const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
   
-    const lastLoginDate = dateTime.toLocaleDateString(undefined, dateOptions);
-    const lastLoginTime = dateTime.toLocaleTimeString(undefined, timeOptions);
-    console.log('Formatted Date:', lastLoginDate);
-    console.log('Formatted Time:', lastLoginTime);
+  //   const lastLoginDate = dateTime.toLocaleDateString(undefined, dateOptions);
+  //   const lastLoginTime = dateTime.toLocaleTimeString(undefined, timeOptions);
+  //   console.log('Formatted Date:', lastLoginDate);
+  //   console.log('Formatted Time:', lastLoginTime);
   
-    return { lastLoginDate, lastLoginTime };
-  };
+  //   return { lastLoginDate, lastLoginTime };
+  // };
   useEffect(() => {
     getUser();
 
@@ -104,8 +104,8 @@ const ProfilePage = () => {
 
             <p className="mt-8 text-gray-500">{category?.category}</p>
             <p className="mt-2 text-gray-500">{occupation?.titile}</p>
-            <p className="mt-2 text-gray-500">Last Login: {formatLastLogin(user?.last_login).lastLoginDate}</p>
-             <p className="mt-2 text-gray-500">Time: {formatLastLogin(user?.last_login).lastLoginTime}</p>
+            {/* <p className="mt-2 text-gray-500">Last Login: {formatLastLogin(user?.last_login).lastLoginDate}</p>
+             <p className="mt-2 text-gray-500">Time: {formatLastLogin(user?.last_login).lastLoginTime}</p> */}
           </div>
           <div className="flex items-center justify-center mt-10">
             <Slide />

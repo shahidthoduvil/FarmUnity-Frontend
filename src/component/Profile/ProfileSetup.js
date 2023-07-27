@@ -1,12 +1,13 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoIosAdd } from 'react-icons/io';
 import profileBackground from '../../images/images.jpg'; // Replace with your default background picture
 import { BASE_URL } from '../../utils/config';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const ProfileSetup = () => {
   const navigate = useNavigate();
@@ -14,8 +15,6 @@ const ProfileSetup = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [username, setUsername] = useState('');
   const [city, setCity] = useState('');
-  const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [district, setDistrict] = useState('');
@@ -24,7 +23,11 @@ const ProfileSetup = () => {
   const [address, setAddress] = useState('');
   const [isStep1Complete, setIsStep1Complete] = useState(false);
   const [isStep2Complete, setIsStep2Complete] = useState(false);
-  
+  const [categories, setCategories] = useState([]);
+  const [occupations, setOccupations] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+
+  // Gather category and occupation data from the state
 
   const handleProfileImageChange = (event) => {
     const file = event.target.files[0];
@@ -36,20 +39,69 @@ const ProfileSetup = () => {
     setBackgroundImage(file);
   };
 
+
+
   const handleStep1Submit = (event) => {
     event.preventDefault();
     // Handle Step 1 form submission here, set isStep1Complete to true
-    if (category && subcategory && profileBackground&& profileImage ) {
+    if (categories && occupations && profileBackground && profileImage) {
       setIsStep1Complete(true);
     } else {
       setIsStep1Complete(false);
     }
+
   };
+
+
+
   const handlePreviousStep = (event) => {
     event.preventDefault();
     // Navigate back to Step 1
     setIsStep1Complete(false);
   };
+
+  const fetchOccupationData = async (categoryId) => {
+    try {
+      const url = `${BASE_URL}/api/category-occupation-list/?category=${categoryId}`
+
+      const response = await axios.get(url);
+      setOccupations(response.data.occupations);
+      console.log('response: ', response.data);
+    } catch (error) {
+      console.error('Error fetching category and occupation data:', error);
+    }
+  };
+
+
+  // Event handler for category selection change
+  const handleCategoryChange = (event) => {
+    const selectedCategoryId = event.target.value;
+    setSelectedCategoryId(selectedCategoryId); // Update the selected category ID
+    fetchOccupationData(selectedCategoryId)
+  };
+
+  const fetchCategoryOccupationData = async (categoryId) => {
+    try {
+      const url = categoryId
+        ? `${BASE_URL}/api/category-occupation-list/?category=${categoryId}`
+        : `${BASE_URL}/api/category-occupation-list/`;
+
+      const response = await axios.get(url);
+      setCategories(response.data.categories);
+
+    } catch (error) {
+      console.error('Error fetching category and occupation data:', error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchCategoryOccupationData(selectedCategoryId);
+  }, [selectedCategoryId]);
+
+
+
+
 
   const handleStep2Submit = async (event) => {
     event.preventDefault();
@@ -58,33 +110,38 @@ const ProfileSetup = () => {
     } else {
       setIsStep2Complete(false);
     }
-   
+
+
+
     // Send form data and uploaded images to the server for setup
-    // try {
-    //   const formData = new FormData();
-    //   formData.append('profileImage', profileImage);
-    //   formData.append('backgroundImage', backgroundImage);
-    //   formData.append('username', username);
-    //   formData.append('city', city);
-    //   formData.append('category', category);
-    //   formData.append('subcategory', subcategory);
-    //   formData.append('country', country);
-    //   formData.append('state', state);
-    //   formData.append('district', district);
-    //   formData.append('place', place);
-    //   formData.append('pincode', pincode);
-    //   formData.append('address', address);
+    try {
+      const formData = new FormData();
+      formData.append('backgroundImage', backgroundImage);
+      formData.append('username', username);
+      formData.append('city', city);
+      formData.append('categories', categories);
+      formData.append('occupations', occupations);
+      formData.append('country', country);
+      formData.append('state', state);
+      formData.append('district', district);
+      formData.append('place', place);
+      formData.append('pincode', pincode);
+      formData.append('address', address);
 
-    //   // Make an API call to the server to save the profile setup data
-    //   await axios.post(`${BASE_URL}/api/profile-setup`, formData);
-
-    //   // Redirect to the profile page after successful setup
-    //   navigate.push('/profile');
-    // } catch (error) {
-    //   console.log(error);
-    //   // Handle error case if needed
-    // }
+      // Make an API call to the server to save the profile setup data
+        const result = await axios.post(`${BASE_URL}/api/profile-setup/`, formData);
+        console.log('Profile data',result.data);
+        toast.error('sucesss')
+      // Redirect to the profile page after successful setup
+    navigate('/profile');
+ } catch (error) {
+   console.log(error);
+    // Handle error case if needed
+   }
   };
+
+
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -136,38 +193,40 @@ const ProfileSetup = () => {
               />
             </label>
           </div>
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                Category
-              </label>
-              <select
-                id="category"
-                className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="">Select Category</option>
-                <option value="category1">Category 1</option>
-                <option value="category2">Category 2</option>
-                {/* Add more options as needed */}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="subcategory" className="block text-sm font-medium text-gray-700">
-                Subcategory
-              </label>
-              <select
-                id="subcategory"
-                className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                value={subcategory}
-                onChange={(e) => setSubcategory(e.target.value)}
-              >
-                <option value="">Select Subcategory</option>
-                <option value="subcategory1">Subcategory 1</option>
-                <option value="subcategory2">Subcategory 2</option>
-                {/* Add more options as needed */}
-              </select>
-            </div>
+          <div>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+          Category
+        </label>
+        <select
+          id="categories"
+          className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          onChange={handleCategoryChange}
+          value={selectedCategoryId} // Added to bind the selected category to the state
+        >
+          <option value="">Select Category</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.Category_name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label htmlFor="occupations" className="block text-sm font-medium text-gray-700">
+          Occupation
+        </label>
+        <select
+          id="occupations"
+          className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          <option value="">Select Occupation</option>
+          {occupations.map((occupation) => (
+              <option key={occupation.id} value={occupation.id}>
+                {occupation.titile}
+              </option>
+            ))}
+        </select>
+      </div>
             <div>
               <button
                 type="submit"
@@ -271,7 +330,7 @@ const ProfileSetup = () => {
               
                 // disabled={isStep2Complete}
 
-                className={`w-full flex justify-center py-2 px-4 border border-transparent ML-5 rounded-md shadow-sm text-sm font-medium text-white ${isStep2Complete ? 'bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed'}`}
+                className={`w - full flex justify - center py - 2 px - 4  border - transparent ML - 5 rounded - md shadow - sm text - sm font - medium text - white ${ isStep2Complete ? 'bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed' } `}
               >
                 Save Profile Setup
               </button>
