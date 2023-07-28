@@ -9,11 +9,10 @@ import { BASE_URL } from '../../utils/config';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-const ProfileSetup = () => {
+const ProfileSetup = ({id,user_id}) => {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(null);
-  const [username, setUsername] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
@@ -23,8 +22,8 @@ const ProfileSetup = () => {
   const [address, setAddress] = useState('');
   const [isStep1Complete, setIsStep1Complete] = useState(false);
   const [isStep2Complete, setIsStep2Complete] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [occupations, setOccupations] = useState([]);
+  const [cat, setCategories] = useState([]);
+  const [Occup, setOccupations] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
 
   // Gather category and occupation data from the state
@@ -41,14 +40,38 @@ const ProfileSetup = () => {
 
 
 
-  const handleStep1Submit = (event) => {
+  const handleStep1Submit = async (event) => {
     event.preventDefault();
     // Handle Step 1 form submission here, set isStep1Complete to true
-    if (categories && occupations && profileBackground && profileImage) {
+
+
+
+      // Send form data and uploaded images to the server for setup
+      try {
+        const formData = new FormData();
+        formData.append('backgroundImage', backgroundImage);
+        formData.append(' profileImage', profileImage);
+        formData.append('cat', cat);
+        formData.append('Occup', Occup);
+  
+  
+        // Make an API call to the server to save the profile setup data
+          const result = await axios.put(`${BASE_URL}/api/profile-setup1/${35}/`, formData);
+          console.log('Profile data',result.data);
+          toast.error('sucesss')
+        
+   } catch (error) {
+     console.log(error);
+      // Handle error case if needed
+     }
+    
+    if (cat && Occup && profileBackground && profileImage) {
       setIsStep1Complete(true);
     } else {
       setIsStep1Complete(false);
     }
+
+   
 
   };
 
@@ -65,7 +88,7 @@ const ProfileSetup = () => {
       const url = `${BASE_URL}/api/category-occupation-list/?category=${categoryId}`
 
       const response = await axios.get(url);
-      setOccupations(response.data.occupations);
+      setOccupations(response.data.Occup);
       console.log('response: ', response.data);
     } catch (error) {
       console.error('Error fetching category and occupation data:', error);
@@ -87,7 +110,7 @@ const ProfileSetup = () => {
         : `${BASE_URL}/api/category-occupation-list/`;
 
       const response = await axios.get(url);
-      setCategories(response.data.categories);
+      setCategories(response.data.cat);
 
     } catch (error) {
       console.error('Error fetching category and occupation data:', error);
@@ -116,11 +139,8 @@ const ProfileSetup = () => {
     // Send form data and uploaded images to the server for setup
     try {
       const formData = new FormData();
-      formData.append('backgroundImage', backgroundImage);
-      formData.append('username', username);
+
       formData.append('city', city);
-      formData.append('categories', categories);
-      formData.append('occupations', occupations);
       formData.append('country', country);
       formData.append('state', state);
       formData.append('district', district);
@@ -129,7 +149,7 @@ const ProfileSetup = () => {
       formData.append('address', address);
 
       // Make an API call to the server to save the profile setup data
-        const result = await axios.post(`${BASE_URL}/api/profile-setup/`, formData);
+        const result = await axios.post(`${BASE_URL}/api/profile-setup2/`, formData);
         console.log('Profile data',result.data);
         toast.error('sucesss')
       // Redirect to the profile page after successful setup
@@ -198,13 +218,13 @@ const ProfileSetup = () => {
           Category
         </label>
         <select
-          id="categories"
+          id="cat"
           className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           onChange={handleCategoryChange}
           value={selectedCategoryId} // Added to bind the selected category to the state
         >
           <option value="">Select Category</option>
-          {categories.map((category) => (
+          {cat.map((category) => (
             <option key={category.id} value={category.id}>
               {category.Category_name}
             </option>
@@ -216,11 +236,11 @@ const ProfileSetup = () => {
           Occupation
         </label>
         <select
-          id="occupations"
+          id="Occup"
           className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           <option value="">Select Occupation</option>
-          {occupations.map((occupation) => (
+          {Occup.map((occupation) => (
               <option key={occupation.id} value={occupation.id}>
                 {occupation.titile}
               </option>
