@@ -8,8 +8,10 @@ import profileBackground from '../../images/images.jpg'; // Replace with your de
 import { BASE_URL } from '../../utils/config';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { getLocal } from '../../helpers/auth';
+import jwtDecode from 'jwt-decode';
 
-const ProfileSetup = ({id,user_id}) => {
+const ProfileSetup = () => {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -17,17 +19,18 @@ const ProfileSetup = ({id,user_id}) => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [district, setDistrict] = useState('');
-  const [place, setPlace] = useState('');
+  // const [place, setPlace] = useState('');
   const [pincode, setPincode] = useState('');
-  const [address, setAddress] = useState('');
+  const [landmark, setLandmark] = useState('');
   const [isStep1Complete, setIsStep1Complete] = useState(false);
   const [isStep2Complete, setIsStep2Complete] = useState(false);
-  const [cat, setCategories] = useState([]);
-  const [Occup, setOccupations] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [occupations, setOccupations] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
-
+ 
   // Gather category and occupation data from the state
 
+  
   const handleProfileImageChange = (event) => {
     const file = event.target.files[0];
     setProfileImage(file);
@@ -37,8 +40,9 @@ const ProfileSetup = ({id,user_id}) => {
     const file = event.target.files[0];
     setBackgroundImage(file);
   };
-
-
+  const localResponse = getLocal('authToken');
+  const decoded = jwtDecode(localResponse);
+  
 
   const handleStep1Submit = async (event) => {
     event.preventDefault();
@@ -51,12 +55,12 @@ const ProfileSetup = ({id,user_id}) => {
         const formData = new FormData();
         formData.append('backgroundImage', backgroundImage);
         formData.append(' profileImage', profileImage);
-        formData.append('cat', cat);
-        formData.append('Occup', Occup);
+        formData.append('cateories', categories);
+        formData.append('occupations', occupations);
   
   
         // Make an API call to the server to save the profile setup data
-          const result = await axios.put(`${BASE_URL}/api/profile-setup1/${35}/`, formData);
+          const result = await axios.put(`${BASE_URL}/api/profile-setup1/${decoded.user_id}/`, formData);
           console.log('Profile data',result.data);
           toast.error('sucesss')
         
@@ -65,7 +69,7 @@ const ProfileSetup = ({id,user_id}) => {
       // Handle error case if needed
      }
     
-    if (cat && Occup && profileBackground && profileImage) {
+    if (categories && occupations && profileBackground && profileImage) {
       setIsStep1Complete(true);
     } else {
       setIsStep1Complete(false);
@@ -88,7 +92,7 @@ const ProfileSetup = ({id,user_id}) => {
       const url = `${BASE_URL}/api/category-occupation-list/?category=${categoryId}`
 
       const response = await axios.get(url);
-      setOccupations(response.data.Occup);
+      setOccupations(response.data.occupations);
       console.log('response: ', response.data);
     } catch (error) {
       console.error('Error fetching category and occupation data:', error);
@@ -110,7 +114,7 @@ const ProfileSetup = ({id,user_id}) => {
         : `${BASE_URL}/api/category-occupation-list/`;
 
       const response = await axios.get(url);
-      setCategories(response.data.cat);
+      setCategories(response.data.categories);
 
     } catch (error) {
       console.error('Error fetching category and occupation data:', error);
@@ -128,7 +132,7 @@ const ProfileSetup = ({id,user_id}) => {
 
   const handleStep2Submit = async (event) => {
     event.preventDefault();
-    if (country && state && district && place && pincode && address) {
+    if (country && state && district && city && pincode && landmark) {
       setIsStep2Complete(true);
     } else {
       setIsStep2Complete(false);
@@ -144,9 +148,11 @@ const ProfileSetup = ({id,user_id}) => {
       formData.append('country', country);
       formData.append('state', state);
       formData.append('district', district);
-      formData.append('place', place);
+      formData.append('city', city);
+
       formData.append('pincode', pincode);
-      formData.append('address', address);
+      formData.append('landmark', landmark);
+      formData.append('user',decoded.user_id)
 
       // Make an API call to the server to save the profile setup data
         const result = await axios.post(`${BASE_URL}/api/profile-setup2/`, formData);
@@ -218,13 +224,13 @@ const ProfileSetup = ({id,user_id}) => {
           Category
         </label>
         <select
-          id="cat"
+          id="categories"
           className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           onChange={handleCategoryChange}
           value={selectedCategoryId} // Added to bind the selected category to the state
         >
           <option value="">Select Category</option>
-          {cat.map((category) => (
+          {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.Category_name}
             </option>
@@ -236,11 +242,11 @@ const ProfileSetup = ({id,user_id}) => {
           Occupation
         </label>
         <select
-          id="Occup"
+          id="occupations"
           className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           <option value="">Select Occupation</option>
-          {Occup.map((occupation) => (
+          {occupations.map((occupation) => (
               <option key={occupation.id} value={occupation.id}>
                 {occupation.titile}
               </option>
@@ -303,12 +309,12 @@ const ProfileSetup = ({id,user_id}) => {
                 Place
               </label>
               <input
-                id="place"
+                id="city"
                 type="text"
      
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                value={place}
-                onChange={(e) => setPlace(e.target.value)}
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
               />
             </div>
             <div>
@@ -329,12 +335,12 @@ const ProfileSetup = ({id,user_id}) => {
                 Address
               </label>
               <input
-                id="address"
+                id="landmark"
                 type="text"
       
                 className="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                value={landmark}
+                onChange={(e) => setLandmark(e.target.value)}
               />
             </div>
             <div className="flex justify-between">

@@ -9,6 +9,7 @@ const Details = () => {
   const [user, setUser] = useState({});
   const [occupation, setOccupation] = useState({});
   const [address, setAddress] = useState({});
+  const [category, setCategory] = useState('')
 
   const token = getLocal();
   const { user_id } = jwtDecode(token);
@@ -27,7 +28,7 @@ const Details = () => {
       setUser(user);
       setOccupation(user_occupation);
       setAddress(user_address);
-
+      setCategory(response.data.category);
       // // Set user online status using is_user_online function
       // const userOnlineStatus = checkUserOnline(user.is_active, user.last_login);
       // setIsUserOnline(userOnlineStatus);
@@ -117,7 +118,7 @@ const Details = () => {
         <label htmlFor="category" className="font-bold">
           Category:
         </label>
-        <p className="mt-2">{/* Insert category data here */}</p>
+        <p className="mt-2">{category}</p>
       </div>
 
       <div className="mb-4">

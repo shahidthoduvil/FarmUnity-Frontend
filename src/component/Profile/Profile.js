@@ -16,7 +16,7 @@ const ProfilePage = () => {
   const [user, setUser] = useState({})
   const [occupation, setOccupation] = useState({})
   const [Address, setAddress] = useState({})
-  const [category, setCategory] = useState({})
+  const [category, setCategory] = useState('')
 
   const token = getLocal()
   const { user_id } = jwtDecode(token)
@@ -50,6 +50,7 @@ const ProfilePage = () => {
       setOccupation(response.data.user_occupation)
       setAddress(response.data.user_address)
       setCategory(response.data.category);
+      console.log(response.data.category)
       console.log('vatewifhg is :', category);
 
 
@@ -102,7 +103,7 @@ const ProfilePage = () => {
             <h1 className="text-4xl font-medium text-gray-700">{user?.username} <span class="font-light text-gray-500"></span></h1>
             <p className="font-light text-gray-600 mt-3">{Address?.city}</p>
 
-            <p className="mt-8 text-gray-500">{category?.category}</p>
+            <p className="mt-8 text-gray-500">{category}</p>
             <p className="mt-2 text-gray-500">{occupation?.titile}</p>
             {/* <p className="mt-2 text-gray-500">Last Login: {formatLastLogin(user?.last_login).lastLoginDate}</p>
              <p className="mt-2 text-gray-500">Time: {formatLastLogin(user?.last_login).lastLoginTime}</p> */}
