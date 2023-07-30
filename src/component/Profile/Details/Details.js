@@ -110,6 +110,12 @@ const Details = () => {
         </label>
         <p className="mt-2">{address?.city}</p>
       </div>
+      <div className="mb-4">
+        <label htmlFor="place" className="font-bold">
+          pincode
+        </label>
+        <p className="mt-2">{address?.pincode}</p>
+      </div>
 
       {/* Heading: Occupation Details */}
       <h2 className="text-2xl font-bold my-4 text-center">Occupation Details</h2>
@@ -137,7 +143,7 @@ const Details = () => {
 
       {/* Edit button */}
       <div className="flex justify-end mt-4">
-        <EditDetails />
+        <EditDetails action={getUser} />
       </div>
     </div>
   );

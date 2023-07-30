@@ -23,7 +23,7 @@ const SubNavbar = () => {
             <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
            focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Solution</p></Link>
 
-            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+            <Link to='farmers'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
            focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Farmers</p></Link>
 
             <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white

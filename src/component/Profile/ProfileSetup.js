@@ -13,13 +13,12 @@ import jwtDecode from 'jwt-decode';
 
 const ProfileSetup = () => {
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState(null);
-  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [pic, setProfileImage] = useState(null);
+  const [cover, setBackgroundImage] = useState(null);
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [district, setDistrict] = useState('');
-  // const [place, setPlace] = useState('');
   const [pincode, setPincode] = useState('');
   const [landmark, setLandmark] = useState('');
   const [isStep1Complete, setIsStep1Complete] = useState(false);
@@ -53,8 +52,8 @@ const ProfileSetup = () => {
       // Send form data and uploaded images to the server for setup
       try {
         const formData = new FormData();
-        formData.append('backgroundImage', backgroundImage);
-        formData.append(' profileImage', profileImage);
+        formData.append('backgroundImage', cover);
+        formData.append(' profileImage', pic);
         formData.append('cateories', categories);
         formData.append('occupations', occupations);
   
@@ -69,7 +68,7 @@ const ProfileSetup = () => {
       // Handle error case if needed
      }
     
-    if (categories && occupations && profileBackground && profileImage) {
+    if (categories && occupations && cover && pic) {
       setIsStep1Complete(true);
     } else {
       setIsStep1Complete(false);
@@ -177,14 +176,14 @@ const ProfileSetup = () => {
           <form onSubmit={handleStep1Submit} className="space-y-6">
             {/* Step 1: Include necessary fields */}
             <label htmlFor="backgroundImage" className="cursor-pointer mb-4 relative">
-            {backgroundImage ? (
+            {cover ? (
               <img
-                src={URL.createObjectURL(backgroundImage)}
+                src={URL.createObjectURL(cover)}
                 alt="Background Image"
                 className="w-full h-36 rounded-md mb-2"
               />
             ) : (
-              <img src={profileBackground} alt="Background Image" className="w-full h-24 rounded-md mb-2" />
+              <img src={cover} alt="Background Image" className="w-full h-24 rounded-md mb-2" />
             )}
             <div className="text-center text-indigo-500 absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-40 rounded-md">
               <IoIosAdd className="w-6 h-6 text-white" />
@@ -199,8 +198,8 @@ const ProfileSetup = () => {
           </label>
           <div className="h-24 rounded-full mb-2 flex justify-center w-full">
             <label htmlFor="profileImage" className="cursor-pointer mb-4 relative">
-              {profileImage ? (
-                <img src={URL.createObjectURL(profileImage)} alt="Profile Image" className="w-24 h-24 rounded-full mb-2" />
+              {pic ? (
+                <img src={URL.createObjectURL(pic)} alt="Profile Image" className="w-24 h-24 rounded-full mb-2" />
               ) : (
                 <div className="w-24 h-24 bg-[#788F69] mx-auto rounded-full shadow-md flex items-center justify-center">
                   {/* Use the add icon for profile image */}

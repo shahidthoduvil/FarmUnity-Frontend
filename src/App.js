@@ -22,7 +22,7 @@ import QuotesPage from './component/AdminPages/QuotesPage';
 import NoficationPage from './component/AdminPages/NoficationPage';
 import Memberlistpage from './component/AdminPages/Memberlistpage';
 import PostPage from './pages/PostPage';
-
+import FarmersPage from './pages/FarmersPage';
 
 
 
@@ -52,6 +52,7 @@ function App() {
           <Route Component={ResetPassword} path='reset-password'></Route> 
           <Route Component={ProfilePage} path='profile'></Route>
           <Route Component={PostPage} path='post'></Route>
+          <Route Component={FarmersPage} path='farmers'></Route>
  
           <Route Component={ProfileSetupPage} path='profile-setup'></Route>
        

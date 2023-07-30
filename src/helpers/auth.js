@@ -33,7 +33,14 @@ export default async function login(e) {
   }
 }
 
+
+ 
+
 export function getLocal() {
   const response = localStorage.getItem('authToken');
   return response;
 }
+
+
+
+        
