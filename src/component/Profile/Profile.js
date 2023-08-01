@@ -20,24 +20,30 @@ const ProfilePage = () => {
 
   const token = getLocal()
   const { user_id } = jwtDecode(token)
+  const isUserOnline = () => {
+    return user?.is_active ? "Online" : "Offline";
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   // const formatLastLogin = (dateTimeString) => {
   //   const dateTime = new Date(dateTimeString);
   //   console.log('DateTime:', dateTime);
-  
+
   //   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   //   const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
-  
+
   //   const lastLoginDate = dateTime.toLocaleDateString(undefined, dateOptions);
   //   const lastLoginTime = dateTime.toLocaleTimeString(undefined, timeOptions);
   //   console.log('Formatted Date:', lastLoginDate);
   //   console.log('Formatted Time:', lastLoginTime);
-  
+
   //   return { lastLoginDate, lastLoginTime };
   // };
   useEffect(() => {
-    getUser().then(()=>{
-      console.log('Its UUUU :: ',user);
+    getUser().then(() => {
+      console.log('Its UUUU :: ', user);
     })
 
 
@@ -72,7 +78,7 @@ const ProfilePage = () => {
       {/* Profile header */}
 
       <div className="relative bg-cover bg-center h-72 md:h-96">
-        <div className="relative bg-cover bg-center h-72 md:h-96"  style={{ backgroundImage: `url(${BASE_URL+user.cover})` }}>
+        <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${BASE_URL + user.cover})` }}>
 
 
 
@@ -94,8 +100,8 @@ const ProfilePage = () => {
                       <img src={profilePicture} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     )}
                     {/* Edit icon for profile picture */}
-                    <EditProfile refreshProfile={refreshProfile}  id={user.id} action={getUser}/>
-                    
+                    <EditProfile refreshProfile={refreshProfile} id={user.id} action={getUser} />
+
                   </div>
                   {/* Edit icon for profile background */}
 
@@ -110,6 +116,11 @@ const ProfilePage = () => {
 
             <p className="mt-8 text-gray-500">{category}</p>
             <p className="mt-2 text-gray-500">{occupation?.titile}</p>
+         
+              <p className="mt-2  text-gray-900">{isUserOnline()}</p>
+          
+
+
             {/* <p className="mt-2 text-gray-500">Last Login: {formatLastLogin(user?.last_login).lastLoginDate}</p>
              <p className="mt-2 text-gray-500">Time: {formatLastLogin(user?.last_login).lastLoginTime}</p> */}
           </div>

@@ -27,7 +27,40 @@ const ProfileSetup = () => {
   const [occupations, setOccupations] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
  
+
+ 
   // Gather category and occupation data from the state
+
+
+  // const checkProfileSetupStatus = async () => {
+  //   try {
+  //     const localResponse = localStorage.getItem('authToken');
+  //     if (!localResponse) {
+  //       // If the user is not logged in, redirect to the login page
+  //       navigate('/login');
+  //       return;
+  //     }
+
+  //     const decoded = jwtDecode(localResponse);
+ 
+  //     const response = await axios.get(`${BASE_URL}/api/check-profile-setup/${decoded.user_id}/`);
+  //     const { is_setup_complete } = response.data;
+  //     setIsProfileSetupComplete(is_setup_complete);
+
+  //     // Redirect based on the profile setup status
+  //     if (is_setup_complete) {
+  //       navigate('/');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error checking profile setup status:', error);
+  //     toast.error('Failed to check profile setup status.');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkProfileSetupStatus();
+  // }, []);
+
 
   
   const handleProfileImageChange = (event) => {
@@ -35,10 +68,14 @@ const ProfileSetup = () => {
     setProfileImage(file);
   };
 
+
+
   const handleBackgroundImageChange = (event) => {
     const file = event.target.files[0];
     setBackgroundImage(file);
   };
+
+
   const localResponse = getLocal('authToken');
   const decoded = jwtDecode(localResponse);
   
@@ -126,16 +163,15 @@ const ProfileSetup = () => {
   }, [selectedCategoryId]);
 
 
+  const isStep1FieldsComplete = () => {
+    return categories && occupations && cover && pic;
+  };
 
 
 
   const handleStep2Submit = async (event) => {
     event.preventDefault();
-    if (country && state && district && city && pincode && landmark) {
-      setIsStep2Complete(true);
-    } else {
-      setIsStep2Complete(false);
-    }
+
 
 
 
@@ -158,7 +194,7 @@ const ProfileSetup = () => {
         console.log('Profile data',result.data);
         toast.error('sucesss')
       // Redirect to the profile page after successful setup
-    navigate('/profile');
+    navigate('/');
  } catch (error) {
    console.log(error);
     // Handle error case if needed
@@ -255,7 +291,9 @@ const ProfileSetup = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium
+                 text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-nonefocus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                 disabled={!isStep1FieldsComplete()}
               >
                 Next (Step 1)
               </button>
@@ -355,7 +393,9 @@ const ProfileSetup = () => {
               
                 // disabled={isStep2Complete}
 
-                className={`w - full flex justify - center py - 2 px - 4  border - transparent ML - 5 rounded - md shadow - sm text - sm font - medium text - white ${ isStep2Complete ? 'bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed' } `}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent ML-5 rounded-md shadow-sm text-sm font-medium text-white
+                ${isStep2Complete ? 'bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' : 'bg-gray-300 cursor-not-allowed'}`}
+              
               >
                 Save Profile Setup
               </button>

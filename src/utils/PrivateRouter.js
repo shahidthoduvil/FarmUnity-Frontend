@@ -9,12 +9,12 @@ import LoginPage from '../pages/LoginPage';
 const PrivateRouter = ({ children, ...rest }) => {
 
     const response = localStorage.getItem('authToken');
-
+    console.log('Response ::>> ',response);
     const navigate = useNavigate("")
 
     if (response) {
         const decoded = jwt_decode(response)
-
+        console.log('Decoded ::>> ',decoded);
         if (decoded.is_admin) {
             console.log('admin');
             return (

@@ -8,10 +8,7 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { GoogleAuthentication } from './GoogleAuthentication';
 import { useGoogleLogin } from '@react-oauth/google';
-
-
-
-
+import { base_url,BASE_URL } from '../../utils/config';
 
 
 function Login() {
@@ -19,60 +16,75 @@ function Login() {
   const navigate = useNavigate();
 
   const [user,setUser]=useState('')
+ 
 
+
+  // useEffect(() => {
+  //   const checkLoggedInUser = async () => {
+  //     const localResponse = getLocal('authToken');
+
+  //     if (localResponse) {
+  //       const decoded = jwtDecode(localResponse);
+  //       if (decoded.is_admin) {
+  //         // If the user is an admin, redirect to the admin page
+  //         navigate('/adm');
+  //       } else if (decoded.is_staff) {
+  //         // If the user is staff, redirect to staff page (modify as per your routes)
+  //         navigate('/staff');
+  //       } else {
+  //         // If the user is a regular user, check if there is a stored location
+  //         const location = localStorage.getItem('location');
+  //         navigate('/');
+        
+  //       }
+  //     } else {
+  //       // If the user is not logged in, display an error message
+  //       toast.loading('Please Login into your account', { duration: 2000 });
+  //     }
+  //   };
+  //   checkLoggedInUser();
+  // }, [navigate]);
+
+
+  const localResponse = localStorage.getItem('authToken');
+
+
+  
+  const checkProfileSetupStatus = async () => {
+    try {
+   
+      
+      if (!localResponse) {
+        // If the user is not logged in, redirect to the login page
+        navigate('/login');
+        return;
+      }
+      const decoded=jwtDecode(localResponse)
+      if( decoded.is_setup_complete){
+        navigate('/')
+      }
+      else
+      navigate('/profile-setup')
+
+
+      
+      // Redirect based on the profile setup status
+      
+    } catch (error) {
+      console.error('Error checking profile setup status:', error);
+      toast.error('Failed to check profile setup status.');
+    }
+  };
 
   useEffect(() => {
-
-    const checkLoggedInUser = async () => {
-      const localResponse = getLocal('authToken');
-
-
-      if (localResponse) {
-        const decoded = jwtDecode(localResponse);
-        if (decoded.is_admin) {
-          // If the user is an admin, redirect to the admin page
-          navigate('/adm');
-        } else if (decoded.is_staff) {
-          // If the user is staff, 
-          console.log('staff');
-          navigate('/adm');
-        } else {
-          // If the user is a regular user, check if there is a stored location
-          const location = localStorage.getItem('location');
-          navigate('/');
-          if (location) {
-            // If a location is stored, redirect to that location
-            navigate(location, { replace: true });
-            localStorage.removeItem('location');
-          } else {
-            // If no location is stored, redirect to the home page
-            navigate('/', { replace: true });
-          }
-        }
-      } else {
-        // If the user is not logged in, display an error message
-        toast.loading('Please Login into your accout', { duration: 2000 });
-      }
-    };
-
-
-
-
-
-
-    checkLoggedInUser();
-  }, [navigate]);
-
-
-
-
+    checkProfileSetupStatus();
+  }, []);
+  
 
   const handleGoogleAuth = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: (error) => console.log('Login Failed:', error)
   });
-
-
 
   useEffect(() => {
     if (user) {
@@ -85,18 +97,27 @@ function Login() {
         .then((res) => {
           const userProfile = res.data
           console.log('user profile is:', userProfile);
-          GoogleAuthentication(userProfile).then((res) => {
-            // console.log('final result :', jwtDecode(JSON.stringify(res.data.token)));
-            if (res.data.status === 200) {
-              localStorage.setItem('authToken', JSON.stringify(res.data.token));
-              toast.success(res.data.msg)
-              navigate('/')
-            } else if (res.data.status === 400) {
-              toast.error(res.data.msg)
-            }
+          const values ={
+            email : userProfile.email,
+            first_name : userProfile.given_name,
+            last_name : userProfile.family_name,
+            password : userProfile.id,
+            is_google : true
+        }
+          axios.post(`${base_url}/google_authentication/`,values).then((res) => {
+              console.log('Hello ::>> ',res.data);
+              localStorage.setItem('authToken',JSON.stringify(res.data.token))
+               navigate('/');
+
           })
+          .catch((error) => {
+            console.error("Axios request error:", error);
+           
+            
+          });
+       
         })
-        .catch((err) => toast.error('WOrked'));
+      .catch((err) => toast.error('WOrked'));
     }
   }, [user])
 
@@ -141,8 +162,6 @@ function Login() {
               type="email"
               id="email"
               name='email'
-
-
               className="w-full border border-gray-300 px-3 py-2 mb-4 rounded-md"
             />
             <label htmlFor="password" className="block mb-2 font-light">
@@ -200,9 +219,3 @@ function Login() {
 
 
 export default Login;
-
-
-
-
-
-

@@ -15,7 +15,7 @@ const Details = () => {
   const { user_id } = jwtDecode(token);
   // const [isUserOnline, setIsUserOnline] = useState(false);
   const isUserOnline = () => {
-    return user?.is_active ? "User is Online" : "User is Offline";
+    return user?.is_active ? "Online" : "Offline";
   };
   useEffect(() => {
     getUser();

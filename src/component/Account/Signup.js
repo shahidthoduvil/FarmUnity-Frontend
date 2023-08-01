@@ -15,7 +15,7 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
-  const [category, setCategory] = useState('');
+  
   // const passwordRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
 
   const [step, setStep] = useState(1);

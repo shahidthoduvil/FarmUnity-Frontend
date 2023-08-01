@@ -23,6 +23,7 @@ import NoficationPage from './component/AdminPages/NoficationPage';
 import Memberlistpage from './component/AdminPages/Memberlistpage';
 import PostPage from './pages/PostPage';
 import FarmersPage from './pages/FarmersPage';
+import Chat from './component/FARMER/Chat';
 
 
 
@@ -51,8 +52,12 @@ function App() {
           <Route Component={ForgotPassword} path='forgot-password'></Route>
           <Route Component={ResetPassword} path='reset-password'></Route> 
           <Route Component={ProfilePage} path='profile'></Route>
+          <Route path="/profile/:userId" Component={ProfilePage} />
+
+
           <Route Component={PostPage} path='post'></Route>
-          <Route Component={FarmersPage} path='farmers'></Route>
+          <Route Component={FarmersPage} path=':userCategory'></Route>
+          <Route Component={Chat} path="/chat/:userId" ></Route>
  
           <Route Component={ProfileSetupPage} path='profile-setup'></Route>
        

@@ -63,7 +63,7 @@ const handleCoverImageChange = (e) => {
 
     try {
       console.log('Form Dataaaa :::>>> ',formData);
-      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for updating the profile
+
       await axios.patch(`${BASE_URL}/api/update-profile/${user_id}/`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',

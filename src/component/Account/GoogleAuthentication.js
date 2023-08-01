@@ -8,10 +8,20 @@ const GoogleAuthentication = (userProfile) => {
         password : userProfile.id,
         is_google : true
     }
-    console.log(userProfile,'is the values');
-    return userAxiosInstance.post("/api/google_authentication/", values,{
-        withCredentials:true
-    })
+    
+    return userAxiosInstance.post("google_authentication/", values, {
+        withCredentials: true,
+      })
+        .then((res) => {
+       
+          console.log('success');
+        
+        })
+        .catch((error) => {
+          console.error("Axios request error:", error);
+         
+          
+        });
 }       
 
 
