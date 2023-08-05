@@ -6,15 +6,22 @@ import MemberList from '../Admin/MemberList.js/MemberList'
 const Memberlistpage = () => {
   return (
     <>
-    <NavbarAdmin />
-    <div className="flex flex-col lg:flex-row max-w-screen-2xl mx-auto">
-      <div className="order-2 lg:order-1">
+    
+
+    <div className="flex flex-col h-screen">
+      {/* Navbar */}
+      <NavbarAdmin />
+
+      {/* Main Content */}
+      <div className="flex-1 flex">
+        {/* Sidebar */}
         <Sidebar />
-      </div>
-      <div className="order-1 lg:order-2 flex-1">
+
+        {/* User List */}
+        <div className="flex-1 p-4 overflow-y-auto">
         <MemberList />
+        </div>
       </div>
-      
     </div>
   </>
   )

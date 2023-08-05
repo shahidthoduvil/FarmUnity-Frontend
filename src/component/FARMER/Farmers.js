@@ -66,8 +66,8 @@ const Farmers = () => {
             <Link to={`/chat/${user.id}`} className="flex items-center p-2 border-b">
               <div className="flex flex-col">
                 <div className="font-semibold text-gray-800">{user.first_name} {user.last_name}</div>
-                <div className="text-gray-600">Category:{user.Cat.Category_name} </div>
-                <div className="text-gray-600">Occupation:{user.Occup.titile}</div>
+                <div className="text-gray-600">Category:{user.cat?.Category_name} </div>
+                <div className="text-gray-600">Occupation:{user.Occup?.titile}</div>
                 <div className="text-gray-600">Phone: {user.phone_number}</div>
                 {/* Add other user details you want to display */}
               </div>

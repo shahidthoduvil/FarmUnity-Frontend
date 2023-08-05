@@ -5,24 +5,21 @@ import UserList from '../Admin/user/UserList';
 
 const UserListPage = () => {
   return (
+    <div className="flex flex-col h-screen">
+      {/* Navbar */}
+      <NavbarAdmin />
 
-<>
-  <div className="flex ">
-    <NavbarAdmin />
-  </div>
-  <div className="flex flex-col lg:flex-row max-w-screen-2xl mx-auto">
-    <div className="lg:w-1/4">
-      <Sidebar />
+      {/* Main Content */}
+      <div className="flex-1 flex">
+        {/* Sidebar */}
+        <Sidebar />
+
+        {/* User List */}
+        <div className="flex-1 p-4 overflow-y-auto">
+          <UserList />
+        </div>
+      </div>
     </div>
-    <div className="flex-1">
-      <UserList />
-    </div>
-  </div>
-</>
-
-  
-
-
   );
 };
 

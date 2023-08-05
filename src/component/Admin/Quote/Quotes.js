@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2'
-
+import Swal from 'sweetalert2';
 import {
   Card,
   CardHeader,
@@ -13,25 +12,20 @@ import {
   Button,
   CardFooter,
 } from "@material-tailwind/react";
-import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } from "react-icons/fa"; // Import the icons from react-icons
+import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } from "react-icons/fa";
 import { BASE_URL } from '../../../utils/config';
 import { AddQuote } from './AddQuote';
 import EditQuote from './EditQuote';
-
-
 
 const Quotes = () => {
   const [quotes, setQuotes] = useState([{
     is_list: false,
   }]);
 
-
-
   useEffect(() => {
-    // Fetch the list of banners from the backend API
+    // Fetch the list of quotes from the backend API
     getAdminQuotes()
   }, []);
-
 
   async function getAdminQuotes() {
     try {
@@ -39,35 +33,21 @@ const Quotes = () => {
       const response = await axios.get(BASE_URL + '/home/Admin-quote/');
       console.log('mgkljklgjlsjgklsg: ', response.data);
       setQuotes(response.data);
-      
-
     } catch (error) {
       console.error("Error fetching quote-list:", error);
     }
   }
 
-
-  
-
-
-
   const handleListUnlist = (quoteId, isList) => {
     axios.patch(`${BASE_URL}/home/quote/${quoteId}/list_unlist/`, { is_list: isList })
       .then((response) => {
         console.log('Quote listed/unlisted successfully:', response.data);
-        // Handle any success message or update the quoteData state
-            setQuotes(prevQuotes => prevQuotes.map(quote => quote.id === quoteId ? { ...quote, is_list: isList} : quote));
+        setQuotes(prevQuotes => prevQuotes.map(quote => quote.id === quoteId ? { ...quote, is_list: isList } : quote));
       })
       .catch((error) => {
         console.error('Error listing/unlisting quote:', error);
-        // Handle any error message or error handling here
       });
   };
-
-
-
-
-
 
   const handleDeleteQuotes = (id) => {
     Swal.fire({
@@ -80,19 +60,16 @@ const Quotes = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        const quote = axios.delete(`${BASE_URL}/home/quote/delete/${id}/`).then(
-          async function getAdminQuotes() {
-            const request = await axios.get(BASE_URL + '/home/Admin-quote/')
-
-            setQuotes(request.data)
-          }
-        )
-
+        axios.delete(`${BASE_URL}/home/quote/delete/${id}/`)
+          .then(() => {
+            getAdminQuotes();
+          })
+          .catch((error) => {
+            console.log('Error deleting quote:', error);
+          });
       }
-    })
+    });
   }
-
-
 
   return (
     <Card className="h-full w-full">
@@ -106,21 +83,19 @@ const Quotes = () => {
               See information about all members
             </Typography>
           </div>
-
         </div>
         <div className="flex items-center justify-between gap-4">
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
-
+              {/* ... Add tabs headers here if needed ... */}
             </TabsHeader>
           </Tabs>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="overflow-hidden px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
             <tr>
-
               <th scope="col" className="px-6 py-4 font-large text-gray-900">
                 Content
               </th>
@@ -143,16 +118,13 @@ const Quotes = () => {
           </thead>
           <tbody>
             {quotes.map((quote) => (
-
               <tr className="hover:bg-gray-50" key={quote.id}>
-
                 <td className="px-6 py-4">
                   <p> {quote.content}</p>
                 </td>
                 <td className="px-6 py-4">
                   <p> {quote.Author}</p>
                 </td>
-
                 <td className="px-6 py-4">
                   {quote.is_list ? (
                     <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
@@ -168,20 +140,15 @@ const Quotes = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex">
-                   
-
-                  {quote.is_list ? (
-              <button onClick={() => handleListUnlist(quote.id, false)}>Unlist</button>
-            ) : (
-              <button onClick={() => handleListUnlist(quote.id, true)}>List</button>
-            )}
+                    {quote.is_list ? (
+                      <button onClick={() => handleListUnlist(quote.id, false)}>Unlist</button>
+                    ) : (
+                      <button onClick={() => handleListUnlist(quote.id, true)}>List</button>
+                    )}
                   </div>
-
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-
-                    {/* Delete button */}
                     <Button
                       color="red"
                       size="sm"
@@ -196,16 +163,11 @@ const Quotes = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    {/* Edit button */}
                     <EditQuote id={quote.id} action={getAdminQuotes} />
-
-
-
                   </div>
                 </td>
               </tr>
             ))}
-
             <tr>
               <td
                 colSpan="4"
@@ -214,8 +176,6 @@ const Quotes = () => {
                 {/* No related users found. */}
               </td>
             </tr>
-
-
           </tbody>
         </table>
       </CardBody>
@@ -231,13 +191,10 @@ const Quotes = () => {
             Next
           </Button>
         </div>
-        <AddQuote  action={getAdminQuotes}/>
+        <AddQuote action={getAdminQuotes} />
       </CardFooter>
-
     </Card>
   );
 }
 
 export default Quotes;
-
-
