@@ -28,7 +28,7 @@ import jwtDecode from 'jwt-decode';
 const MembersList = () => {
   const [users, setUserList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; //
+  const itemsPerPage = 5; //
 
   useEffect(() => {
     getUserList();
@@ -63,7 +63,7 @@ const MembersList = () => {
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               Members list
@@ -90,7 +90,7 @@ const MembersList = () => {
       </CardHeader>
       <CardBody className="overflow-hidden px-0"> {/* Change overflow-scroll to overflow-hidden */}
         <table className="mt-4 w-full min-w-max table-auto text-left">
-        <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
+          <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
             <tr>
               <th scope="col" className="px-6 py-4 font-large text-gray-900">
                 User Name
@@ -111,77 +111,77 @@ const MembersList = () => {
           </thead>
           <tbody>
             {users.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-    .map((user, index) => (
-              <tr className="hover:bg-gray-50" key={index}>
-                <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                  <div className="relative h- 10 w-10">
-                    {user?.pic ? (
-                      <img
-                        className="h-full w-full rounded-full object-cover object-center"
-                        src={user?.pic}
-                        alt="avatar"
-                      />
-                    ) : (
-                      <img
-                        className="h-full w-full rounded-full object-cover object-center"
-                        src={profilePicture}
-                        alt="avatar"
-                      />
-                    )}
-                    {user?.is_active ? (
-                      <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
-                    ) : (
-                      <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-700 "></span>
-                    )}
-                  </div>
-                  <div className="text-sm">
-                    <div className="font-medium text-gray-700">{user?.username}</div>
-                    <div className="text-gray-400">{user?.email}</div>
-                  </div>
-                </th>
-                <td className="px-6 py-4">
-                  <p>{user.cat?.Category_name}</p>
-                </td>
-               
-                <td className="px-6 py-4">
-                  <p>{user.Occup?.titile}</p>
-                </td>
-                <td className="px-6 py-4">
-                  {user?.is_active ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                      Active
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                      Blocked
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex">
-                    <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={user?.is_active}
-                        readOnly
-                      />
-                      <div
-                        onClick={() => changeStatus(user.id)}
-                        className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
-                      ></div>
-                      {user?.is_active ? (
-                        <span className="ml-2 text-sm font-medium text-gray-900">Block</span>
+              .map((user, index) => (
+                <tr className="hover:bg-gray-50" key={index}>
+                  <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                    <div className="relative h- 10 w-10">
+                      {user?.pic ? (
+                        <img
+                          className="h-full w-full rounded-full object-cover object-center"
+                          src={user?.pic}
+                          alt="avatar"
+                        />
                       ) : (
-                        <span className="ml-2 text-sm font-medium text-gray-900">Unblock</span>
+                        <img
+                          className="h-full w-full rounded-full object-cover object-center"
+                          src={profilePicture}
+                          alt="avatar"
+                        />
                       )}
-                    </label>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      {user?.is_active ? (
+                        <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
+                      ) : (
+                        <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-700 "></span>
+                      )}
+                    </div>
+                    <div className="text-sm">
+                      <div className="font-medium text-gray-700">{user?.username}</div>
+                      <div className="text-gray-400">{user?.email}</div>
+                    </div>
+                  </th>
+                  <td className="px-6 py-4">
+                    <p>{user.cat?.Category_name}</p>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <p>{user.Occup?.titile}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    {user?.is_active ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                        Active
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        Blocked
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex">
+                      <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={user?.is_active}
+                          readOnly
+                        />
+                        <div
+                          onClick={() => changeStatus(user.id)}
+                          className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+                        ></div>
+                        {user?.is_active ? (
+                          <span className="ml-2 text-sm font-medium text-gray-900">Block</span>
+                        ) : (
+                          <span className="ml-2 text-sm font-medium text-gray-900">Unblock</span>
+                        )}
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             <tr>
               <td colSpan="4" className="px-6 py-4 text-center text-red-500 font-bold">
                 {/* No related users found. */}
@@ -191,29 +191,29 @@ const MembersList = () => {
         </table>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-      <Typography variant="small" color="blue-gray" className="font-normal">
-    Page {currentPage} of {Math.ceil(users.length / itemsPerPage)}
-  </Typography>
-  <div className="flex gap-2">
-    <Button
-      variant="outlined"
-      color="blue-gray"
-      size="sm"
-      disabled={currentPage === 1}
-      onClick={() => setCurrentPage((prev) => prev - 1)}
-    >
-      Previous
-    </Button>
-    <Button
-      variant="outlined"
-      color="blue-gray"
-      size="sm"
-      disabled={currentPage === Math.ceil(users.length / itemsPerPage)}
-      onClick={() => setCurrentPage((prev) => prev + 1)}
-    >
-      Next
-    </Button>
-  </div>
+        <Typography variant="small" color="blue-gray" className="font-normal">
+          Page {currentPage} of {Math.ceil(users.length / itemsPerPage)}
+        </Typography>
+        <div className="flex gap-2">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === Math.ceil(users.length / itemsPerPage)}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            Next
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

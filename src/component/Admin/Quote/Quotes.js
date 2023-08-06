@@ -21,6 +21,8 @@ const Quotes = () => {
   const [quotes, setQuotes] = useState([{
     is_list: false,
   }]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; //
 
   useEffect(() => {
     // Fetch the list of quotes from the backend API
@@ -73,25 +75,19 @@ const Quotes = () => {
 
   return (
     <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
+            {/* <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              QUOTES
+              Quotes
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all members
+              See information about all Quotes
             </Typography>
           </div>
         </div>
-        <div className="flex items-center justify-between gap-4">
-          <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {/* ... Add tabs headers here if needed ... */}
-            </TabsHeader>
-          </Tabs>
-        </div>
-      </CardHeader>
+        
+      </CardHeader>  */}
       <CardBody className="overflow-hidden px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
@@ -117,57 +113,58 @@ const Quotes = () => {
             </tr>
           </thead>
           <tbody>
-            {quotes.map((quote) => (
-              <tr className="hover:bg-gray-50" key={quote.id}>
-                <td className="px-6 py-4">
-                  <p> {quote.content}</p>
-                </td>
-                <td className="px-6 py-4">
-                  <p> {quote.Author}</p>
-                </td>
-                <td className="px-6 py-4">
-                  {quote.is_list ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                      List
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                      UnList
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex">
+            {quotes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+              .map((quote, index) => (
+                <tr className="hover:bg-gray-50" key={quote.id}>
+                  <td className="px-6 py-4">
+                    <p> {quote.content}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    <p> {quote.Author}</p>
+                  </td>
+                  <td className="px-6 py-4">
                     {quote.is_list ? (
-                      <button onClick={() => handleListUnlist(quote.id, false)}>Unlist</button>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                        List
+                      </span>
                     ) : (
-                      <button onClick={() => handleListUnlist(quote.id, true)}>List</button>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        UnList
+                      </span>
                     )}
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    <Button
-                      color="red"
-                      size="sm"
-                      ripple="light"
-                      onClick={() => {
-                        handleDeleteQuotes(quote.id)
-                      }}
-                    >
-                      <FaTrash className="mr-1" />
-                    </Button>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    <EditQuote id={quote.id} action={getAdminQuotes} />
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex">
+                      {quote.is_list ? (
+                        <button onClick={() => handleListUnlist(quote.id, false)}>Unlist</button>
+                      ) : (
+                        <button onClick={() => handleListUnlist(quote.id, true)}>List</button>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <Button
+                        color="red"
+                        size="sm"
+                        ripple="light"
+                        onClick={() => {
+                          handleDeleteQuotes(quote.id)
+                        }}
+                      >
+                        <FaTrash className="mr-1" />
+                      </Button>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <EditQuote id={quote.id} action={getAdminQuotes} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
             <tr>
               <td
                 colSpan="4"
@@ -178,16 +175,29 @@ const Quotes = () => {
             </tr>
           </tbody>
         </table>
+
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage} of {Math.ceil(quotes.length / itemsPerPage)}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" color="blue-gray" size="sm">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
             Previous
           </Button>
-          <Button variant="outlined" color="blue-gray" size="sm">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === Math.ceil(quotes.length / itemsPerPage)}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
             Next
           </Button>
         </div>

@@ -84,7 +84,7 @@ export function Addbanner({action}) {
                   type="text"
                   id="title"
                   name="title"
-                  value={formData.title}
+              
                   onChange={handleChange}
                   className="mt-1 p-3 border border-gray-300 rounded w-full"
                 />

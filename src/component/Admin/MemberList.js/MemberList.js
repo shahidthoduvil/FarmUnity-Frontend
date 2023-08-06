@@ -24,6 +24,8 @@ import MemberEdit from './MemberEdit';
 
 const MembersList = () => {
   const [members, setMembers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; //
 
   useEffect(() => {
     // Fetch the list of members from the backend API
@@ -76,25 +78,19 @@ const MembersList = () => {
 
   return (
     <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
+            {/* <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               Members
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all members
+              See information about all Members
             </Typography>
           </div>
         </div>
-        <div className="flex items-center justify-between gap-4">
-          <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {/* ... Add tabs headers here if needed ... */}
-            </TabsHeader>
-          </Tabs>
-        </div>
-      </CardHeader>
+      </CardHeader>  */}
+
       <CardBody className="overflow-hidden px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
@@ -117,58 +113,59 @@ const MembersList = () => {
             </tr>
           </thead>
           <tbody>
-            {members.map((member) => (
-              <tr className="hover:bg-gray-50" key={member.id}>
-                <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                  <div className="relative h- 10 w-10">
-                    {member.img ? (
-                      <img
-                        className="h-full w-full object-cover object-center"
-                        src={BASE_URL + member.img}
-                        alt="avatar"
-                      />
-                    ) : (
-                      "no image found"
-                    )}
+            {members.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+              .map((member, index) => (
+                <tr className="hover:bg-gray-50" key={member.id}>
+                  <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                    <div className="relative h- 10 w-10">
+                      {member.img ? (
+                        <img
+                          className="h-full w-full object-cover object-center"
+                          src={BASE_URL + member.img}
+                          alt="avatar"
+                        />
+                      ) : (
+                        "no image found"
+                      )}
+                      {member.is_list ? (
+                        <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
+                      ) : (
+                        <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-700 "></span>
+                      )}
+                    </div>
+                  </th>
+                  <td className="px-6 py-4">
+                    <p> {member.title}</p>
+                  </td>
+                  <td className="px-6 py-4">
                     {member.is_list ? (
-                      <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 "></span>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                        List
+                      </span>
                     ) : (
-                      <span className="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-red-700 "></span>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                        UnList
+                      </span>
                     )}
-                  </div>
-                </th>
-                <td className="px-6 py-4">
-                  <p> {member.title}</p>
-                </td>
-                <td className="px-6 py-4">
-                  {member.is_list ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                      List
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
-                      UnList
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex">
-                    {member.is_list ? (
-                      <button onClick={() => handleListUnlist(member.id, false)}>Unlist</button>
-                    ) : (
-                      <button onClick={() => handleListUnlist(member.id, true)}>List</button>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    <MemberEdit id={member.id} action={getAdminMember} />
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex">
+                      {member.is_list ? (
+                        <button onClick={() => handleListUnlist(member.id, false)}>Unlist</button>
+                      ) : (
+                        <button onClick={() => handleListUnlist(member.id, true)}>List</button>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <MemberEdit id={member.id} action={getAdminMember} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
             <tr>
               <td
                 colSpan="4"
@@ -182,19 +179,35 @@ const MembersList = () => {
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage} of {Math.ceil(members.length / itemsPerPage)}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" color="blue-gray" size="sm">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
             Previous
           </Button>
-          <Button variant="outlined" color="blue-gray" size="sm">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === Math.ceil(members.length / itemsPerPage)}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
             Next
           </Button>
+
+        
         </div>
         <AddMember action={getAdminMember} />
       </CardFooter>
+
     </Card>
+
   );
 }
 

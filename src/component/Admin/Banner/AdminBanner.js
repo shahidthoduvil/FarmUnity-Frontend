@@ -24,6 +24,8 @@ import BannerEdit from './BannerEdit';
 
 const BannerList = () => {
   const [banners, setBanners] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5
 
   useEffect(() => {
     // Fetch the list of banners from the backend API
@@ -74,7 +76,7 @@ const BannerList = () => {
 
   return (
     <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
+      {/* <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
@@ -85,14 +87,7 @@ const BannerList = () => {
             </Typography>
           </div>
         </div>
-        <div className="flex items-center justify-between gap-4">
-          <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {/* ... Add tabs headers here if needed ... */}
-            </TabsHeader>
-          </Tabs>
-        </div>
-      </CardHeader>
+      </CardHeader>  */}
       <CardBody className="overflow-hidden px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
@@ -118,7 +113,7 @@ const BannerList = () => {
             </tr>
           </thead>
           <tbody>
-            {banners.map((banner) => (
+            {banners.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((banner) => (
               <tr className="hover:bg-gray-50" key={banner.id}>
                 <th className="flex gap-3 px-6 py-4 font-normal text-gray-900">
                   <div className="relative h- 10 w-10">
@@ -195,21 +190,34 @@ const BannerList = () => {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-2">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage} of {Math.ceil(banners.length / itemsPerPage)}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" color="blue-gray" size="sm">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
             Previous
           </Button>
-          <Button variant="outlined" color="blue-gray" size="sm">
+          <Button
+            variant="outlined"
+            color="blue-gray"
+            size="sm"
+            disabled={currentPage === Math.ceil(banners.length / itemsPerPage)}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
             Next
           </Button>
         </div>
         <Addbanner action={getAdminBanner} />
       </CardFooter>
     </Card>
+
   );
 }
 

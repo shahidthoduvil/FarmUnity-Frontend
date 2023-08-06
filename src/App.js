@@ -36,9 +36,6 @@ function App() {
 
         <Route exact path='*' Component={PageNotFound}></Route>
         <Route  path='/' exact  element={<PrivateRouter/>}></Route>
-
-        
-         
           <Route exact path='/' element={<HomePage/>}></Route>
           <Route Component={AdminPanelPage} path='adm'></Route>
           <Route Component={UserListPage} path='adm/user-list'></Route>
@@ -56,7 +53,7 @@ function App() {
 
 
           <Route Component={PostPage} path='post'></Route>
-          <Route Component={FarmersPage} path=':userCategory'></Route>
+          <Route Component={FarmersPage} path='/:userCategory/'></Route>
           <Route Component={Chat} path="/chat/:userId" ></Route>
  
           <Route Component={ProfileSetupPage} path='profile-setup'></Route>

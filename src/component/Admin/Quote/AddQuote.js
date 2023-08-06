@@ -29,7 +29,9 @@ export function AddQuote({action}) {
     setFormData((prevData) => ({
       ...prevData,
       [name]: fieldValue,
+   
     }));
+
   };
 
   const handleSubmit = async (e) => {
@@ -76,7 +78,7 @@ export function AddQuote({action}) {
                   type="text"
                   id="content"
                   name="content"
-                  value={formData.content}
+                 
                   onChange={handleChange}
                   className="mt-1 p-3 border border-gray-300 rounded w-full"
                 />
@@ -89,7 +91,7 @@ export function AddQuote({action}) {
                   type="text"
                   id="Author"
                   name="Author"
-                  value={formData.Author}
+               
                   onChange={handleChange}
                   className="mt-1 p-3 border border-gray-300 rounded w-full"
                 />
