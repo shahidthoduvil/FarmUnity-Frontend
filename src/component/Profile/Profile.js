@@ -75,7 +75,7 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Profile header */}
+
 
       <div className="relative bg-cover bg-center h-72 md:h-96">
         <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${BASE_URL + user.cover})` }}>
@@ -99,11 +99,11 @@ const ProfilePage = () => {
                     ) : (
                       <img src={profilePicture} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     )}
-                    {/* Edit icon for profile picture */}
+                  
                     <EditProfile refreshProfile={refreshProfile} id={user.id} action={getUser} />
 
                   </div>
-                  {/* Edit icon for profile background */}
+              
 
                 </div>
               </div>

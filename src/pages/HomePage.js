@@ -16,33 +16,33 @@ const HomePage = () => {
   const navigate=useNavigate
   const localResponse = localStorage.getItem('authToken');
 
-  const checkProfileSetupStatus = async () => {
-    try {
+  // const checkProfileSetupStatus = async () => {
+  //   try {
     
       
-      if (!localResponse) {
+  //     if (!localResponse) {
        
-        navigate('/login');
-        return;
-      }
-      const decoded=jwtDecode(localResponse)
-      if( decoded.is_setup_complete){
-        navigate('/')
-      }
-      else
-      navigate('/profile-setup')
+  //       navigate('/login');
+  //       return;
+  //     }
+  //     const decoded=jwtDecode(localResponse)
+  //     if( decoded.is_setup_complete){
+  //       navigate('/')
+  //     }
+  //     else
+  //     navigate('/profile-setup')
 
 
       
-    } catch (error) {
-      console.error('Error checking profile setup status:', error);
-      toast.error('Failed to check profile setup status.');
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error checking profile setup status:', error);
+  //     toast.error('Failed to check profile setup status.');
+  //   }
+  // };
 
-  useEffect(() => {
-    checkProfileSetupStatus();
-  }, []);
+  // useEffect(() => {
+  //   checkProfileSetupStatus();
+  // }, []);
 
   return (
     <div className="flex flex-col max-h-screen">

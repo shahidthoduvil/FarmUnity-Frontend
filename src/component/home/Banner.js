@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { BASE_URL } from '../../utils/config';
 import './Banner.css'
 
+
 const Banner = () => {
   const [banners, setBanner] = useState([]);
 

@@ -23,7 +23,7 @@ export default async function login(e) {
     if (response.status === 200) {
       const data = await response.json();
       localStorage.setItem('authToken', JSON.stringify(data));
-      toast.success('Login success',{ duration: 5000 });
+      
       return data;
     } else {
       toast.error('Invalid user credentials');

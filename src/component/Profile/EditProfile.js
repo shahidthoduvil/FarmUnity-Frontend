@@ -41,12 +41,24 @@ const handleCoverImageChange = (e) => {
 };
 
 
-//   useEffect(() => {
-//     // Fetch the existing banner data from the backend
-//     axios.get(`${BASE_URL}/api/profile-update/${user_id}/`)
-//         .then(response => setFormData(response.data))
-//         .catch(error => console.log(error));
-// }, [user_id]);
+useEffect(() => {
+  async function fetchUserData() {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/getuserdetails/${user_id}`);
+      const user = response.data; // Adjust this according to your API response structure
+
+      setFormData({
+        username: user.username,
+        pic: null, 
+        cover: null, // Same here
+      });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+
+  fetchUserData();
+}, [user_id]);
 
 
 
@@ -112,12 +124,11 @@ const handleCoverImageChange = (e) => {
                   <label htmlFor="usernameInput" className="text-gray-500">
                     Username
                   </label>
-                  <input id="usernameInput" type="text" className="mt-1 p-2 border border-gray-300 rounded" name='username' onChange={handleChange} />
+                  <input id="usernameInput" type="text" className="mt-1 p-2 border border-gray-300 rounded" name='username' onChange={handleChange}  value={formData.username} />
                 </div>
               </div>
             </div>
           </DialogBody>
-
           <DialogFooter>
             <Button variant="text" color="red" onClick={() => handleOpen(null)} className="mr-1">
               <span>Cancel</span>

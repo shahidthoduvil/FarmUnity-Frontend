@@ -24,6 +24,8 @@ import Memberlistpage from './component/AdminPages/Memberlistpage';
 import PostPage from './pages/PostPage';
 import FarmersPage from './pages/FarmersPage';
 import Chat from './component/FARMER/Chat';
+import Admin_login from './component/Account/Admin_login';
+import UserProfile from './component/Profile/UserProfile';
 
 
 
@@ -35,36 +37,41 @@ function App() {
         <Routes>
 
         <Route exact path='*' Component={PageNotFound}></Route>
-        <Route  path='/' exact  element={<PrivateRouter/>}></Route>
-          <Route exact path='/' element={<HomePage/>}></Route>
+        <Route exact path='/' element={<HomePage/>}></Route>
+        <Route Component={Admin_login}path='adm/login'></Route>
+        <Route    element={<PrivateRouter role='admin'  route={'/adm/login'}   />}>
+          
           <Route Component={AdminPanelPage} path='adm'></Route>
           <Route Component={UserListPage} path='adm/user-list'></Route>
           <Route Component={BannerLIstPage} path='adm/banner-list'></Route>
           <Route Component={QuotesPage} path='adm/quotes'></Route>
           <Route Component={NoficationPage} path='adm/Notification'></Route>
           <Route Component={Memberlistpage} path='adm/memberlist'></Route>
+        </Route>
 
+     
           <Route Component={LoginPage} path='login'></Route>
           <Route Component={SigupPage} path='signup'></Route>
           <Route Component={ForgotPassword} path='forgot-password'></Route>
           <Route Component={ResetPassword} path='reset-password'></Route> 
-          <Route Component={ProfilePage} path='profile'></Route>
-          <Route path="/profile/:userId" Component={ProfilePage} />
+        
+  
 
+        <Route element={<PrivateRouter   role='user' route={'login'} />}>
 
           <Route Component={PostPage} path='post'></Route>
           <Route Component={FarmersPage} path='/:userCategory/'></Route>
           <Route Component={Chat} path="/chat/:userId" ></Route>
- 
           <Route Component={ProfileSetupPage} path='profile-setup'></Route>
-       
+          <Route Component={UserProfile} path='user-profile'></Route>
    
-    
-        
-          
+          <Route path="/profile/:userId" Component={ProfilePage} />
+          <Route Component={ProfilePage} path='profile'></Route>
 
-
+         </Route>
         </Routes>
+  
+
       </Router>
    
 

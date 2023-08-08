@@ -148,124 +148,104 @@ const Example = ({action}) => {
       {/* Edit Dialog */}
       <Dialog open={size === 'lg'} size={size || 'md'} handler={() => handleOpen(null)}>
         <form onSubmit={handleUpdate}>
-        <DialogHeader>EDIT YOUR Details</DialogHeader>
-        <DialogBody className="dialog-content" style={{
-          'height': '400px',
-          'overflow-y': 'auto'
-        }}>
-          <div className="bg-gray-200 min-h-screen">
-            <div className="p-8 bg-white shadow mt-24">
-              {/* Editable Form Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* <div className="flex flex-col">
-                  <label htmlFor="usernameInput" className="text-gray-500">
-                    Username
-                  </label>
-                  <input
-                    id="usernameInput"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-                    defaultValue="MOHAMMED MT"
-                  />
-                </div> */}
-
-                
-                <div className="flex flex-col">
-                  <label htmlFor="addressInput" className="text-gray-500">
-                    Address
-                  </label>
-
-                  
-                  <input
-                    id="countryInput"
-                    name="landmark"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-
-              
-                    onChange={handleAddress}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="countryInput" className="text-gray-500">
-                    Country
-                  </label>
-                  <input
-                    id="countryInput"
-                    name="country"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-
-          
-                    onChange={handleChangeCountry}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="stateInput" className="text-gray-500">
-                    State
-                  </label>
-                  <input
-                    id="stateInput"
-                    name="state"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-               
-                    onChange={handleChangeState}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="districtInput" className="text-gray-500">
-                    District
-                  </label>
-                  <input
-                    id="districtInput"
-                    name="district"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-                    
-                    onChange={handleChangeDistrict}
+          <DialogHeader>EDIT YOUR Details</DialogHeader>
+          <DialogBody className="dialog-content" style={{ 'height': '400px', 'overflow-y': 'auto' }}>
+            <div className="bg-gray-200 min-h-screen">
+              <div className="p-8 bg-white shadow mt-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex flex-col">
+                    <label htmlFor="addressInput" className="text-gray-500">
+                      Address
+                    </label>
+                    <input
+                      id="addressInput"
+                      name="landmark"
+                      type="text"
+                      className="mt-1 p-2 border border-gray-300 rounded"
+                      value={formData.landmark}
+                      onChange={handleAddress}
                     />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="placeInput" className="text-gray-500">
-                    Place
-                  </label>
-                  <input
-                    id="placeInput"
-                    name="city"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-                    
-                    onChange={handleChangeCity}
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="countryInput" className="text-gray-500">
+                      Country
+                    </label>
+                    <input
+                      id="countryInput"
+                      name="country"
+                      type="text"
+                      className="mt-1 p-2 border border-gray-300 rounded"
+                      value={formData.country}
+                      onChange={handleAddress}
                     />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="pincodeInput" className="text-gray-500">
-                    Pincode
-                  </label>
-                  <input
-                    id="pincodeInput"
-                    name="pincode"
-                    type="text"
-                    className="mt-1 p-2 border border-gray-300 rounded"
-          
-                    onChange={handleChangePincode}
-                  />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="stateInput" className="text-gray-500">
+                      State
+                    </label>
+                    <input
+                      id="stateInput"
+                      name="state"
+                      type="text"
+                      className="mt-1 p-2 border border-gray-300 rounded"
+                      value={formData.state}
+                      onChange={handleAddress}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="districtInput" className="text-gray-500">
+                      District
+                    </label>
+                    <input
+                      id="districtInput"
+                      name="district"
+                      type="text"
+                      className="mt-1 p-2 border border-gray-300 rounded"
+                      value={formData.district}
+                      onChange={handleAddress}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="placeInput" className="text-gray-500">
+                      Place
+                    </label>
+                    <input
+                      id="placeInput"
+                      name="city"
+                      type="text"
+                      className="mt-1 p-2 border border-gray-300 rounded"
+                      value={formData.city}
+                      onChange={handleAddress}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="pincodeInput" className="text-gray-500">
+                      Pincode
+                    </label>
+                    <input
+                      id="pincodeInput"
+                      name="pincode"
+                      type="text"
+                      className="mt-1 p-2 border border-gray-300 rounded"
+                      value={formData.pincode}
+                      onChange={handleAddress}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </DialogBody>
-        <DialogFooter>
-          <Button variant="text" color="red" onClick={() => handleOpen(null)} className="mr-1">
-            <span>Cancel</span>
-          </Button>
-          <Button type='submit' variant="gradient" color="green" onClick={() => handleOpen(null)}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
+          </DialogBody>
+          <DialogFooter>
+            <Button variant="text" color="red" onClick={() => handleOpen(null)} className="mr-1">
+              <span>Cancel</span>
+            </Button>
+            <Button type="submit" variant="gradient" color="green">
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
         </form>
       </Dialog>
+
     </div>
   );
 };

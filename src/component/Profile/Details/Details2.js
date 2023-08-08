@@ -3,7 +3,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { BASE_URL } from '../../../utils/config';
 import { getLocal } from '../../../helpers/auth';
-import EditDetails from './EditDetails';
+
 
 const Details = () => {
   const [user, setUser] = useState({});
@@ -23,7 +23,7 @@ const Details = () => {
 
   async function getUser() {
     try {
-      const response = await axios.get(`${BASE_URL}/api/getuserdetails/${user_id}/`);
+      const response = await axios.get(`${BASE_URL}/api/getsingledetails/${user_id}/`);
       const { user, user_occupation, user_address } = response.data;
       setUser(user);
       console.log(user);
@@ -142,10 +142,7 @@ const Details = () => {
         <p className="mt-2">{isUserOnline()}</p>
       </div>
 
-      {/* Edit button */}
-      <div className="flex justify-end mt-4">
-        <EditDetails action={getUser} />
-      </div>
+    
     </div>
   );
 };

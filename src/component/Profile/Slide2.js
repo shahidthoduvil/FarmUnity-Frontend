@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Rate from './Review/Rate'
-import Details from './Details/Details';
+import Rate2 from './Review/Rate2'
+import Details2 from './Details/Details2';
 import MapLocation from './Map/MapLocation';
 
-const Slide = () => {
+const Slide2 = () => {
   const [activeTab, setActiveTab] = useState('');
 
   const handleTabChange = (tabId) => {
@@ -31,9 +31,9 @@ const Slide = () => {
           <li className="z-30 flex-auto text-center">
             <button
               className={`text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out ${
-                activeTab === 'message' ? 'bg-white' : ''
+                activeTab === 'message2' ? 'bg-white' : ''
               }`}
-              onClick={() => handleTabChange('message')}
+              onClick={() => handleTabChange('message2')}
             >
               <span className="ml-1">Messages</span>
             </button>
@@ -41,9 +41,9 @@ const Slide = () => {
           <li className="z-30 flex-auto text-center">
             <button
               className={`text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out ${
-                activeTab === 'Details' ? 'bg-white' : ''
+                activeTab === 'Details2' ? 'bg-white' : ''
               }`}
-              onClick={() => handleTabChange('Details')}
+              onClick={() => handleTabChange('Details2')}
             >
               <span className="ml-1">Details</span>
             </button>
@@ -62,22 +62,22 @@ const Slide = () => {
           </div>
           <div
             className={`${
-              activeTab === 'message' ? 'block opacity-100' : 'hidden opacity-0'
+              activeTab === 'message2' ? 'block opacity-100' : 'hidden opacity-0'
             }`}
-            id="message"
+            id="message2"
             role="tabpanel"
           >
-            <Rate/>
+            <Rate2/>
           </div>
           <div
             className={`${
-              activeTab === 'Details' ? 'block opacity-100' : 'hidden opacity-0'
+              activeTab === 'Details2' ? 'block opacity-100' : 'hidden opacity-0'
             }`}
-            id="Details"
+            id="Details2"
             role="tabpanel"
           >
 
-           <Details/>
+           <Details2/>
           </div>
         </div>
       </div>
@@ -85,4 +85,4 @@ const Slide = () => {
   );
 };
 
-export default Slide;
+export default Slide2;
