@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { BASE_URL } from '../../utils/config';
-import { TextField, List, ListItem, ListItemText,Button } from '@mui/material';
+import { TextField, List, ListItem,Typography} from '@mui/material';
 
 import axios from 'axios';
 import { getLocal } from '../../helpers/auth';
+import Chat from './Chat';
 
 const debounce = (func, delay) => {
   let timeout;
@@ -24,15 +25,7 @@ const Farmers = () => {
   const [occupationSuggestions, setOccupationSuggestions] = useState([]);
   const [showUsernameSuggestions, setShowUsernameSuggestions] = useState(false);
   const [showOccupationSuggestions, setShowOccupationSuggestions] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [totalPages, setTotalPages] = useState(1); 
-  const PAGE_SIZE = 3;
-  
-
-
-   const handlePaginationClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const navigate=useNavigate()
 
   useEffect(() => {
     axios.get(`${BASE_URL}/home/users/category/${userCategory}`, {
@@ -41,13 +34,10 @@ const Farmers = () => {
       },
     })
     .then((response) => {
-      const totalUsers = response.data.length;
-      setTotalPages(Math.ceil(totalUsers / PAGE_SIZE));
       setUserList(response.data);
     })
     .catch((error) => console.error('Error fetching users:', error));
   }, [userCategory]);
-
 
   const fetchUsernameSuggestions = (inputValue) => {
     axios.get(`${BASE_URL}/home/users/auto-suggest/${userCategory}/?q=${encodeURIComponent(inputValue)}`)
@@ -57,6 +47,10 @@ const Farmers = () => {
       .catch((error) => console.error('Error fetching username suggestions:', error));
   };
 
+
+
+
+
   const fetchOccupationSuggestions = (inputValue) => {
     axios.get(`${BASE_URL}/home/users/auto-suggest/${userCategory}/?q=${encodeURIComponent(inputValue)}`)
       .then((response) => {
@@ -64,6 +58,11 @@ const Farmers = () => {
       })
       .catch((error) => console.error('Error fetching occupation suggestions:', error));
   };
+
+
+
+
+
 
   const debouncedFetchUsernameSuggestions = debounce(fetchUsernameSuggestions, 300);
   const debouncedFetchOccupationSuggestions = debounce(fetchOccupationSuggestions, 300);
@@ -85,12 +84,18 @@ const Farmers = () => {
     setShowOccupationSuggestions(inputValue !== '');
   };
 
+
+
+
   const handleUsernameSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion.username);
     setUsernameSuggestions([]);
     setShowUsernameSuggestions(false);
     setShowOccupationSuggestions(false);
   };
+
+
+
 
   const handleOccupationSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion.Occup__titile);
@@ -99,13 +104,14 @@ const Farmers = () => {
     setShowOccupationSuggestions(false);
   };
 
+
+
+
   return (
-
-
     <div className="bg-[#97b683] min-h-screen flex flex-col items-center py-8">
-    <div className="max-w-2xl w-full p-4 bg-white shadow-md">
-      <div className="flex items-center justify-between mb-4">
-      <TextField
+      <div className="max-w-2xl w-full p-4 bg-white shadow-md">
+        <div className="flex items-center justify-between mb-4">
+          <TextField
             type="text"
             className="w-full px-4 py-2 rounded-lg border focus:outline-none"
             placeholder="Search for users."
@@ -116,31 +122,32 @@ const Farmers = () => {
               setShowOccupationSuggestions(true);
             }}
           />
-      </div>
-      {showUsernameSuggestions && usernameSuggestions.length > 0 && (
+        </div>
+        {showUsernameSuggestions && usernameSuggestions.length > 0 && (
         <List className="suggestions-list">
-            {usernameSuggestions.map((suggestion, index) => (
-              <ListItem key={index} button onClick={() => handleUsernameSuggestionClick(suggestion)}>
-                <ListItemText primary={suggestion.username} />
-              </ListItem>
-            ))}
+        {usernameSuggestions.map((suggestion, index) => (
+          <ListItem key={index} button onClick={() => handleUsernameSuggestionClick(suggestion)}>
+    <Typography variant="body1">{suggestion.username}</Typography>
+
+          </ListItem>
+        ))}
+      </List>
+        )}
+        {showOccupationSuggestions && occupationSuggestions.length > 0 && (
+          <List className="suggestions-list">
+          {occupationSuggestions.map((suggestion, index) => (
+            <ListItem key={index} button onClick={() => handleOccupationSuggestionClick(suggestion)}>
+             <Typography variant="body1">{suggestion.Occup__titile}</Typography>
+            </ListItem>
+          ))}
         </List>
-      )}
-      {showOccupationSuggestions && occupationSuggestions.length > 0 && (
-        <List className="suggestions-list">
-           {occupationSuggestions.map((suggestion, index) => (
-              <ListItem key={index} button onClick={() => handleOccupationSuggestionClick(suggestion)}>
-                <ListItemText primary={suggestion.Occup__titile} />
-              </ListItem>
-            ))}
-        </List>
-      )}
-      {userList.length > 0 ? (
-        userList.map((user) => (
-          <div key={user.id} className="flex items-center p-2 border-b">
-            <Link to={`/profile/${user.id}`}>
-              <Avatar src={`${BASE_URL}/${user.pic}`} alt={user.username} sx={{ width: 60, height: 60, marginRight: 4 }} />
-            </Link>
+        )}
+        {userList.length > 0 ? (
+          userList.map((user) => (
+            <div key={user.id} className="flex items-center p-2 border-b">
+        
+              <Avatar onClick={()=>navigate(`/user-profile/${user.username}`)} src={`${BASE_URL}/${user.pic}`} alt={user.username} sx={{ width: 60, height: 60, marginRight: 4 }} />
+           
             <Link to={`/chat/${user.id}`} className="flex items-center p-2 border-b">
               <div className="flex flex-col">
                 <div className="font-semibold text-gray-800">{user.first_name} {user.last_name}</div>
@@ -150,27 +157,13 @@ const Farmers = () => {
               </div>
             </Link>
           </div>
-        ))
-      ) : (
-        <p>No users available.</p>
-      )}
-      {totalPages > 1 && (
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <Button
-              key={index}
-              onClick={() => setCurrentPage(index + 1)}
-              variant={currentPage === index + 1 ? 'contained' : 'outlined'}
-            >
-              {index + 1}
-            </Button>
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <p>No users available.</p>
+        )}
+      </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 export default Farmers;

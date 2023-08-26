@@ -8,78 +8,37 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { GoogleAuthentication } from './GoogleAuthentication';
 import { useGoogleLogin } from '@react-oauth/google';
-import { base_url,BASE_URL } from '../../utils/config';
+import { base_url, BASE_URL } from '../../utils/config';
 
 
 function Login() {
 
+
   const navigate = useNavigate();
 
-  const [user,setUser]=useState('')
- 
+  const [user, setUser] = useState('')
 
-
-  // useEffect(() => {
-  //   const checkLoggedInUser = async () => {
-  //     const localResponse = getLocal('authToken');
-
-  //     if (localResponse) {
-  //       const decoded = jwtDecode(localResponse);
-  //       if (decoded.is_admin) {
-  //         // If the user is an admin, redirect to the admin page
-  //         navigate('/adm');
-  //       } else if (decoded.is_staff) {
-  //         // If the user is staff, redirect to staff page (modify as per your routes)
-  //         navigate('/staff');
-  //       } else {
-  //         // If the user is a regular user, check if there is a stored location
-  //         const location = localStorage.getItem('location');
-  //         navigate('/');
-        
-  //       }
-  //     } else {
-  //       // If the user is not logged in, display an error message
-  //       toast.loading('Please Login into your account', { duration: 2000 });
-  //     }
-  //   };
-  //   checkLoggedInUser();
-  // }, [navigate]);
-
-
-  const localResponse = localStorage.getItem('authToken');
-
-
-  
-  const checkProfileSetupStatus = async () => {
-    try {
-   
-      
-      if (!localResponse) {
-        // If the user is not logged in, redirect to the login page
-        navigate('/login');
-        return;
-      }
-      const decoded=jwtDecode(localResponse)
-      if( decoded.is_setup_complete){
-        navigate('/')
-      }
-      else
-      navigate('/profile-setup')
-
-
-      
-      // Redirect based on the profile setup status
-      
-    } catch (error) {
-      console.error('Error checking profile setup status:', error);
-      toast.error('Failed to check profile setup status.');
-    }
-  };
+  console.log('Reached Login page!!');
 
   useEffect(() => {
-    checkProfileSetupStatus();
+    const localResponse = getLocal('authToken');
+    console.log('local response from login ::.>> ', localResponse);
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      if (decoded.is_setup_complete == true) {
+        navigate('/')
+      }
+      else{
+        navigate('/profile-setup')
+      }
+
+      // If the user is not logged in, display an error message
+      toast.loading('Please Login into your account', { duration: 2000 });
+    }
   }, []);
-  
+
+
+
 
   const handleGoogleAuth = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -97,27 +56,27 @@ function Login() {
         .then((res) => {
           const userProfile = res.data
           console.log('user profile is:', userProfile);
-          const values ={
-            email : userProfile.email,
-            first_name : userProfile.given_name,
-            last_name : userProfile.family_name,
-            password : userProfile.id,
-            is_google : true
-        }
-          axios.post(`${base_url}/google_authentication/`,values).then((res) => {
-              console.log('Hello ::>> ',res.data);
-              localStorage.setItem('authToken',JSON.stringify(res.data.token))
-               navigate('/');
+          const values = {
+            email: userProfile.email,
+            first_name: userProfile.given_name,
+            last_name: userProfile.family_name,
+            password: userProfile.id,
+            is_google: true
+          }
+          axios.post(`${base_url}/google_authentication/`, values).then((res) => {
+            console.log('Hello ::>> ', res.data);
+            localStorage.setItem('authToken', JSON.stringify(res.data.token))
+            navigate('/');
 
           })
-          .catch((error) => {
-            console.error("Axios request error:", error);
-           
-            
-          });
-       
+            .catch((error) => {
+              console.error("Axios request error:", error);
+
+
+            });
+
         })
-      .catch((err) => toast.error('WOrked'));
+        .catch((err) => toast.error('WOrked'));
     }
   }, [user])
 

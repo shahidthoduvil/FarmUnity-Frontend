@@ -1,52 +1,59 @@
-
-
-
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Rating } from '@material-tailwind/react';
-import ProfilePic from '../../../images/FARMER.jpg';
 
-const UserReview = ({ name, rating, review }) => (
-  <div className="flex bg-white p-4 shadow-md rounded-md mb-4">
-    <div className="flex-none mr-4">
-      <img src={ProfilePic} alt={name} className="w-12 h-12 rounded-full object-cover" />
-    </div>
-    <div className="flex-grow">
-      <h3 className="text-lg font-semibold mb-1">{name}</h3>
-      <Rating value={rating} color="amber" />
-      <p className="mt-1 text-gray-600">{review}</p>
-    </div>
-  </div>
-);
+import { BASE_URL } from '../../../utils/config';
+import { getLocal } from '../../../helpers/auth';
+import jwtDecode from 'jwt-decode';
 
-const Rate= () => {
-  const reviews = [
-    {
-      name: 'John Doe',
-      rating: 4,
-      review: 'Great product! I am very satisfied with my purchase.',
-    },
-    {
-      name: 'Jane Smith',
-      rating: 5,
-      review: 'The best product ever! Highly recommended!',
-    },
-    // Add more reviews as needed
-  ];
+const Rate = () => {
+  const [reviews, setReviews] = useState([]);
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [reviewMessage, setReviewMessage] = useState('');
+  const token = getLocal();
+  const { user_id } = jwtDecode(token);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/home/${user_id}/reviews/`)
+      .then(response => response.json())
+      .then(data => setReviews(data))
+      .catch(error => console.error('Error fetching reviews:', error));
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Perform any action you want with the selected rating and review message here
+    console.log('Selected Rating:', selectedRating);
+    console.log('Review Message:', reviewMessage);
+  };
 
   return (
     <div>
-      <div className="mb-4">
-        <h2 className="text-2xl font-bold mb-2">User Reviews</h2>
-        {/* Render the user review list */}
+      <div className="p-4 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-4">User Reviews</h2>
         {reviews.map((review, index) => (
-          <UserReview
-            key={index}
-            name={review.name}
-            rating={review.rating}
-            review={review.review}
-          />
+          <div key={index} className="mb-6 border-b pb-4">
+            <div className="flex items-center mb-2">
+              <img
+                src={BASE_URL + review.user.pic}
+                alt="User Profile"
+                className="w-12 h-12 rounded-full mr-4"
+              />
+              <div>
+                <p className="font-semibold text-lg">{review.user.username}</p>
+                <p className="text-sm text-gray-500">
+                {review.user.Occup.titile}
+                </p>
+                <p className="text-sm text-gray-500">
+                {review.user.cat.Category_name}
+                </p>
+              </div>
+            </div>
+            <div className="mb-2">
+            </div>
+            <p className="text-gray-700">{review.message}</p>
+          </div>
         ))}
+      
       </div>
     </div>
   );

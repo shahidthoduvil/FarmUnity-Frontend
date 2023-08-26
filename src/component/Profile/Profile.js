@@ -100,7 +100,7 @@ const ProfilePage = () => {
                       <img src={profilePicture} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     )}
                   
-                    <EditProfile refreshProfile={refreshProfile} id={user.id} action={getUser} />
+                    <EditProfile refreshProfile={refreshProfile} id={user.id} action={getUser} user={user} />
 
                   </div>
               

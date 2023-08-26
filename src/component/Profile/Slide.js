@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Rate from './Review/Rate'
 import Details from './Details/Details';
 import MapLocation from './Map/MapLocation';
+import UserPost from './UserPost/UserPost';
 
 const Slide = () => {
   const [activeTab, setActiveTab] = useState('');
@@ -31,6 +32,16 @@ const Slide = () => {
           <li className="z-30 flex-auto text-center">
             <button
               className={`text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out ${
+                activeTab ==='post' ? 'bg-white' : ''
+              }`}
+              onClick={() => handleTabChange('post')}
+            >
+              <span className="ml-1">Posts</span>
+            </button>
+          </li>
+          <li className="z-30 flex-auto text-center">
+            <button
+              className={`text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out ${
                 activeTab === 'message' ? 'bg-white' : ''
               }`}
               onClick={() => handleTabChange('message')}
@@ -48,6 +59,7 @@ const Slide = () => {
               <span className="ml-1">Details</span>
             </button>
           </li>
+
         </ul>
         <div data-tab-content="" className="p-5">
         <div
@@ -58,6 +70,16 @@ const Slide = () => {
             role="tabpanel"
           >
             <MapLocation/>
+       
+          </div>
+          <div
+            className={`${
+              activeTab === 'post' ? 'block opacity-100' : 'hidden opacity-0 z-0'
+            }`}
+            id="post"
+            role="tabpanel"
+          >
+            <UserPost/>
        
           </div>
           <div

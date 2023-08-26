@@ -4,7 +4,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../../utils/config';
 import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
-const Example = ({action}) => {
+const Example = ({address}) => {
   const [size, setSize] = useState(null);
   const handleClose = () => setSize(null);
 
@@ -29,16 +29,17 @@ const Example = ({action}) => {
   const localResponse = getLocal('authToken');
   const decoded = jwtDecode(localResponse);
 
-  useEffect(() => {
-    // Fetch the quote data when the component mounts
-    axios.get(`${BASE_URL}/api/update_address/${decoded.user_id}/`)
-      .then((response) => {
-        setFormData(response.data); // Set the fetched data as initial state
-      })
-      .catch((error) => {
-        console.error('Error fetching quote:', error);
-      });
-  }, [decoded.user_id]);
+  // useEffect(() => {
+
+  //   axios.get(`${BASE_URL}/api/update_address/${decoded.user_id}/`)
+  //     .then((response) => {
+  //       setFormData(response.data); 
+        
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching quote:', error);
+  //     });
+  // }, [decoded.user_id]);
 
   const handleAddress = (event) => {
     const { name, value } = event.target;
@@ -124,14 +125,15 @@ const Example = ({action}) => {
       await axios.patch(`${BASE_URL}/api/update_address/${decoded.user_id}/`, formData)
         .then((response) => {
           console.log('Quote updated successfully:', response.data);
+      
           handleClose();
-          action()
+        
 
-          // Assuming "action" is a function passed as a prop to update the quotes list
+ 
         })
     } catch (error) {
       console.log(error);
-      // Handle error case if needed
+  
     }
   }
 
@@ -162,7 +164,7 @@ const Example = ({action}) => {
                       name="landmark"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={formData.landmark}
+                      value={address.landmark}
                       onChange={handleAddress}
                     />
                   </div>
@@ -175,8 +177,8 @@ const Example = ({action}) => {
                       name="country"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={formData.country}
-                      onChange={handleAddress}
+                      value={address.country}
+                      onChange={handleChangeCountry}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -188,8 +190,8 @@ const Example = ({action}) => {
                       name="state"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={formData.state}
-                      onChange={handleAddress}
+                      value={address.state}
+                      onChange={handleChangeState }
                     />
                   </div>
                   <div className="flex flex-col">
@@ -201,8 +203,8 @@ const Example = ({action}) => {
                       name="district"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={formData.district}
-                      onChange={handleAddress}
+                      value={address.district}
+                      onChange={handleChangeDistrict}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -214,8 +216,8 @@ const Example = ({action}) => {
                       name="city"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={formData.city}
-                      onChange={handleAddress}
+                      value={address.city}
+                      onChange={handleChangeCity }
                     />
                   </div>
                   <div className="flex flex-col">
@@ -227,8 +229,8 @@ const Example = ({action}) => {
                       name="pincode"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={formData.pincode}
-                      onChange={handleAddress}
+                      value={address.pincode}
+                      onChange={handleChangePincode}
                     />
                   </div>
                 </div>

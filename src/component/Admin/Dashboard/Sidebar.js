@@ -57,14 +57,15 @@ export default function Example() {
           <ListItemPrefix>
             <Cog6ToothIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <Link to="/adm/notification">Notification Message</Link>
+          <Link to='/adm/post'>Posts</Link>
         </ListItem>
         <ListItem className="hover:bg-blue-200">
           <ListItemPrefix>
-            <ShoppingBagIcon className="h-5 w-5" />
+            <Cog6ToothIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <Link to="/adm/">Posts</Link>
+          <Link to="/adm/notification">Notification Message</Link>
         </ListItem>
+       
         <ListItem className="hover:bg-blue-200">
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />

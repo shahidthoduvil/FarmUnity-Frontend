@@ -1,9 +1,11 @@
 import React from 'react';
 import UserMenu from '../Profile/UserMenu';
 import Notification from './Notification';
+import { getLocal } from "../../helpers/auth";
 
 
 function Navbar() {
+    const localResponse = getLocal('authToken');
     return (
         <nav className="bg-[#788F69]">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -44,7 +46,13 @@ function Navbar() {
                                     </svg>
                                 </button>
                             </div> */}
-                            <Notification/>
+                            {localResponse ? 
+                                   <Notification />
+                             :' '
+                            }
+                                
+                       
+                         
                             <UserMenu />
                         </div>
                     </div>

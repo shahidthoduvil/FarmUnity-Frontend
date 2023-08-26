@@ -7,16 +7,19 @@ import reportWebVitals from './reportWebVitals';
 
 
 
+
 import { ThemeProvider } from "@material-tailwind/react";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { client_id } from './utils/config';
-
+import { ChakraProvider, theme } from '@chakra-ui/react'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
     <GoogleOAuthProvider clientId={client_id} >
     <ThemeProvider>
+    <ChakraProvider theme={theme}>
     <App />
+    </ChakraProvider>
     </ThemeProvider>
     </GoogleOAuthProvider >
   </>

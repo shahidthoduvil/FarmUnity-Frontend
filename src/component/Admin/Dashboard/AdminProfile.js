@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 
+
 import {
     Menu,
     MenuHandler,
@@ -17,6 +18,7 @@ import {
   } from "@heroicons/react/24/outline";
 
 import { getLocal } from "../../../helpers/auth";
+import jwtDecode from "jwt-decode";
 
    
 export default function Example() {
@@ -45,7 +47,7 @@ export default function Example() {
           <MenuItem className="flex items-center gap-2">
             <UserCircleIcon strokeWidth={2} className="h-4 w-4" />
             <Typography variant="small" className="font-normal">
-             <Link to='profile' >My profile</Link>
+             <Link to='/adm/profile' >My profile</Link>
             </Typography>
           </MenuItem>
           <MenuItem className="flex items-center gap-2">
@@ -60,7 +62,7 @@ export default function Example() {
             {localResponse ? <Typography variant="small" className="font-normal"onClick={()=>handleclick()}>
               Sign Out
             </Typography>: <Typography variant="small" className="font-normal">
-             <Link to='/logi'>login</Link> 
+             <Link to='/login'>login</Link> 
             </Typography> }
             
           </MenuItem>

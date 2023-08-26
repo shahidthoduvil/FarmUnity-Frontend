@@ -12,7 +12,7 @@ import axios from 'axios';
 import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 import { BASE_URL } from '../../utils/config';
-export default function Example({  refreshProfile,action }) {
+export default function Example({  refreshProfile,action,user }) {
 
   const [size, setSize] = useState(null);
 
@@ -124,7 +124,7 @@ useEffect(() => {
                   <label htmlFor="usernameInput" className="text-gray-500">
                     Username
                   </label>
-                  <input id="usernameInput" type="text" className="mt-1 p-2 border border-gray-300 rounded" name='username' onChange={handleChange}  value={formData.username} />
+                  <input id="usernameInput" type="text" className="mt-1 p-2 border border-gray-300 rounded" name='username' onChange={handleChange}  />
                 </div>
               </div>
             </div>

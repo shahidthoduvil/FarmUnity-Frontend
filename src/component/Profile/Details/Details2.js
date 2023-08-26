@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { BASE_URL } from '../../../utils/config';
+import { useParams } from 'react-router-dom';
 import { getLocal } from '../../../helpers/auth';
 
 
-const Details = () => {
+const Details = ({usernam}) => {
   const [user, setUser] = useState({});
   const [occupation, setOccupation] = useState({});
   const [address, setAddress] = useState({});
   const [category, setCategory] = useState('')
 
-  const token = getLocal();
-  const { user_id } = jwtDecode(token);
+ 
+
+  
   // const [isUserOnline, setIsUserOnline] = useState(false);
   const isUserOnline = () => {
     return user?.is_active ? "Online" : "Offline";
@@ -23,7 +25,7 @@ const Details = () => {
 
   async function getUser() {
     try {
-      const response = await axios.get(`${BASE_URL}/api/getsingledetails/${user_id}/`);
+      const response = await axios.get(`${BASE_URL}/home/getuserinfo/${usernam}/`);
       const { user, user_occupation, user_address } = response.data;
       setUser(user);
       console.log(user);

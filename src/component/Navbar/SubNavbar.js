@@ -18,10 +18,10 @@ const SubNavbar = () => {
             <Link to='/post'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
            focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Post</p></Link>
 
-            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]   hover:text-white
+            <Link to='/news'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]   hover:text-white
            focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">News</p></Link>
 
-            <Link><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
+            <Link to='/solution'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
            focus:outline-none whitespace-nowrap transition-transform transform hover:scale-110 active:scale-100">Solution</p></Link>
 
             <Link to='farmer'><p class="text-sm font-medium text-black px-4 py-2 rounded-full hover:bg-[#788F69]  hover:text-white
