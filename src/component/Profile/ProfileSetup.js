@@ -2,7 +2,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { json, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosAdd } from 'react-icons/io';
 import profileBackground from '../../images/images.jpg'; // Replace with your default background picture
 import { BASE_URL } from '../../utils/config';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
+import { Typography } from  '@material-tailwind/react';
 
 const ProfileSetup = () => {
   const navigate = useNavigate();
@@ -27,10 +28,21 @@ const ProfileSetup = () => {
   const [occupations, setOccupations] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [selectedOccupationId, setSelectedOccupationId] = useState('');
+ 
+ 
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (decoded.is_admin==true) {
+        navigate('/adm')
+      }
+    }
+  }, []);
 
 
 
-  // Gather category and occupation data from the state
 
 
   useEffect(() => {
@@ -46,6 +58,24 @@ const ProfileSetup = () => {
       navigate('/login')
     }
   }, []);
+
+
+ 
+  const [isSignedOut, setIsSignedOut] = useState(false); 
+
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (!localResponse) {
+      navigate('/login');
+    }
+  }, []);
+
+ 
+  const handleSignOut = () => {
+    localStorage.removeItem('authToken'); 
+    setIsSignedOut(true); 
+    navigate('/login');
+  };
 
 
 
@@ -69,11 +99,6 @@ const ProfileSetup = () => {
   const handleStep1Submit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    // console.log('This are the data send to the backend :::>>> ');
-    // console.log('Cover : ',cover);
-    // console.log('Pic : ',pic);
-    // console.log('CategoriY id',selectedCategoryId);
-    // console.log('Farmer Id id',selectedOccupationId);
     formData.append('cover', cover);
     formData.append('pic', pic);
     formData.append('Occup',selectedOccupationId );
@@ -87,19 +112,16 @@ const ProfileSetup = () => {
 
     if (categories && occupations && cover && pic) {
       setIsStep1Complete(true);
-    } else {
+    } else 
+    {
       setIsStep1Complete(false);
     }
-
-
-
   };
 
 
 
   const handlePreviousStep = (event) => {
     event.preventDefault();
-    // Navigate back to Step 1
     setIsStep1Complete(false);
   };
 
@@ -116,7 +138,7 @@ const ProfileSetup = () => {
   };
 
 
-  // Event handler for category selection change
+
   const handleCategoryChange = (event) => {
     const selectedCategoryId = event.target.value;
     setSelectedCategoryId(selectedCategoryId);
@@ -163,6 +185,7 @@ const ProfileSetup = () => {
 
 
     // Send form data and uploaded images to the server for setup
+
     try {
       const formData = new FormData();
 
@@ -177,8 +200,13 @@ const ProfileSetup = () => {
 
       const result = await axios.post(`${BASE_URL}/api/profile-setup2/`, formData);
       console.log('Profile data', result.data);
+      console.log(decoded,'decoded.email');
       const token_response = await axios.post(`${BASE_URL}/api/get-new-token`, {email:decoded.email});
+
+  
+       console.log(token_response.data.token,'token_response>>>>>>.');
       localStorage.setItem('authToken',JSON.stringify(token_response.data.token))
+
       navigate('/');
     } catch (error) {
       console.log(error);
@@ -192,6 +220,24 @@ const ProfileSetup = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="max-w-md w-full p-6 bg-white rounded-md shadow-md">
+
+      {localResponse ? (
+          <Typography
+            variant="subtitle1"
+            className="font-normal cursor-pointer text-blue-600"
+            onClick={() => handleSignOut()}
+          >
+            Sign Out
+          </Typography>
+        ) : (
+          <Typography variant="subtitle1" className="font-normal">
+            <Link to="/login" className="text-blue-600">
+              Log In
+            </Link>
+          </Typography>
+        )}
+       
+     
         <h4 className="text-2xl font-semibold mb-4 text-center">Complete the Profile Setup</h4>
         {!isStep1Complete ? (
           <form onSubmit={handleStep1Submit} className="space-y-6">
@@ -380,7 +426,7 @@ const ProfileSetup = () => {
               >
                 Previous
               </button>
-              <button
+              {/* <button
                 type="submit"
 
                 // disabled={isStep2Complete}
@@ -390,7 +436,14 @@ const ProfileSetup = () => {
 
               >
                 Save Profile Setup
-              </button>
+              </button> */}
+
+<button
+  type="submit"
+  className="w-full flex justify-center py-2 px-4 border border-transparent ML-5 rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+>
+  Save Profile Setup
+</button>
             </div>
           </form>
         )}

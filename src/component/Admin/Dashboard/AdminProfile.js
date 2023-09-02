@@ -18,7 +18,7 @@ import {
   } from "@heroicons/react/24/outline";
 
 import { getLocal } from "../../../helpers/auth";
-import jwtDecode from "jwt-decode";
+
 
    
 export default function Example() {

@@ -4,13 +4,17 @@ import background1 from '../../images/py.jpg'
 import { useNavigate } from 'react-router-dom';
 
 import { BASE_URL } from '../../utils/config';
+import { useEffect } from 'react';
+import { getLocal } from '../../helpers/auth';
+import jwtDecode from 'jwt-decode';
 
 const ResetPassword = () => {
 
     const [password, setPassword] = useState('')
     const [password2, setPassword2] = useState('')
   
-    const history = useNavigate();
+    const navigate = useNavigate();
+    
 
     const user_id = localStorage.getItem('user_id')
     // console.log(user_id);
@@ -30,10 +34,25 @@ const ResetPassword = () => {
             if (response.status === 200) {
                 toast.success('Password updated')
                 localStorage.removeItem('user_id')
-                history('/login')
+                navigate('/login')
             }
         }
     }
+
+    useEffect(() => {
+      const localResponse = getLocal('authToken');
+      if (localResponse) {
+        const decoded = jwtDecode(localResponse);
+        console.log('Decoded from setup complete ::: ', decoded);
+        if (!decoded.is_admin==true) {
+          navigate('/')
+        }
+        else{
+          navigate('/adm')
+        }
+      }
+    }, []);
+  
   
     return (
       <div

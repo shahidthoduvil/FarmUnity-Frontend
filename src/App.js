@@ -5,7 +5,7 @@ import SigupPage from './pages/SigupPage';
 import LoginPage from './pages/LoginPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
+
 import PrivateRouter from './utils/PrivateRouter';
 
 
@@ -16,22 +16,25 @@ import ForgotPassword from './component/Account/ForgotPassword';
 import ResetPassword from './component/Account/ResetPassword';
 
 import PageNotFound from './pages/PageNotFound';
-import ProfileSetupPage from './pages/ProfileSetupPage';
 
 import QuotesPage from './component/AdminPages/QuotesPage';
 import NoficationPage from './component/AdminPages/NoficationPage';
 import Memberlistpage from './component/AdminPages/Memberlistpage';
-import PostPage from './pages/PostPage';
-import FarmersPage from './pages/FarmersPage';
-import Chat from './component/FARMER/Chat';
 import Admin_login from './component/Account/Admin_login';
-import UserProfile from './component/Profile/UserProfile';
-import News from './component/News/News';
-import Solution from './component/Solutions/Solution';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Farmers from './component/FARMER/Farmers';
 import AdminPostPage from './component/AdminPages/AdminPostPage';
 import AdminProfile from './component/Admin/AdminProfile/AdminProfileDetails';
+import UserRoutes from './utils/Routes/UserRoutes';
+import FarmersPage from './pages/FarmersPage';
+
+import News from './component/News/News';
+import ProfileSetup from './component/Profile/ProfileSetup';
+import UserProfile from './component/Profile/UserProfile';
+import Solution from './component/Solutions/Solution';
+import ProfilePage from './component/Profile/Profile';
+import Chat from './component/FARMER/Chat';
+import PostPage from './pages/PostPage';
 
 
 
@@ -51,8 +54,7 @@ function App() {
 
 
         <Route Component={Admin_login}path='adm/login'></Route>
-        <Route    element={<PrivateRouter role='admin'  route={'/adm/login'}   />}>
-  
+        <Route  element={<PrivateRouter role='admin'  route={'/adm/login'}   />}>
           <Route Component={AdminPanelPage} path='adm'></Route>
           <Route Component={AdminProfile} path='adm/profile'></Route>
           <Route Component={UserListPage} path='adm/user-list'></Route>
@@ -73,14 +75,16 @@ function App() {
 
         <Route element={<PrivateRouter   role='user' route={'login'} />}>
 
-          <Route Component={PostPage} path='post'></Route>
+        <Route Component={PostPage} path='post'></Route>
           <Route Component={FarmersPage} path='/:userCategory/'></Route>
           <Route Component={Chat} path="/chat/:usernam" ></Route>
           <Route Component={News} path='news'></Route>
-          <Route Component={ProfileSetupPage} path='profile-setup'></Route>
+          <Route Component={ProfileSetup} path='profile-setup'></Route>
           <Route Component={UserProfile} path='user-profile/:usernam'></Route>
           <Route Component={Solution} path='solution'/>
           <Route Component={ProfilePage} path='profile'></Route>
+    
+         
 
          </Route>
          

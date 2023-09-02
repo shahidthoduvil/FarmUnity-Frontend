@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import background2 from '../../images/try.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../utils/config'
 import { toast, Toaster } from 'react-hot-toast'
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import jwtDecode from 'jwt-decode';
+import { getLocal } from '../../helpers/auth';
 
 
 function Signup() {
@@ -15,8 +17,8 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
+  const navigate=useNavigate()
   
-  // const passwordRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
 
   const [step, setStep] = useState(1);
 
@@ -148,6 +150,22 @@ function Signup() {
     nextStep();
 
   };
+
+ 
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (!decoded.is_admin==true) {
+        navigate('/')
+      }
+      else{
+        navigate('/adm')
+      }
+    }
+  }, []);
+
 
   return (
     <div

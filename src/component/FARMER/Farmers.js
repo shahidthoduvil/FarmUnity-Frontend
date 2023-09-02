@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Avatar } from '@mui/material';
+import { Avatar,Button } from '@mui/material';
 import { BASE_URL } from '../../utils/config';
 import { TextField, List, ListItem,Typography} from '@mui/material';
 
@@ -20,15 +20,17 @@ const Farmers = () => {
   const [userList, setUserList] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const { userCategory } = useParams();
-  const [loggedInUserId, setLoggedInUserId] = useState(null); // Get this from authentication
+  const [loggedInUserId, setLoggedInUserId] = useState(null); 
   const [usernameSuggestions, setUsernameSuggestions] = useState([]);
   const [occupationSuggestions, setOccupationSuggestions] = useState([]);
   const [showUsernameSuggestions, setShowUsernameSuggestions] = useState(false);
   const [showOccupationSuggestions, setShowOccupationSuggestions] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); 
+  
   const navigate=useNavigate()
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/home/users/category/${userCategory}`, {
+    axios.get(`${BASE_URL}/home/users/category/${userCategory}/`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
@@ -146,7 +148,7 @@ const Farmers = () => {
           userList.map((user) => (
             <div key={user.id} className="flex items-center p-2 border-b">
         
-              <Avatar onClick={()=>navigate(`/user-profile/${user.username}`)} src={`${BASE_URL}/${user.pic}`} alt={user.username} sx={{ width: 60, height: 60, marginRight: 4 }} />
+              <Avatar onClick={()=>navigate(`/user-profile/${user.username}`)} src={BASE_URL+user.pic} alt={user.username} sx={{ width: 60, height: 60, marginRight: 4 }} />
            
             <Link to={`/chat/${user.id}`} className="flex items-center p-2 border-b">
               <div className="flex flex-col">
@@ -162,6 +164,8 @@ const Farmers = () => {
           <p>No users available.</p>
         )}
       </div>
+
+    
     </div>
   );
 };

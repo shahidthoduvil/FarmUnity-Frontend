@@ -3,12 +3,15 @@ import { BASE_URL } from '../../../utils/config';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import profilePicture from '../../../images/images.jpeg';
+import { getLocal } from '../../../helpers/auth';
+import { useNavigate } from 'react-router-dom';
+
 
 const AdminProfileDetails = () => {
   const [admin, setAdmin] = useState({});
   const localResponse = localStorage.getItem('authToken');
   const decoded = jwtDecode(localResponse);
-
+  const  navigate=useNavigate()
 
  
 
@@ -24,6 +27,18 @@ const AdminProfileDetails = () => {
       console.error('Error fetching admin profile:', error);
     }
   };
+
+
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (!decoded.is_admin==true) {
+        navigate('/adm/login')
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">

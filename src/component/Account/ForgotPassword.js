@@ -4,10 +4,13 @@ import { toast,Toaster,} from "react-hot-toast";
 import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/config';
+import { useEffect } from 'react';
+import { getLocal } from '../../helpers/auth';
+import jwtDecode from 'jwt-decode';
 
 const ForgotPassword = () => {
     const [email,setEmail] = useState("")
-    
+
 
     const navigate = useNavigate("")
 
@@ -27,7 +30,18 @@ const ForgotPassword = () => {
         console.log(error);
       });
   }
-
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (!decoded.is_admin==true) {
+        navigate('/')
+      }else{
+        navigate('/adm')
+      }
+    }
+  }, []);
 
   return (
     <div

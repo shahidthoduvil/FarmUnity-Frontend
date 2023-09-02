@@ -20,7 +20,7 @@ import {
 import { getLocal } from "../../helpers/auth";
 import axios from "axios";
 import { BASE_URL } from "../../utils/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 
 
@@ -52,6 +52,10 @@ export default function Example() {
     }
   }
 
+  useEffect(()=>{
+    getUser()
+  },[])
+
   return (
     <Menu >
       <MenuHandler  >
@@ -60,7 +64,7 @@ export default function Example() {
             variant="circular"
             alt="tania andrew"
             className="cursor-pointer w-9 h-9"
-            src={`${BASE_URL}/${user.pic}`}
+            src={BASE_URL+user.pic}
           />
 
         ) : (

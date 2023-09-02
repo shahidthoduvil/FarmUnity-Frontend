@@ -6,6 +6,7 @@ import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 import { faTrashAlt, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 
 const Solution = () => {
@@ -17,6 +18,18 @@ const Solution = () => {
   const totalPages = Math.ceil(questions.length / itemsPerPage);
   const token = getLocal();
   const { user_id } = jwtDecode(token);
+  
+  const navigate=useNavigate()
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (decoded.is_admin==true) {
+        navigate('/adm')
+      }
+    }
+  }, []);
 
   const fetchQuestions = () => {
     axios.get(`${BASE_URL}/message/questions/`)

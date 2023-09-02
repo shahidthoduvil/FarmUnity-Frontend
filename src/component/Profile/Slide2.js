@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Rate2 from './Review/Rate2'
 import Details2 from './Details/Details2';
 import MapLocation from './Map/MapLocation';
-import UserPost from './UserPost/UserPost';
+import UserPostName from './UserPost/UserPostName';
 
 
 
@@ -81,7 +81,7 @@ const Slide2 = ({usernam}) => {
             id="post"
             role="tabpanel"
           >
-            <UserPost/>
+            <UserPostName usernam={usernam}/>
        
           </div>
           <div

@@ -24,14 +24,18 @@ import { FaSearch, FaChevronUp, FaChevronDown, FaEdit } from "react-icons/fa";
 import { BASE_URL } from '../../../utils/config';
 import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
+// const {user_id}=getLocal('authToken')
 
 const MembersList = () => {
   const [users, setUserList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; //
+  const itemsPerPage = 5; 
+  const respone= getLocal('authToken')
+  const decode=jwtDecode(respone)
 
   useEffect(() => {
     getUserList();
+    console.log(decode,'decoded admin ,,,,,,,,,,,,,,,,,,,,,,,,')
   }, []);
 
   async function getUserList() {
@@ -52,10 +56,13 @@ const MembersList = () => {
     }
   }
 
+
+
+
   async function serachUser(keyword) {
     const request = await axios.get(`${BASE_URL}/api/adminsearchUser/?search=${keyword}`);
     if (request.data.length === 0) {
-      // Handle case when no users are found
+  
     }
     setUserList(request.data);
   }
@@ -83,7 +90,7 @@ const MembersList = () => {
         <div className="flex items-center justify-between gap-4">
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
-              {/* ... Add tabs headers here if needed ... */}
+
             </TabsHeader>
           </Tabs>
         </div>

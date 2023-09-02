@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Avatar } from '@mui/material';
-import Link from 'react'
+import { Link } from 'react-router-dom';
 import { getLocal } from '../../helpers/auth';
 import axios from 'axios';
 import { BASE_URL, wsApiUrl } from '../../utils/config';
@@ -29,6 +29,19 @@ const Chat = () => {
   
   
   const messageRef = useRef()
+
+  const navigate=useNavigate()
+ 
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (decoded.is_admin==true) {
+        navigate('/adm')
+      }
+    }
+  }, []);
 
   const setUserProfileDetails = async () => {
     axios.get(`${BASE_URL}/api/getuserdetails/${usernam}`).then((response) => {
@@ -140,7 +153,9 @@ useEffect(()=>{
               if (message.sender_username == recipientdetails.username) {
               
                 return (
+                  <Link to='/user-proifle/:usernam'>
                   <div className="flex items-start justify-start mb-4">
+                   
                     <div className="mr-2">
                       <img
                         src={ BASE_URL+recipientdetails?.pic}
@@ -152,7 +167,9 @@ useEffect(()=>{
                       <p className="text-sm font-medium">{recipientdetails?.username}</p>
                        {message.message}
                     </div>
+                  
                   </div>
+                  </Link>
                 )
               }
               else  {

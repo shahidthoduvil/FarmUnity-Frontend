@@ -20,13 +20,15 @@ import {
     CardFooter,
 } from "@material-tailwind/react";
 import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } from "react-icons/fa";
+import jwtDecode from 'jwt-decode';
 
 const AdminPost = () => {
     const [posts, setPosts] = useState([]);
     const localResponse = getLocal('authToken');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5; //
-
+    const token = getLocal();
+    const { user_id } = jwtDecode(token);
 
     useEffect(() => {
         fetchPosts();
@@ -34,7 +36,7 @@ const AdminPost = () => {
 
     const fetchPosts = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/post/posts/`);
+            const response = await axios.get(`${BASE_URL}/post/post/${user_id}/`);
             setPosts(response.data);
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -138,8 +140,8 @@ const AdminPost = () => {
                                         <div className="relative h- 10 w-10">
                                             {post.user.pic ? (
                                                 <img
-                                                    className="h-full w-full object-cover object-center"
-                                                    src={post.user.pic}
+                                                    className=" object-cover object-center w-20 h-16  rounded-full"
+                                                    src={BASE_URL+post.user.pic}
                                                     alt="avatar"
                                                 />
                                             ) : (
@@ -161,7 +163,7 @@ const AdminPost = () => {
                                     <td className="px-6 py-4">
                                         <img
                                             className="w-24 h-16 object-cover rounded"
-                                            src={post.image}
+                                            src={BASE_URL+post.image}
                                             alt="Post"
                                         />
                                     </td>

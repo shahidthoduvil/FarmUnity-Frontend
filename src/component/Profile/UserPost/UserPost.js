@@ -6,39 +6,44 @@ import jwtDecode from 'jwt-decode';
 import Swal from 'sweetalert2';
 import defaultImage from '../../../images/1kutzil5lj0nvfsf_1596544016.webp';
 import AddPost from './AddPost'
-import { FaSync } from 'react-icons/fa';
+import { FaThumbsUp, FaComment, FaTrash } from 'react-icons/fa';
+import CommentModal from './CommentModal';
 
 const UserPost = () => {
   const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null); // State to track selected post
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const token = getLocal();
   const { user_id } = jwtDecode(token);
 
-
-
-  useEffect(() => {
-    fetchUserPosts();
-  }, [user_id]);
-
   const fetchUserPosts = async () => {
     try {
-      setIsLoading(true); 
       const response = await axios.get(`${BASE_URL}/post/user-posts/${user_id}/`);
       setPosts(response.data);
-      setIsLoading(false); 
     } catch (error) {
       console.error('Error fetching user posts:', error);
-      setIsLoading(false);
     }
   };
+  
+  useEffect(() => {
+    fetchUserPosts();
+  }, []);
 
   const openModal = (post) => {
-    setSelectedPost(post); 
+    setSelectedPost(post);
   };
 
   const closeModal = () => {
-    setSelectedPost(null); 
+    setSelectedPost(null);
+  };
+
+
+  const handleCommentUserPost = (postId) => {
+    setSelectedPostId(postId);
+  };
+
+  const handleCloseCommentModalUserPost = () => {
+    setSelectedPostId(null);
   };
 
   const handleDeletePost = async (postId) => {
@@ -61,7 +66,7 @@ const UserPost = () => {
           }).then((response) => {
             if (response.status === 204) {
               fetchUserPosts();
-              closeModal(); // Close the modal after deleting the post
+              closeModal();
             }
           }).catch((error) => {
             console.error('Error deleting post:', error);
@@ -73,22 +78,44 @@ const UserPost = () => {
     }
   };
 
+  const handleLikeUserPost = async (postId, isLiked) => {
+    console.log(isLiked, 'isLiked>>>>.');
+    try {
+      if (!isLiked) {
+
+        const response = await axios.post(
+          `${BASE_URL}/post/like-post/`,
+          {
+            user: user_id,
+            post: postId,
+          }
+
+        );
+        if (response.status === 200 || response.status === 201) {
+          fetchUserPosts();
+        }
+      } else {
+        console.log('unliked');
+        const response = await axios.delete(
+          `${BASE_URL}/post/un-like-post/${postId}/${user_id}/`
+        );
+        console.log('unliked');
+        if (response.status === 204) {
+          fetchUserPosts()        }
+      }
+
+    } catch (error) {
+      console.error('Error performing like/unlike:', error);
+    }
+  };
+
+
+
+
+  
+
   return (
     <div className="grid grid-cols-3 gap-4">
-
-<div className="flex justify-end">
-<button
-          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400"
-          onClick={fetchUserPosts}
-          disabled={isLoading}
-        >
-          {isLoading ? <span className="animate-spin">⏳</span> : <FaSync />}
-         
-        </button>
-       
-      </div>
-
-
       {posts.length === 0 ? (
         <div className="border border-gray-300 rounded-md overflow-hidden flex justify-center items-center">
           <img
@@ -112,14 +139,13 @@ const UserPost = () => {
       <div className="col-span-3 flex justify-end mt-4">
         <AddPost action={fetchUserPosts} />
       </div>
-
       {selectedPost && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-99999">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
             <div className="flex items-center space-x-2 mb-4">
               <img
                 className="w-10 h-10 rounded-full"
-                src={selectedPost.user.pic}
+                src={ selectedPost.user.pic}
                 alt="User"
               />
               <div>
@@ -130,19 +156,51 @@ const UserPost = () => {
                 </div>
                 <p className="truncate">{selectedPost.Location}</p>
               </div>
-
             </div>
             <h3 className="text-xl font-semibold mt-2">{selectedPost.title}</h3>
-
             <img
               className="w-full h-64 object-cover mb-4"
               src={selectedPost.image}
               alt="Post"
             />
             <p className="text-gray-600 mt-1">{selectedPost.description}</p>
+
+            <div className="flex items-center p-3 justify-between">
+              <button
+                className={`flex items-center text-gray-500 m-3 hover:text-blue-500 transition-colors ${selectedPost.is_liked ? 'text-blue-500' : ''}`}
+                onClick={() => handleLikeUserPost(selectedPost.id, selectedPost.is_liked)}
+              >
+                <div className="relative flex items-center">
+                  <span className={`mr-1 text-xs ${selectedPost.is_liked ? 'text-blue-500 bg-blue-100' : 'text-green-900 bg-green-100'}`}>
+                    {selectedPost.like_count}
+                  </span>
+                  <FaThumbsUp className={`w-5 h-5 ${selectedPost.is_liked ? 'text-blue-500' : 'mr-1'}`} />
+                  <span className={`ml-1 ${selectedPost.is_liked ? 'text-blue-500' : ''}`}>
+                    {selectedPost.is_liked ? 'Liked' : 'Like'}
+                  </span>
+                </div>
+              </button>
+              <button
+                className="flex items-center text-gray-500 m-3 hover:text-blue-500 transition-colors"
+                onClick={() => handleCommentUserPost(selectedPost.id)}
+              >
+                <div className="relative flex items-center">
+                  <span className="mr-1 text-xs text-green-900 bg-green-100">
+                    {selectedPost.comment_count}
+                  </span>
+                  <FaComment className="w-5 h-5 mr-1" />
+                  <span> comments</span>
+                </div>
+              </button>
+            </div>
+
+    
+            {selectedPostId && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 z-9999 flex justify-center items-center">
+                <CommentModal postId={selectedPostId} onClose={handleCloseCommentModalUserPost} />
+              </div>
+            )}
             <div className="p-4">
-
-
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                 onClick={closeModal}
@@ -155,12 +213,10 @@ const UserPost = () => {
               >
                 Delete
               </button>
-
             </div>
           </div>
         </div>
       )}
-     
     </div>
   );
 };

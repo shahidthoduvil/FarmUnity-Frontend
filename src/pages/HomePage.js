@@ -34,10 +34,25 @@ const HomePage = () => {
       }
 
       // If the user is not logged in, display an error message
+
       toast.loading('Please Login into your account', { duration: 2000 });
     }
     else{
       navigate('/login')
+    }
+  }, []);
+
+
+  
+ 
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (decoded.is_admin==true) {
+        navigate('/adm')
+      }
     }
   }, []);
   

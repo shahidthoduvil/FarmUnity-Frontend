@@ -54,7 +54,7 @@ export default function Day10() {
           )}
         </IconButton>
       </MenuHandler>
-      <MenuList className="flex flex-col gap-2">
+      <MenuList className="flex flex-col gap-2 overflow-y-auto max-h-48">
         {notifications.map((notification) => (
           <MenuItem className="flex items-center gap-4 py-2 pr-8 pl-2">
             <Avatar

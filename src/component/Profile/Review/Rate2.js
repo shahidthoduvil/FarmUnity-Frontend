@@ -6,6 +6,8 @@ import { BASE_URL } from '../../../utils/config';
 import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 const Rate2 = ({usernam}) => {
@@ -104,19 +106,15 @@ const fetchReviews = () => {
             <div className="mb-2">
             </div>
             <p className="text-gray-700">{review.message}</p>
-            { review.user.id  ===user_id  && (
-        <button onClick={() => handleDelete(review.id)}>Delete</button>
-      )}
+        {review.user.id === user_id && (
+  <button onClick={() => handleDelete(review.id)}>
+          <FontAwesomeIcon icon={faTimesCircle} className="text-lg" />
+  </button>
+)}
           </div>
         ))}
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block font-semibold">Rating</label>
-          {/* <Rating
-            value={rate}
-            onChange={(value) => setRate(value)}
-          /> */}
-        </div>
+       
         <div className="mb-4">
           <label className="block font-semibold">Review Message</label>
           <textarea

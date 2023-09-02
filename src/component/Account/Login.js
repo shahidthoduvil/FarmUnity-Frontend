@@ -55,9 +55,12 @@ function Login() {
       })
         .then((res) => {
           const userProfile = res.data
+      
           console.log('user profile is:', userProfile);
+          console.log('user profile is:', res.data)
           const values = {
             email: userProfile.email,
+            username:userProfile.username,
             first_name: userProfile.given_name,
             last_name: userProfile.family_name,
             password: userProfile.id,
@@ -94,7 +97,7 @@ function Login() {
 
 
     if (loginResponse) {
-      // If the login is successful, redirect to the home page
+    
       navigate('/');
       toast.success('Logged in succesfully')
 

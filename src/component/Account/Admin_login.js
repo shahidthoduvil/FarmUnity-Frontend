@@ -4,9 +4,10 @@
 import React, { useState } from 'react';
 import background1 from '../../images/farmcom.jpg';
 import { useNavigate } from 'react-router-dom';
-import login from '../../helpers/auth';
+import login, { getLocal } from '../../helpers/auth';
 import { toast, Toaster } from 'react-hot-toast';
 import jwtDecode from 'jwt-decode';
+import { useEffect } from 'react';
 
 function Admin_login() {
   const navigate = useNavigate();
@@ -35,6 +36,20 @@ function Admin_login() {
       }
     }
   };
+  
+
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (decoded.is_admin==true) {
+        navigate('/adm')
+      }
+    }
+  }, []);
+
+
 
   return (
     <div

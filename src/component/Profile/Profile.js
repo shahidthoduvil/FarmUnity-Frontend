@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import profilePicture from '../../images/images.jpg'; // Replace with your background image
 import profileBackground from '../../images/try.jpg'; // Replace with your profile picture
 import EditProfile from '../Profile/EditProfile'
@@ -17,6 +17,10 @@ const ProfilePage = () => {
   const [occupation, setOccupation] = useState({})
   const [Address, setAddress] = useState({})
   const [category, setCategory] = useState('')
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const navigate=useNavigate()
 
   const token = getLocal()
   const { user_id } = jwtDecode(token)
@@ -25,6 +29,17 @@ const ProfilePage = () => {
   };
   useEffect(() => {
     getUser();
+  }, []);
+
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (localResponse) {
+      const decoded = jwtDecode(localResponse);
+      console.log('Decoded from setup complete ::: ', decoded);
+      if (decoded.is_admin==true) {
+        navigate('/adm')
+      }
+    }
   }, []);
 
   // const formatLastLogin = (dateTimeString) => {
@@ -50,7 +65,7 @@ const ProfilePage = () => {
   }, [])
 
   const refreshProfile = () => {
-    // Fetch updated user data after profile update
+
     getUser();
   };
 
@@ -63,6 +78,7 @@ const ProfilePage = () => {
       setOccupation(response.data.user_occupation)
       setAddress(response.data.user_address)
       setCategory(response.data.category);
+      callSetFollowed(user_id, response.data.user.id);
       console.log(response.data.category)
       console.log('vatewifhg is :', category);
 
@@ -70,6 +86,25 @@ const ProfilePage = () => {
       console.log(e);
     }
   }
+
+
+  
+  const callSetFollowed = (user1 = user_id, user2 = user.id) => {
+    console.log('Hello kootukaaare.....', user1, user2);
+    axios.get(`${BASE_URL}/post/follow/${user1}/${user2}/`)
+      .then((response) => {
+        console.log(response, 'respone>>>>>>.');
+        if (response.data.is_followed === true) {
+          setIsFollowing(true);
+        }
+        setFollowerCount(response.data.follower_count);
+        setFollowingCount(response.data.following_count);
+      })
+      .catch((error) => {
+        console.error('Error checking follow status:', error);
+      });
+  };
+
 
 
 
@@ -88,16 +123,15 @@ const ProfilePage = () => {
                 <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
 
                   <div className="flex items-center gap-2">
-
-                    <Rating />
+                    <br/>
                   </div>
                 </div>
                 <div className="relative">
                   <div className="w-48 h-48 bg-[#788F69] mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
                     {user?.pic ? (
-                      <img src={`${BASE_URL}/${user.pic}`} alt="Profile Image" className="w-40 h-40 rounded-full" />
+                      <img src={BASE_URL+user.pic} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     ) : (
-                      <img src={profilePicture} alt="Profile Image" className="w-40 h-40 rounded-full" />
+                      <img src={BASE_URL+profilePicture} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     )}
                   
                     <EditProfile refreshProfile={refreshProfile} id={user.id} action={getUser} user={user} />
@@ -107,6 +141,9 @@ const ProfilePage = () => {
 
                 </div>
               </div>
+              <p className="md:mt-2">Followers: {followerCount}</p>
+            
+            <p className="md:mt-2">Following: {followingCount}</p>
             </div>
           </div>
 
