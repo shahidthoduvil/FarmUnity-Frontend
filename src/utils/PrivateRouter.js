@@ -51,8 +51,11 @@ import axios from 'axios';
 
 export default function PrivateRouter({ role, route }) {
     const [verify, setVerify] = useState(null);
-    const localResponse = getLocal('authToken');
-    const decoded = jwtDecode(localResponse);
+    const localResponse = getLocal();
+    
+    if(localResponse){
+      const decoded = jwtDecode(localResponse);
+    }
 
   
     useEffect(() => {

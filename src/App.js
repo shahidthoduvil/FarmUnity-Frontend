@@ -35,6 +35,7 @@ import Solution from './component/Solutions/Solution';
 import ProfilePage from './component/Profile/Profile';
 import Chat from './component/FARMER/Chat';
 import PostPage from './pages/PostPage';
+import LandingPage from './pages/LandingPage';
 
 
 
@@ -49,10 +50,8 @@ function App() {
         <Routes>
 
         <Route exact path='*' Component={PageNotFound}></Route>
-        <Route exact path='/' element={<HomePage/>}></Route>
-
-
-
+         <Route path='/' exact element={<LandingPage/>}></Route>
+      
         <Route Component={Admin_login}path='adm/login'></Route>
         <Route  element={<PrivateRouter role='admin'  route={'/adm/login'}   />}>
           <Route Component={AdminPanelPage} path='adm'></Route>
@@ -64,25 +63,21 @@ function App() {
           <Route Component={Memberlistpage} path='adm/memberlist'></Route>
           <Route Component={AdminPostPage} path='adm/post'></Route>
         </Route>
+          <Route Component={LoginPage}  path='/login'></Route>
+          <Route Component={SigupPage} path='/signup'></Route>
+          <Route Component={ForgotPassword} path='/forgot-password'></Route>
+          <Route Component={ResetPassword} path='/reset-password'></Route> 
 
-     
-          <Route Component={LoginPage} path='login'></Route>
-          <Route Component={SigupPage} path='signup'></Route>
-          <Route Component={ForgotPassword} path='forgot-password'></Route>
-          <Route Component={ResetPassword} path='reset-password'></Route> 
-        
-  
-
-        <Route element={<PrivateRouter   role='user' route={'login'} />}>
-
-        <Route Component={PostPage} path='post'></Route>
-          <Route Component={FarmersPage} path='/:userCategory/'></Route>
-          <Route Component={Chat} path="/chat/:usernam" ></Route>
-          <Route Component={News} path='news'></Route>
-          <Route Component={ProfileSetup} path='profile-setup'></Route>
-          <Route Component={UserProfile} path='user-profile/:usernam'></Route>
-          <Route Component={Solution} path='solution'/>
-          <Route Component={ProfilePage} path='profile'></Route>
+        <Route element={<PrivateRouter   role='user' route={'/'} />}>
+          <Route  path='/home'  Component={HomePage}></Route>
+          <Route Component={PostPage} path='/home/post'></Route>
+          <Route Component={FarmersPage} path='/home/:userCategory/'></Route>
+          <Route Component={Chat} path="/home/chat/:usernam" ></Route>
+          <Route Component={News} path='/home/news'></Route>
+          <Route Component={ProfileSetup} path='/home/profile-setup'></Route>
+          <Route Component={UserProfile} path='/home/user-profile/:usernam'></Route>
+          <Route Component={Solution} path='/home/solution'/>
+          <Route Component={ProfilePage} path='/home/profile'></Route>
     
          
 

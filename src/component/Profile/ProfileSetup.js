@@ -51,7 +51,7 @@ const ProfileSetup = () => {
       const decoded = jwtDecode(localResponse);
       console.log('Decoded from setup complete ::: ', decoded);
       if (decoded.is_setup_complete == true) {
-        navigate('/')
+        navigate('/home')
       }
     }
     else {
@@ -207,7 +207,7 @@ const ProfileSetup = () => {
        console.log(token_response.data.token,'token_response>>>>>>.');
       localStorage.setItem('authToken',JSON.stringify(token_response.data.token))
 
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       console.log(error);
       // Handle error case if needed

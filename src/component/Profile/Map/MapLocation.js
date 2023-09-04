@@ -120,7 +120,7 @@ import {
   OverlayView,
   
 } from '@react-google-maps/api'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const center = { lat: 11.258753, lng: 75.780411 }
 
@@ -131,16 +131,19 @@ const MapLocation = () => {
     googleMapsApiKey:process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
   });
+  
 
   const [map, setMap] = useState(/** @type google.maps.Map */(null))
   const [directionsResponse, setDirectionsResponse] = useState(null)
   const [distance, setDistance] = useState('')
   const [duration, setDuration] = useState('')
-
+  
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destiantionRef = useRef()
+
+  
 
   if (!isLoaded) {
     return <SkeletonText />
@@ -171,6 +174,8 @@ const MapLocation = () => {
     destiantionRef.current.value = ''
   }
 
+
+  
   return (
     <Flex
       position='relative'
@@ -179,18 +184,18 @@ const MapLocation = () => {
       h='100vh'
       w='100vw'
     >
-      <Box position='absolute' left={0} top={0} h='100%' w='100%'>
+      <Box position='absolute' left={0} top={0} h='100%' w='80%'>
         {/* Google Map Box */}
         <GoogleMap
           center={center}
           zoom={15}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
+          mapContainerStyle={{ width: '80%', height: '100%' }}
           options={{
             zoomControl: false,
             streetViewControl: false,
             mapTypeControl: false,
             fullscreenControl: false,
-            mapTypeControl: true,  // Enable map type control
+            mapTypeControl: true,  
             mapTypeId: 'satellite',
           }}
           onLoad={map => setMap(map)}
@@ -211,23 +216,26 @@ const MapLocation = () => {
               y: -(height / 2),
             })}
           >
-            <div style={{ background: 'white', padding: '5px' }}>
-              <strong>Welcome to My Location</strong>
-              <p>This is a great place to be!</p>
+            <div style={{ background: 'white', padding: '1px' }}>
+              
             </div>
           </OverlayView>
           
         </GoogleMap>
       </Box>
       <Box
-        p={4}
-        borderRadius='lg'
-        m={4}
-        bgColor='white'
-        shadow='base'
-        minW='container.md'
-        zIndex='1'
-      >
+      p={4}
+      borderRadius='lg'
+      m={16}
+      bgColor='white'
+      shadow='base'
+      minW='container.md'
+      zIndex='2'  
+      position='absolute' 
+      top={0}
+      left={0}
+
+    >
         <HStack spacing={2} justifyContent='space-between'>
           <Box flexGrow={1}>
             <Autocomplete>

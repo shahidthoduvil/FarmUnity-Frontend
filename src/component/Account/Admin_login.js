@@ -45,6 +45,8 @@ function Admin_login() {
       console.log('Decoded from setup complete ::: ', decoded);
       if (decoded.is_admin==true) {
         navigate('/adm')
+      }else{
+        navigate('/home')
       }
     }
   }, []);

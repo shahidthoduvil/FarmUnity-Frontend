@@ -26,7 +26,7 @@ function Login() {
     if (localResponse) {
       const decoded = jwtDecode(localResponse);
       if (decoded.is_setup_complete == true) {
-        navigate('/')
+        navigate('/home')
       }
       else{
         navigate('/profile-setup')
@@ -69,7 +69,7 @@ function Login() {
           axios.post(`${base_url}/google_authentication/`, values).then((res) => {
             console.log('Hello ::>> ', res.data);
             localStorage.setItem('authToken', JSON.stringify(res.data.token))
-            navigate('/');
+            navigate('/home');
 
           })
             .catch((error) => {
@@ -98,11 +98,19 @@ function Login() {
 
     if (loginResponse) {
     
-      navigate('/');
+      navigate('/home');
       toast.success('Logged in succesfully')
 
     }
   };
+
+
+  useEffect(() => {
+    const localResponse = getLocal('authToken');
+    if (!localResponse) {
+      navigate('/login')
+    }
+  }, []);
 
   return (
     <div

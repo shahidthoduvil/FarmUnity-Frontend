@@ -153,12 +153,12 @@ function Signup() {
 
  
   useEffect(() => {
-    const localResponse = getLocal('authToken');
+    const localResponse = getLocal();
     if (localResponse) {
       const decoded = jwtDecode(localResponse);
       console.log('Decoded from setup complete ::: ', decoded);
       if (!decoded.is_admin==true) {
-        navigate('/')
+        navigate('/home')
       }
       else{
         navigate('/adm')

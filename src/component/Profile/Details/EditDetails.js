@@ -4,7 +4,10 @@ import axios from 'axios';
 import { BASE_URL } from '../../../utils/config';
 import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
-const Example = ({address}) => {
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const EditDetails = ({Action}) => {
   const [size, setSize] = useState(null);
   const handleClose = () => setSize(null);
 
@@ -25,21 +28,37 @@ const Example = ({address}) => {
     pincode: '',
 
   })
+  const [errors, setErrors] = useState({
+    landmark: '',
+    country: '',
+    state: '',
+    district: '',
+    city: '',
+    pincode: '',
+  });
 
   const localResponse = getLocal('authToken');
   const decoded = jwtDecode(localResponse);
 
-  // useEffect(() => {
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/api/update_address/${decoded.user_id}/`)
+      .then((response) => {
+        const data = response.data;
+        setFormData({
+          landmark: data.landmark || '',
+          country: data.country || '',
+          state: data.state || '',
+          district: data.district || '',
+          city: data.city || '',
+          pincode: data.pincode || '',
+        });
+      })
+      .catch((error) => {
+        console.error('Error fetching address:', error);
+      });
+  }, [decoded.user_id]);
 
-  //   axios.get(`${BASE_URL}/api/update_address/${decoded.user_id}/`)
-  //     .then((response) => {
-  //       setFormData(response.data); 
-        
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching quote:', error);
-  //     });
-  // }, [decoded.user_id]);
 
   const handleAddress = (event) => {
     const { name, value } = event.target;
@@ -104,10 +123,84 @@ const Example = ({address}) => {
     
   };
 
+  const validateLandmark = (value) => {
+    if (value.trim() === '') {
+      return 'Landmark is required';
+    }
+    return '';
+  };
+
+  const validateCountry = (value) => {
+    if (value.trim() === '') {
+      return 'Country is required';
+    }
+    return '';
+  };
+
+  const validateState = (value) => {
+    if (value.trim() === '') {
+      return 'State is required';
+    }
+    return '';
+  };
+
+  const validateDistrict = (value) => {
+    if (value.trim() === '') {
+      return 'District is required';
+    }
+    return '';
+  };
+
+  const validateCity = (value) => {
+    if (value.trim() === '') {
+      return 'City is required';
+    }
+    return '';
+  };
+
+  const validatePincode = (value) => {
+    if (value.trim() === '') {
+      return 'Pincode is required';
+    }
+    return '';
+  };
+
+
+
+
 
 
   const handleUpdate = async (event) => {
     event.preventDefault();
+
+
+    const landmarkError = validateLandmark(formData.landmark);
+    const countryError = validateCountry(formData.country);
+    const stateError = validateState(formData.state);
+    const districtError = validateDistrict(formData.district);
+    const cityError = validateCity(formData.city);
+    const pincodeError = validatePincode(formData.pincode);
+
+    setErrors({
+      landmark: landmarkError,
+      country: countryError,
+      state: stateError,
+      district: districtError,
+      city: cityError,
+      pincode: pincodeError,
+    });
+
+   
+    if (
+      landmarkError ||
+      countryError ||
+      stateError ||
+      districtError ||
+      cityError ||
+      pincodeError
+    ) {
+      return;
+    }
 
     try {
    
@@ -125,10 +218,8 @@ const Example = ({address}) => {
       await axios.patch(`${BASE_URL}/api/update_address/${decoded.user_id}/`, formData)
         .then((response) => {
           console.log('Quote updated successfully:', response.data);
-      
           handleClose();
-        
-
+          Action()
  
         })
     } catch (error) {
@@ -148,7 +239,9 @@ const Example = ({address}) => {
 
 
       {/* Edit Dialog */}
+      
       <Dialog open={size === 'lg'} size={size || 'md'} handler={() => handleOpen(null)}>
+      <ToastContainer />
         <form onSubmit={handleUpdate}>
           <DialogHeader>EDIT YOUR Details</DialogHeader>
           <DialogBody className="dialog-content" style={{ 'height': '400px', 'overflow-y': 'auto' }}>
@@ -164,9 +257,10 @@ const Example = ({address}) => {
                       name="landmark"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={address.landmark}
+                      value={formData.landmark}
                       onChange={handleAddress}
                     />
+                      <div className="text-red-500">{errors.landmark}</div>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="countryInput" className="text-gray-500">
@@ -177,9 +271,10 @@ const Example = ({address}) => {
                       name="country"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={address.country}
+                      value={formData.country}
                       onChange={handleChangeCountry}
                     />
+                      <div className="text-red-500">{errors.country}</div>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="stateInput" className="text-gray-500">
@@ -190,9 +285,10 @@ const Example = ({address}) => {
                       name="state"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={address.state}
+                      value={formData.state}
                       onChange={handleChangeState }
                     />
+                      <div className="text-red-500">{errors.state}</div>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="districtInput" className="text-gray-500">
@@ -203,9 +299,10 @@ const Example = ({address}) => {
                       name="district"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={address.district}
+                      value={formData.district}
                       onChange={handleChangeDistrict}
                     />
+                      <div className="text-red-500">{errors.district}</div>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="placeInput" className="text-gray-500">
@@ -216,9 +313,10 @@ const Example = ({address}) => {
                       name="city"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={address.city}
+                      value={formData.city}
                       onChange={handleChangeCity }
                     />
+                      <div className="text-red-500">{errors.city}</div>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="pincodeInput" className="text-gray-500">
@@ -229,9 +327,10 @@ const Example = ({address}) => {
                       name="pincode"
                       type="text"
                       className="mt-1 p-2 border border-gray-300 rounded"
-                      value={address.pincode}
+                      value={formData.pincode}
                       onChange={handleChangePincode}
                     />
+                      <div className="text-red-500">{errors.city}</div>
                   </div>
                 </div>
               </div>
@@ -252,4 +351,4 @@ const Example = ({address}) => {
   );
 };
 
-export default Example;
+export default EditDetails;

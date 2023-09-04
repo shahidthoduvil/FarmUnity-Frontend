@@ -24,12 +24,9 @@ const HomePage = () => {
   useEffect(() => {
     const localResponse = getLocal('authToken');
     console.log('local response from login ::.>> ', localResponse);
-    if (localResponse) {
+    if (localResponse!=null) {
       const decoded = jwtDecode(localResponse);
-      if (decoded.is_setup_complete == true) {
-        navigate('/')
-      }
-      else{
+      if (!decoded.is_setup_complete == true) {
         navigate('/profile-setup')
       }
 
@@ -46,7 +43,9 @@ const HomePage = () => {
   
  
   useEffect(() => {
-    const localResponse = getLocal('authToken');
+    console.log('xfhgfhxh');
+    const localResponse = getLocal();
+    console.log(localResponse,'localresponse>>>>.');
     if (localResponse) {
       const decoded = jwtDecode(localResponse);
       console.log('Decoded from setup complete ::: ', decoded);

@@ -144,7 +144,7 @@ const Details = () => {
 
       {/* Edit button */}
       <div className="flex justify-end mt-4">
-        <EditDetails address={address} user={user} />
+        <EditDetails address={address} Action={getUser} />
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export default function Example() {
 
   const handleclick = () => {
     localStorage.removeItem('authToken');
-    history('/login')
+    history('/')
   }
 
   async function getUser() {

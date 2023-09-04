@@ -45,7 +45,7 @@ const ResetPassword = () => {
         const decoded = jwtDecode(localResponse);
         console.log('Decoded from setup complete ::: ', decoded);
         if (!decoded.is_admin==true) {
-          navigate('/')
+          navigate('/home')
         }
         else{
           navigate('/adm')

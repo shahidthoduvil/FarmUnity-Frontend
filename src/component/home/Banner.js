@@ -3,7 +3,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel, Typography, Button } from "@material-tailwind/react";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BASE_URL } from '../../utils/config';
+import { BASE_URL } from '../../utils/config'
 import './Banner.css'
 
 
