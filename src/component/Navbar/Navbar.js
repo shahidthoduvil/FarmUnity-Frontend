@@ -15,7 +15,7 @@ function Navbar() {
                         <img
                             src={img} // Update with the actual path to your logo image
                             alt="Farm Community Logo"
-                            className="h-6 w-32" // Adjust the height and width as needed
+                            className="h-5 w-32" // Adjust the height and width as needed
                         />
                     </div>
                     <div className="flex-1 flex justify-between sm:ml-6">

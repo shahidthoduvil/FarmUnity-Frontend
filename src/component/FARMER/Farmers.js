@@ -148,9 +148,9 @@ const Farmers = () => {
           userList.map((user) => (
             <div key={user.id} className="flex items-center p-2 border-b">
         
-              <Avatar onClick={()=>navigate(`/user-profile/${user.username}`)} src={BASE_URL+user.pic} alt={user.username} sx={{ width: 60, height: 60, marginRight: 4 }} />
+              <Avatar onClick={()=>navigate(`/home/user-profile/${user.username}`)} src={BASE_URL+user.pic} alt={user.username} sx={{ width: 60, height: 60, marginRight: 4 }} />
            
-            <Link to={`/chat/${user.id}`} className="flex items-center p-2 border-b">
+            <Link to={`/home/chat/${user.id}`} className="flex items-center p-2 border-b">
               <div className="flex flex-col">
                 <div className="font-semibold text-gray-800">{user.first_name} {user.last_name}</div>
                 <div className="text-gray-600">Category: {user.cat?.Category_name} </div>

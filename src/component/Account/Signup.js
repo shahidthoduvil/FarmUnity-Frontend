@@ -85,6 +85,7 @@ function Signup() {
     }
     return true;
   }
+  
   const validateFirstName = () => {
     if (!first_name.trim()) {
       toast.error('Please fill firstname field');
