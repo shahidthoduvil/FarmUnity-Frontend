@@ -12,7 +12,8 @@ import { FaComment } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { FaEllipsisH } from 'react-icons/fa';
 import { FaSync } from 'react-icons/fa';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const Post = () => {
@@ -85,6 +86,7 @@ const Post = () => {
         setNewPostDescription("");
         setNewPostLocation("");
         setNewPostImage(null);
+        toast.success('post added successfully')
       }
 
       fetchPosts();
@@ -93,6 +95,7 @@ const Post = () => {
 
 
     } catch (error) {
+      toast.error('Add post is not working')
       console.error('Error adding post:', error);
     }
   };
@@ -172,7 +175,7 @@ const Post = () => {
 
   return (
     <div className="bg-[#909e87]">
-
+      <ToastContainer />
       <div className="p-4">
 
         <div className="bg-white rounded-lg shadow-md p-4">

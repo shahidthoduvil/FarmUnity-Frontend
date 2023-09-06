@@ -42,7 +42,7 @@ const AdminProfileDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${BASE_URL + admin.cover})` }}>
+      <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(admin.cover)`}}>
         <div className="p-16">
           <div className="p-8 bg-white rounded-3xl shadow mt-24">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
@@ -55,7 +55,7 @@ const AdminProfileDetails = () => {
               <div className="relative col-span-2">
                 <div className="w-48 h-48 bg-[#788F69] mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
                   {admin?.pic ? (
-                    <img src={`${BASE_URL}/${admin.pic}`} alt="Profile" className="w-40 h-40 rounded-full" />
+                    <img src={admin.pic} alt="Profile" className="w-40 h-40 rounded-full" />
                   ) : (
                     <img src={profilePicture} alt="Profile" className="w-40 h-40 rounded-full" />
                   )}

@@ -121,7 +121,7 @@ const MembersList = () => {
                       {member.img ? (
                         <img
                           className="h-full w-full object-cover object-center"
-                          src={BASE_URL + member.img}
+                          src={member.img}
                           alt="avatar"
                         />
                       ) : (

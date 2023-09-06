@@ -120,7 +120,7 @@ const BannerList = () => {
                     {banner.img ? (
                       <img
                         className="h-full w-full object-cover object-center"
-                        src={BASE_URL + banner.img}
+                        src={banner.img}
                         alt="banner"
                       />
                     ) : (<img

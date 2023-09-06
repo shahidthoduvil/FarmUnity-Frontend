@@ -141,7 +141,7 @@ const AdminPost = () => {
                                             {post.user.pic ? (
                                                 <img
                                                     className=" object-cover object-center w-20 h-16  rounded-full"
-                                                    src={BASE_URL+post.user.pic}
+                                                    src={post.user.pic}
                                                     alt="avatar"
                                                 />
                                             ) : (
@@ -163,7 +163,7 @@ const AdminPost = () => {
                                     <td className="px-6 py-4">
                                         <img
                                             className="w-24 h-16 object-cover rounded"
-                                            src={BASE_URL+post.image}
+                                            src={post.image}
                                             alt="Post"
                                         />
                                     </td>

@@ -1,5 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
-
+import React, { useEffect, useState } from 'react';
+import { BASE_URL } from '../../../utils/config';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import profilePicture from '../../../images/images.jpeg';
+import { getLocal } from '../../../helpers/auth';
+import {Link, useNavigate } from 'react-router-dom';
 
 import {
     Menu,
@@ -28,6 +33,26 @@ export default function Example() {
   const history = useNavigate()
 
     
+
+  const [admin, setAdmin] = useState({});
+  const decoded = jwtDecode(localResponse);
+  const  navigate=useNavigate()
+
+ 
+
+  useEffect(() => {
+    fetchAdminProfile();
+  }, [decoded.user_id]);
+
+  const fetchAdminProfile = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/admin-profiles/${decoded.user_id}/`);
+      setAdmin(response.data);
+    } catch (error) {
+      console.error('Error fetching admin profile:', error);
+    }
+  };
+
   const handleclick=()=>{
     localStorage.removeItem('authToken');
     history('/login')
@@ -40,7 +65,7 @@ export default function Example() {
             variant="circular"
             alt="tania andrew"
             className="cursor-pointer w-9 h-9"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            src={admin.pic}
           />
         </MenuHandler>
         <MenuList>
