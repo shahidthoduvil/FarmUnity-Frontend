@@ -29,7 +29,7 @@ function Login() {
         navigate('/home')
       }
       else{
-        navigate('/profile-setup')
+        navigate('/home/profile-setup')
       }
 
       // If the user is not logged in, display an error message

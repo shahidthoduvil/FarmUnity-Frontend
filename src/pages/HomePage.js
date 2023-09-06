@@ -27,7 +27,7 @@ const HomePage = () => {
     if (localResponse!=null) {
       const decoded = jwtDecode(localResponse);
       if (!decoded.is_setup_complete == true) {
-        navigate('/profile-setup')
+        navigate('/home/profile-setup')
       }
 
       // If the user is not logged in, display an error message
