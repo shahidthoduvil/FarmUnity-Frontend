@@ -88,7 +88,7 @@ const CommentModal = ({ postId, onClose }) => {
               <li key={comment.id} className="flex space-x-2 items-start">
                 <img
                   className="w-10 h-10 rounded-full"
-                  src={BASE_URL + comment.userdetails.pic}
+                  src={comment.userdetails.pic}
                   alt={`${comment.userdetails.username}'s Profile`}
                 />
                 <div className="flex-1">

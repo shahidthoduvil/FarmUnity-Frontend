@@ -64,7 +64,7 @@ export default function Example() {
             variant="circular"
             alt="tania andrew"
             className="cursor-pointer w-9 h-9"
-            src={BASE_URL+user.pic}
+            src={user.pic}
           />
 
         ) : (

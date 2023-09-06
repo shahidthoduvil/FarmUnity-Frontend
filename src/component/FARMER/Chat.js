@@ -135,7 +135,7 @@ useEffect(()=>{
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <div className="bg-white py-4 px-8 shadow-md flex items-center">
         <img
-          src={BASE_URL + recipientdetails?.pic}
+          src={recipientdetails?.pic}
           alt="Recipient's Avatar"
           className="w-10 h-10 rounded-full mr-4"
         />
@@ -178,7 +178,7 @@ useEffect(()=>{
 
                     <div className="ml-2">
                       <img
-                        src={BASE_URL+senderdetails?.pic}
+                        src={senderdetails?.pic}
                         alt="Receiver's Avatar"
                         className="w-8 h-8 rounded-full"
                       />

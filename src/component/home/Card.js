@@ -37,7 +37,7 @@ async function getCard(){
         {cards?.map((card)=>(
           <div className="max-w-sm w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 px-2 sm:px-4 mb-8 mt-3">
           <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
-            <img src={`${BASE_URL+card?.img}`} alt="Card 1 Photo" className="w-full h-40 sm:h-56 object-cover" />
+            <img src={`${card?.img}`} alt="Card 1 Photo" className="w-full h-40 sm:h-56 object-cover" />
             <div className="p-4">
               <h2 className="text-lg font-medium text-gray-800 text-center ">{card?.title}</h2>
             </div>

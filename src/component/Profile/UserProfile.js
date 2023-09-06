@@ -115,7 +115,7 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${BASE_URL + user.cover})` }}>
+      <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${user.cover})` }}>
         <div className="p-4 md:p-16"> 
           <div className="p-4 md:p-8 bg-[#ffffffe1] rounded-3xl shadow mt-8 md:mt-24"> 
             <div className="grid grid-cols-1 md:grid-cols-3">
@@ -135,7 +135,7 @@ const UserProfile = () => {
               <div className="relative">
                 <div className="w-24 h-24 md:w-48 md:h-48 bg-[#788F69] mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-8 md:-mt-24 flex items-center justify-center text-indigo-500">
                   {user?.pic ? (
-                    <img src={BASE_URL + user.pic} alt="Profile Image" className="w-20 h-20 md:w-40 md:h-40 rounded-full" />
+                    <img src={ user.pic} alt="Profile Image" className="w-20 h-20 md:w-40 md:h-40 rounded-full" />
                   ) : (
                     <img src={profilePicture} alt="Profile Image" className="w-20 h-20 md:w-40 md:h-40 rounded-full" />
                   )}

@@ -111,9 +111,8 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen">
 
-
       <div className="relative bg-cover bg-center h-72 md:h-96">
-        <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${BASE_URL + user.cover})` }}>
+        <div className="relative bg-cover bg-center h-72 md:h-96" style={{ backgroundImage: `url(${user.cover})` }}>
 
 
 
@@ -129,7 +128,7 @@ const ProfilePage = () => {
                 <div className="relative">
                   <div className="w-48 h-48 bg-[#788F69] mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
                     {user?.pic ? (
-                      <img src={BASE_URL+user.pic} alt="Profile Image" className="w-40 h-40 rounded-full" />
+                      <img src={user.pic} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     ) : (
                       <img src={BASE_URL+profilePicture} alt="Profile Image" className="w-40 h-40 rounded-full" />
                     )}

@@ -30,7 +30,7 @@ const Banner = () => {
         {banners?.map((ban) => (
           <div key={ban.id} className="relative ">
             <img
-              src={`${BASE_URL + ban?.img}`}
+              src={`${ban?.img}`}
               alt={ban?.title}
               className="h-full w-full object-cover rounded-xl"
             />

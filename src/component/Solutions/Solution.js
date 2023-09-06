@@ -135,7 +135,7 @@ const Solution = () => {
               <div className="flex items-center mb-4">
                 <img
                   className="w-8 h-8 rounded-full mr-2"
-                  src={BASE_URL + question.user.pic}
+                  src={question.user.pic}
                   alt={`${question.user.username}'s profile`}
                 />
                 <p className="text-sm text-gray-500">{question.user.username}</p>
@@ -164,7 +164,7 @@ const Solution = () => {
                         <div className="flex items-center">
                           <img
                             className="w-8 h-8 rounded-full mr-2"
-                            src={BASE_URL + solution.user.pic}
+                            src={solution.user.pic}
 
                           />
                           <p className="text-sm text-gray-500">{solution.user.username}</p>

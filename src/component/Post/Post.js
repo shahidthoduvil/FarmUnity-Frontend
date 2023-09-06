@@ -250,7 +250,7 @@ const Post = () => {
                     <div className="flex items-center space-x-2" onClick={() => navigate(`/user-profile/${post.user.username}`)}>
                       <img
                         className="w-10 h-10 rounded-full mr-2"
-                        src={BASE_URL + post.user.pic}
+                        src={post.user.pic}
                         alt="Profile"
                       />
                       <div>
@@ -271,7 +271,7 @@ const Post = () => {
                   <p className="text-gray-500 p-3">{post.title}</p>
                   <img
                     className="w-full h-64 object-cover rounded-t-lg"
-                    src={BASE_URL + post.image}
+                    src={post.image}
                     alt="Post"
                   />
                   <div className="p-3 flex justify-between items-center">
