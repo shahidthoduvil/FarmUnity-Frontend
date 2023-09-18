@@ -1,6 +1,4 @@
-// Post.js
 import React, { useState, useEffect } from 'react';
-import { Checkbox } from "@material-tailwind/react";
 import axios from 'axios';
 import { BASE_URL } from '../../utils/config';
 import { getLocal } from '../../helpers/auth';
@@ -10,44 +8,37 @@ import { useNavigate } from 'react-router-dom';
 import { FaThumbsUp } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
-import { FaEllipsisH } from 'react-icons/fa';
 import { FaSync } from 'react-icons/fa';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostDescription, setNewPostDescription] = useState('');
   const [newPostImage, setNewPostImage] = useState(null);
-
   const [newPostLocation, setNewPostLocation] = useState('');
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [titleError, setTitleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [locationError, setLocationError] = useState('');
 
   const localResponse = getLocal('authToken');
-  const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const token = getLocal()
-  const { user_id } = jwtDecode(token)
+  const token = getLocal();
+  const { user_id } = jwtDecode(token);
+  const decoded = jwtDecode(localResponse);
 
-  const decoded = jwtDecode(localResponse)
   useEffect(() => {
     fetchPosts();
   }, []);
 
-
-
-
-
-
   const fetchPosts = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`${BASE_URL}/post/posts/${user_id}/`)
-
-      console.log(response.data, "kffffffffff")
+      const response = await axios.get(`${BASE_URL}/post/posts/${user_id}/`);
       setPosts(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -57,17 +48,40 @@ const Post = () => {
     }
   };
 
-
-
-
   const handleAddPost = async (event) => {
     event.preventDefault();
+    setTitleError('');
+    setDescriptionError('');
+    setLocationError('');
+
+    let isValid = true;
+
+    if (!newPostTitle.trim()) {
+      setTitleError('Title is required');
+      isValid = false;
+    }
+
+    if (!newPostDescription.trim()) {
+      setDescriptionError('Description is required');
+      isValid = false;
+    }
+
+    if (!newPostLocation.trim()) {
+      setLocationError('Location is required');
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('title', newPostTitle);
       formData.append('description', newPostDescription);
-      formData.append('Location', newPostLocation)
+      formData.append('Location', newPostLocation);
       formData.append('user', decoded.user_id);
+
       if (newPostImage) {
         formData.append('image', newPostImage);
       }
@@ -79,76 +93,49 @@ const Post = () => {
         },
       });
 
-
-
       if (response) {
-        console.log('Before reset:', newPostTitle, newPostDescription, newPostLocation, newPostImage);
-        setNewPostTitle("");
-        setNewPostDescription("");
-        setNewPostLocation("");
+        setNewPostTitle('');
+        setNewPostDescription('');
+        setNewPostLocation('');
         setNewPostImage(null);
-        toast.success('post added successfully')
+        toast.success('Post added successfully');
       }
 
       fetchPosts();
-      console.log('after reset:', newPostTitle, newPostDescription, newPostLocation, newPostImage);
-
-
-
     } catch (error) {
-      toast.error('Add post is not working')
+      toast.error('Error adding post');
       console.error('Error adding post:', error);
     }
   };
 
-
-
   const handleLike = async (postId, isLiked) => {
-    console.log(isLiked, 'isLiked>>>>.');
     try {
       if (!isLiked) {
-
-
-
         const response = await axios.post(
           `${BASE_URL}/post/like-post/`,
           {
             user: user_id,
             post: postId,
           }
-
         );
         if (response.status === 200 || response.status === 201) {
           fetchPosts();
-         
         }
-        toast.success('you liked the post')
+        toast.success('You liked the post');
       } else {
-        console.log('unliked');
         const response = await axios.delete(
           `${BASE_URL}/post/un-like-post/${postId}/${user_id}/`
         );
-        console.log('unliked');
         if (response.status === 204) {
           fetchPosts();
-
         }
-        toast.success('you unliked the post')
+        toast.success('You unliked the post');
       }
-
     } catch (error) {
       console.error('Error performing like/unlike:', error);
-      toast.error('like/unlike  error')
+      toast.error('Like/unlike error');
     }
   };
-
-
-
-
-
-
-
-
 
   const handleComment = (postId) => {
     setSelectedPostId(postId);
@@ -157,8 +144,6 @@ const Post = () => {
   const handleCloseCommentModal = () => {
     setSelectedPostId(null);
   };
-
-
 
   const handleDeletePost = async (postId) => {
     try {
@@ -169,53 +154,48 @@ const Post = () => {
       });
 
       if (response.status === 200) {
-
         await fetchPosts();
-      
       }
-      fetchPosts();  
-      toast.success('you Deleted the post')
-
+      toast.success('You deleted the post');
     } catch (error) {
       console.error('Error deleting post:', error);
-      toast.error('Error deleting post')
+      toast.error('Error deleting post');
     }
   };
-
 
   return (
     <div className="bg-[#909e87]">
       <ToastContainer />
       <div className="p-4">
-
         <div className="bg-white rounded-lg shadow-md p-4">
           <form onSubmit={handleAddPost}>
             <input
               type="text"
-              className="w-full border p-2 mb-4"
+              className={`w-full border p-2 mb-4 ${titleError ? 'border-red-500' : ''}`}
               placeholder="Title"
               value={newPostTitle}
-
               onChange={(e) => setNewPostTitle(e.target.value)}
             />
+            {titleError && <div className="text-red-500">{titleError}</div>}
             <textarea
-              className="w-full h-20 border p-2 mb-4"
+              className={`w-full h-20 border p-2 mb-4 ${descriptionError ? 'border-red-500' : ''}`}
               placeholder="What's on your mind?"
               value={newPostDescription}
               onChange={(e) => setNewPostDescription(e.target.value)}
             />
+            {descriptionError && <div className="text-red-500">{descriptionError}</div>}
             <input
               type="text"
-              className="w-full border p-2 mb-4"
+              className={`w-full border p-2 mb-4 ${locationError ? 'border-red-500' : ''}`}
               placeholder="Location"
               value={newPostLocation}
-              onChange={(e) => setNewPostLocation(e.target.value)} // Add onChange event
+              onChange={(e) => setNewPostLocation(e.target.value)}
             />
+            {locationError && <div className="text-red-500">{locationError}</div>}
             <input
               type="file"
               accept="image/*"
               className="mb-4"
-
               onChange={(e) => setNewPostImage(e.target.files[0])}
             />
 
