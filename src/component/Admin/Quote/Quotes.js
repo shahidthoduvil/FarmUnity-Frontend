@@ -16,6 +16,8 @@ import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } f
 import { BASE_URL } from '../../../utils/config';
 import { AddQuote } from './AddQuote';
 import EditQuote from './EditQuote';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Quotes = () => {
   const [quotes, setQuotes] = useState([{
@@ -25,7 +27,7 @@ const Quotes = () => {
   const itemsPerPage = 5; //
 
   useEffect(() => {
-    // Fetch the list of quotes from the backend API
+    
     getAdminQuotes()
   }, []);
 
@@ -37,6 +39,7 @@ const Quotes = () => {
       setQuotes(response.data);
     } catch (error) {
       console.error("Error fetching quote-list:", error);
+      toast.error("Error fetching quote-list:");
     }
   }
 
@@ -45,9 +48,11 @@ const Quotes = () => {
       .then((response) => {
         console.log('Quote listed/unlisted successfully:', response.data);
         setQuotes(prevQuotes => prevQuotes.map(quote => quote.id === quoteId ? { ...quote, is_list: isList } : quote));
+        toast.success('quote list_unlist successfully')
       })
       .catch((error) => {
         console.error('Error listing/unlisting quote:', error);
+        toast.error('Error listing/unlisting quote:');
       });
   };
 
@@ -65,9 +70,11 @@ const Quotes = () => {
         axios.delete(`${BASE_URL}/home/quote/delete/${id}/`)
           .then(() => {
             getAdminQuotes();
+            toast.success('Quote deleted successfully')
           })
           .catch((error) => {
             console.log('Error deleting quote:', error);
+            toast.error('Error deleting quote');
           });
       }
     });
@@ -75,6 +82,7 @@ const Quotes = () => {
 
   return (
     <Card className="h-full w-full">
+      <ToastContainer/>
             {/* <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
@@ -89,6 +97,7 @@ const Quotes = () => {
         
       </CardHeader>  */}
       <CardBody className="overflow-hidden px-0">
+      <div className="overflow-x-auto"> 
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
             <tr>
@@ -175,6 +184,7 @@ const Quotes = () => {
             </tr>
           </tbody>
         </table>
+        </div>
 
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">

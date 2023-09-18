@@ -30,6 +30,8 @@ const Farmers = () => {
   const navigate=useNavigate()
 
   useEffect(() => {
+    console.log('userCategory:', userCategory);
+    
     axios.get(`${BASE_URL}/home/users/category/${userCategory}/`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,

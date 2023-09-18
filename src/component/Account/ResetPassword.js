@@ -2,11 +2,11 @@ import React,{useState,} from 'react'
 import { toast,Toaster,} from "react-hot-toast";
 import background1 from '../../images/py.jpg'
 import { useNavigate } from 'react-router-dom';
-
 import { BASE_URL } from '../../utils/config';
 import { useEffect } from 'react';
 import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
 const ResetPassword = () => {
 
@@ -14,30 +14,33 @@ const ResetPassword = () => {
     const [password2, setPassword2] = useState('')
   
     const navigate = useNavigate();
-    
-
     const user_id = localStorage.getItem('user_id')
+
     // console.log(user_id);
-
+    
     const handleSubmit = async (e) => {
-        e.preventDefault()
+      e.preventDefault();
+  
+      if (password === password2) {
+          try {
+              const response = await axios.post(`${BASE_URL}/api/resetPassword/`, {
+                  user_id,
+                  password
+              }, {
+                  headers: { 'Content-Type': 'application/json' }
+              });
+  
+              if (response.status === 200) {
+                  toast.success('Password updated');
+                  localStorage.removeItem('user_id');
+                  navigate('/login');
+              }
+          } catch (error) {
+            toast.error('password update error');
+          }
+      }
+  };
 
-        if (password === password2) {
-            const response = await fetch(`${BASE_URL}/api/resetPassword/`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id,    
-                    password
-                })
-            })
-            if (response.status === 200) {
-                toast.success('Password updated')
-                localStorage.removeItem('user_id')
-                navigate('/login')
-            }
-        }
-    }
 
     useEffect(() => {
       const localResponse = getLocal('authToken');

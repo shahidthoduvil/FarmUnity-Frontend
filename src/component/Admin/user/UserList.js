@@ -25,6 +25,8 @@ import { BASE_URL } from '../../../utils/config';
 import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 // const {user_id}=getLocal('authToken')
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MembersList = () => {
   const [users, setUserList] = useState([]);
@@ -44,6 +46,7 @@ const MembersList = () => {
       setUserList(response.data);
     } catch (error) {
       console.error("Error fetching user list:", error);
+      toast.error("Error fetching user list:");
     }
   }
 
@@ -53,6 +56,7 @@ const MembersList = () => {
       getUserList();
     } catch (error) {
       console.error('Error blocking/unblocking user:', error);
+      toast.error('Error blocking/unblocking user:');
     }
   }
 
@@ -96,6 +100,7 @@ const MembersList = () => {
         </div>
       </CardHeader>
       <CardBody className="overflow-hidden px-0"> {/* Change overflow-scroll to overflow-hidden */}
+      <ToastContainer/>
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
             <tr>

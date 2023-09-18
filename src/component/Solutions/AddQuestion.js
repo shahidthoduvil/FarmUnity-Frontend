@@ -14,6 +14,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
  
 export function AddQuestion({fetchQuestions}) {
   const [open, setOpen] = React.useState(false);
@@ -36,9 +38,11 @@ export function AddQuestion({fetchQuestions}) {
       setNewQuestion("");
       handleOpen();  
       fetchQuestions();  
+      toast.success('Question submited successfully')
     })
     .catch(error => {
       console.error('Error submitting question:', error);
+      toast.error('Error submitting question:', error);
     });
   };
 
@@ -82,6 +86,7 @@ export function AddQuestion({fetchQuestions}) {
             send message
           </Button>
         </DialogFooter>
+        <ToastContainer />
         </form>
       </Dialog>
     </>

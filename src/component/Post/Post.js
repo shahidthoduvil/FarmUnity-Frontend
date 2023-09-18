@@ -52,6 +52,7 @@ const Post = () => {
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      toast.error('Error fetching posts:', error);
       setIsLoading(false);
     }
   };
@@ -119,7 +120,9 @@ const Post = () => {
         );
         if (response.status === 200 || response.status === 201) {
           fetchPosts();
+         
         }
+        toast.success('you liked the post')
       } else {
         console.log('unliked');
         const response = await axios.delete(
@@ -128,11 +131,14 @@ const Post = () => {
         console.log('unliked');
         if (response.status === 204) {
           fetchPosts();
+
         }
+        toast.success('you unliked the post')
       }
 
     } catch (error) {
       console.error('Error performing like/unlike:', error);
+      toast.error('like/unlike  error')
     }
   };
 
@@ -165,10 +171,14 @@ const Post = () => {
       if (response.status === 200) {
 
         await fetchPosts();
+      
       }
-      fetchPosts();
+      fetchPosts();  
+      toast.success('you Deleted the post')
+
     } catch (error) {
       console.error('Error deleting post:', error);
+      toast.error('Error deleting post')
     }
   };
 

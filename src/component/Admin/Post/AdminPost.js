@@ -21,6 +21,8 @@ import {
 } from "@material-tailwind/react";
 import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } from "react-icons/fa";
 import jwtDecode from 'jwt-decode';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminPost = () => {
     const [posts, setPosts] = useState([]);
@@ -40,6 +42,7 @@ const AdminPost = () => {
             setPosts(response.data);
         } catch (error) {
             console.error('Error fetching posts:', error);
+            toast.error('Error fetching posts:')
         }
     };
 
@@ -55,10 +58,13 @@ const AdminPost = () => {
             if (response.status === 200) {
 
                 await fetchPosts();
+                toast.success('Posted deleted successfully')
             }
             fetchPosts();
+            toast.success('Posted deleted successfully')
         } catch (error) {
             console.error('Error deleting post:', error);
+            toast.error('Error deleting post:');
         }
     };
 
@@ -80,6 +86,8 @@ const AdminPost = () => {
       </CardHeader>  */}
 
             <CardBody className="overflow-hidden px-0">
+                <ToastContainer/>
+                <div className="overflow-x-auto">
                 <table className="mt-4 w-full min-w-max table-auto text-left">
                     <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
                         <tr>
@@ -188,6 +196,7 @@ const AdminPost = () => {
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
                 <Typography variant="small" color="blue-gray" className="font-normal">

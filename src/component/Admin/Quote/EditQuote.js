@@ -9,6 +9,8 @@ import {
 import { FaEdit } from "react-icons/fa";
 import axios from 'axios';
 import { BASE_URL } from '../../../utils/config';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditQuote = ({ id, action }) => {
   const [size, setSize] = useState(null);
@@ -48,10 +50,11 @@ const EditQuote = ({ id, action }) => {
         console.log('Quote updated successfully:', response.data);
         handleClose();
         action()
-       // Assuming "action" is a function passed as a prop to update the quotes list
+       toast.success('Quote edited successfully')
       })
       .catch((error) => {
         console.error('Error updating quote:', error);
+        toast.error('Error updating quote');
       });
   };
 
@@ -66,6 +69,7 @@ const EditQuote = ({ id, action }) => {
         <form onSubmit={handleUpdate}>
           <DialogHeader>Edit the quote</DialogHeader>
           <DialogBody divider>
+            <ToastContainer/>
             <div className="md:grid grid-cols-1 gap-6">
               <div>
                 <label className="text-gray-600">content:</label>

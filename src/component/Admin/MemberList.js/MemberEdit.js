@@ -11,7 +11,8 @@ import {
 } from "@material-tailwind/react";
 import { FaEdit } from "react-icons/fa";
 import { BASE_URL } from '../../../utils/config';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MemberEdit = ({id,action}) => {
     
@@ -42,29 +43,35 @@ const MemberEdit = ({id,action}) => {
         const file = e.target.files[0];
         setMembers({ ...member, img: file });
     };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', member.title);
-        formData.append('is_list', member.is_list);
 
-        if (member.img) {
-            formData.append('img', member.img, member.img.name);
-        }
+const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('title', member.title);
+    formData.append('is_list', member.is_list);
 
-        // Send the updated banner data to the backend
-        axios.put(`${BASE_URL}/home/member/${id}/Edit/`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-          
-           
-        })
-        .then(response => console.log(response.data));
+    if (member.img) {
+        formData.append('img', member.img, member.img);
+    }
 
-            handleClose()
-            action()          
-    };
+    axios.put(`${BASE_URL}/home/member/${id}/Edit/`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+    .then(response => {
+        console.log(response.data);
+        handleClose();
+        action();
+        toast.success('member edited successfully')
+
+    })
+    .catch(error => {
+        
+        console.error('Error:', error);
+        toast.error('Error editing member');
+    });
+};
 
     return (
         <>
@@ -78,6 +85,7 @@ const MemberEdit = ({id,action}) => {
     <form onSubmit={handleSubmit}>
       <DialogHeader>Edit the banner</DialogHeader>
       <DialogBody divider>
+       
         <div className="md:grid grid-cols-1 gap-6">
         <div>
           <label>Title:</label>
@@ -105,7 +113,9 @@ const MemberEdit = ({id,action}) => {
         <Button variant="gradient" color="green" type="submit">
           <span>Edit</span>
         </Button>
+       
       </DialogFooter>
+      <ToastContainer/>
     </form>
   </Dialog>
   </>

@@ -21,6 +21,8 @@ import { FaSearch, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlusCircle } f
 import { BASE_URL } from '../../../utils/config';
 import { Addbanner } from './Addbanner';
 import BannerEdit from './BannerEdit';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BannerList = () => {
   const [banners, setBanners] = useState([]);
@@ -28,7 +30,6 @@ const BannerList = () => {
   const itemsPerPage = 5
 
   useEffect(() => {
-    // Fetch the list of banners from the backend API
     getAdminBanner();
   }, []);
 
@@ -38,6 +39,7 @@ const BannerList = () => {
       setBanners(response.data);
     } catch (error) {
       console.error("Error fetching banner list:", error);
+      toast.error("Error fetching banner list:", error);
     }
   }
 
@@ -45,10 +47,14 @@ const BannerList = () => {
     axios.patch(`${BASE_URL}/home/banner/${bannerId}/list_unlist/`, { is_list: isList })
       .then((response) => {
         console.log('Banner listed/unlisted successfully:', response.data);
+  
         setBanners(prevBanners => prevBanners.map(banner => banner.id === bannerId ? { ...banner, is_list: isList } : banner));
+        toast.success('Banner listed/unlisted successfully:');
+   
       })
       .catch((error) => {
         console.error('Error listing/unlisting banner:', error);
+        toast.error('Error listing/unlisting banner:', error);
       });
   };
 
@@ -66,9 +72,11 @@ const BannerList = () => {
         axios.delete(`${BASE_URL}/home/banner/delete/${id}/`)
           .then(() => {
             getAdminBanner();
+            toast.success('Banner deleted successfully')
           })
           .catch((error) => {
             console.log('Error deleting banner:', error);
+            toast.error('Error deleting banner:');
           });
       }
     });
@@ -76,6 +84,7 @@ const BannerList = () => {
 
   return (
     <Card className="h-full w-full">
+      <ToastContainer/>
       {/* <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div>
@@ -89,6 +98,7 @@ const BannerList = () => {
         </div>
       </CardHeader>  */}
       <CardBody className="overflow-hidden px-0">
+      <div className="overflow-x-auto"> 
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
             <tr>
@@ -189,6 +199,7 @@ const BannerList = () => {
             </tr>
           </tbody>
         </table>
+        </div>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-2">
         <Typography variant="small" color="blue-gray" className="font-normal">

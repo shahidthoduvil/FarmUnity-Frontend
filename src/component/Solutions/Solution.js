@@ -7,6 +7,8 @@ import jwtDecode from 'jwt-decode';
 import { faTrashAlt, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const Solution = () => {
@@ -56,6 +58,8 @@ const Solution = () => {
         })
         .catch(error => {
           console.error('Error fetching solutions:', error);
+          toast.error('Error fetching solutions')
+
         });
     });
   }, [questions]);
@@ -74,12 +78,14 @@ const Solution = () => {
 
         setNewAnswer("");
         fetchQuestions();
+        toast.success('solution submited successfully')
        
        
       })
       
       .catch(error => {
         console.error('Error submitting solution:', error);
+        toast.error('Error submitting solution')
       });
   };
 
@@ -90,10 +96,12 @@ const Solution = () => {
         if (response.status === 204) {
 
           fetchQuestions();
+          toast.success('Question deleted successfully')
         }
       })
       .catch(error => {
         console.error('Error deleting question:', error);
+        toast.error('Error deleting question')
       });
   };
 
@@ -104,11 +112,15 @@ const Solution = () => {
         if (response.status === 204) {
 
           fetchQuestions();
+ 
         }
+        fetchQuestions();
+        toast.success('Solution deleted successfully')
       })
       .catch(error => {
 
         console.error('Error deleting solution:', error);
+        toast.error('Error deleting Solution')
 
       });
   };
@@ -118,7 +130,7 @@ const Solution = () => {
   const handlePageChange = newPage => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
-      setSolutions([]); // Clear solutions when changing pages
+      setSolutions([]); 
     }
   };
 
@@ -126,9 +138,23 @@ const Solution = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen p-4">
+      <ToastContainer />
       <div className="max-w-5xl mx-auto">
         <h2 className="text-3xl font-bold mb-6">Explore Questions and Answers</h2>
         <AddQuestion fetchQuestions={fetchQuestions} />
+        {questions.length === 0 ? (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "200px", // You can adjust the height as needed
+              color: "red", // Change the color to your desired color
+            }}
+          >
+            <p>No questions available.</p>
+          </div>
+        ) : (
         <div className="grid gap-6">
           {questions.map(question => (
             <div key={question.id} className="bg-white shadow rounded p-6">
@@ -211,6 +237,7 @@ const Solution = () => {
             </div>
           ))}
         </div>
+        )}
         <div className="flex justify-center mt-6">
           {/* <button
             onClick={() => handlePageChange(currentPage - 1)}

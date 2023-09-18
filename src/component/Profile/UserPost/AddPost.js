@@ -11,6 +11,8 @@ import {
   Input,
   Textarea,
 } from "@material-tailwind/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
  
 export  default function AddPost({action}) {
   const [open, setOpen] = React.useState(false);
@@ -54,8 +56,10 @@ export  default function AddPost({action}) {
       setNewPostLocation('');
       setNewPostImage(null);
       action()
+      toast.success('post added successfully')
     } catch (error) {
       console.error('Error adding post:', error);
+      toast.error('Error adding post:', error);
     }
   };
 
@@ -64,6 +68,7 @@ export  default function AddPost({action}) {
       <Button onClick={openDrawer}>Add Post</Button>
       <Drawer open={open} onClose={closeDrawer}>
         <div className="mb-2 flex items-center justify-between p-4">
+          <ToastContainer/>
           <Typography variant="h5" color="blue-gray">
            Add Post
           </Typography>

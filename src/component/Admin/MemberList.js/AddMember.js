@@ -9,6 +9,8 @@ import {
 import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function AddMember({action}) {
   const [size, setSize] = React.useState(null);
@@ -26,13 +28,13 @@ export function AddMember({action}) {
     console.log(e.target.files);
     const { name, value, type, checked, files } = e.target;
 
-    console.log("Name:", name);
-    console.log("Value:", value);
-    console.log("Type:", type);
-    console.log("Checked:", checked);
-    console.log("Files:", files);
+    // console.log("Name:", name);
+    // console.log("Value:", value);
+    // console.log("Type:", type);
+    // console.log("Checked:", checked);
+    // console.log("Files:", files);
 
-    // For file inputs, access the file data using e.target.files
+
     const fieldValue = type === "checkbox" ? checked : type === "file" ? files[0] : value;
 
     setFormData((prevData) => ({
@@ -58,9 +60,11 @@ export function AddMember({action}) {
 
      handleClose()
       action()
+      toast.success('member added successfully')
+      
     } catch (error) {
       console.error("Error add member:", error);
-      // Handle the error and show an error message if needed.
+      toast.error('error adding member')
     }
   };
 
@@ -75,6 +79,7 @@ export function AddMember({action}) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>Its a simple dialog.</DialogHeader>
           <DialogBody divider>
+            <ToastContainer/>
             <div className="md:grid grid-cols-1 gap-6">
               <div>
                 <label htmlFor="title" className="text-gray-600">

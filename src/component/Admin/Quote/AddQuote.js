@@ -9,6 +9,9 @@ import {
 import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export function AddQuote({action}) {
   const [size, setSize] = React.useState(null);
@@ -51,10 +54,11 @@ export function AddQuote({action}) {
       });
   
       handleClose(); 
-      action()// Close the dialog after successful submission.
+      action()
+      toast.success('Quote added successfully')
     } catch (error) {
       console.error("Error creating quote:", error);
-      // Handle the error and show an error message if needed.
+      toast.error('Error creating quote')
     }
   };
 
@@ -69,6 +73,7 @@ export function AddQuote({action}) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>Add the Quote.</DialogHeader>
           <DialogBody divider>
+            <ToastContainer/>
             <div className="md:grid grid-cols-1 gap-6">
               <div>
                 <label htmlFor="content" className="text-gray-600">

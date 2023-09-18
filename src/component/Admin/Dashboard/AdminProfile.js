@@ -3,7 +3,6 @@ import { BASE_URL } from '../../../utils/config';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import profilePicture from '../../../images/images.jpeg';
-import { getLocal } from '../../../helpers/auth';
 import {Link, useNavigate } from 'react-router-dom';
 
 import {

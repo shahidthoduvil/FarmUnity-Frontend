@@ -7,9 +7,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import jwtDecode from 'jwt-decode';
 import { getLocal } from '../../helpers/auth';
+import { Spinner } from '@material-tailwind/react';
 
 
 function Signup() {
+  const [loading,setLoading] = useState(false)
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -105,7 +107,7 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     if (!validateFirstName() || !validateLastName() || !validateUsername() || !validatePhoneNumber() || !validateEmail() || !validatePassword()) {
       return;
     }
@@ -129,6 +131,9 @@ function Signup() {
       } catch (error) {
 
         console.error(error);
+      }
+      finally{
+        setLoading(false)
       }
 
     }
@@ -287,7 +292,11 @@ function Signup() {
               type="submit"
               className="bg-green-500 text-white px-4 py-2 rounded"
             >
-              Signup
+              {
+                loading?
+                <Spinner className="mx-auto" color="indigo" /> :
+                "Signup"
+              }
             </button>
           </div>
           <p className="mt-4 text-center text-gray-600">

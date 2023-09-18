@@ -12,6 +12,8 @@ import {
 import { FaEdit } from "react-icons/fa";
 import { BASE_URL } from '../../../utils/config';
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BannerEdit = ({id,action}) => {
   
@@ -43,32 +45,34 @@ const BannerEdit = ({id,action}) => {
         setBanner({ ...banner, img: file });
     };
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', banner.title);
-        formData.append('is_list', banner.is_list);
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('title', banner.title);
+      formData.append('is_list', banner.is_list);
+  
+      if (banner.img) {
+          formData.append('img', banner.img, banner.img.name);
+      }
+  
+      // Send the updated banner data to the backend
+      axios.put(`${BASE_URL}/home/banner/${id}/Edit`, formData, {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+      })
+      .then(response => {
+          console.log(response.data);
+          handleClose();
+          action();
+          toast.success('Banner edited successfully')
+      })
+      .catch(error => {
 
-        if (banner.img) {
-            formData.append('img', banner.img, banner.img.name);
-        }
-
-        // Send the updated banner data to the backend
-        axios.put(`${BASE_URL}/home/banner/${id}/Edit`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-          
-           
-        })
-        .then(response => console.log(response.data));
-
-
-            handleClose()
-            action()
-          
-                
-    };
-
+          console.error('Error:', error);
+          toast.error('Error editing the banner');
+      });
+  };
+  
     return (
         <>
       
@@ -109,6 +113,7 @@ const BannerEdit = ({id,action}) => {
           <span>Edit</span>
         </Button>
       </DialogFooter>
+      <ToastContainer/>
     </form>
   </Dialog>
   </>

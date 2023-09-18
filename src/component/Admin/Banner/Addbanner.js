@@ -9,6 +9,8 @@ import {
 import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function Addbanner({action}) {
   const [size, setSize] = React.useState(null);
@@ -57,10 +59,12 @@ export function Addbanner({action}) {
       });
       handleClose()
       action()
+      toast.success('Banner added successfully')
     
     } catch (error) {
       console.error("Error add member:", error);
-      // Handle the error and show an error message if needed.
+      toast.error("Error adding  member");
+
     }
   };
 
@@ -75,6 +79,7 @@ export function Addbanner({action}) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>Its a simple dialog.</DialogHeader>
           <DialogBody divider>
+            <ToastContainer/>
             <div className="md:grid grid-cols-1 gap-6">
               <div>
                 <label htmlFor="title" className="text-gray-600">

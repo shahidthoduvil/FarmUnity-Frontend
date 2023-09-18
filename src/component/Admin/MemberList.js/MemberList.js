@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import profilePicture from '../../../images/images.jpg';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   Card,
   CardHeader,
@@ -40,6 +43,7 @@ const MembersList = () => {
       setMembers(response.data);
     } catch (error) {
       console.error("Error fetching Member:", error);
+      toast.error("Error fetching Member");
     }
   }
 
@@ -47,10 +51,14 @@ const MembersList = () => {
     axios.patch(`${BASE_URL}/home/member/${memberId}/list_unlist/`, { is_list: isList })
       .then((response) => {
         console.log('Quote listed/unlisted successfully:', response.data);
+      
         setMembers(prevMembers => prevMembers.map(member => member.id === memberId ? { ...member, is_list: isList } : member));
+        toast.success('member listed/unlisted successfully:');
+
       })
       .catch((error) => {
         console.error('Error listing/unlisting quote:', error);
+        toast.error('Error listing/unlisting quote:');
       });
   };
 
@@ -108,6 +116,9 @@ const MembersList = () => {
                 Action
               </th>
               <th scope="col" className="px-6 py-4 font-large text-gray-900">
+                Delete
+              </th>
+              <th scope="col" className="px-6 py-4 font-large text-gray-900">
                 Edit
               </th>
             </tr>
@@ -157,6 +168,14 @@ const MembersList = () => {
                       ) : (
                         <button onClick={() => handleListUnlist(member.id, true)}>List</button>
                       )}
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <button onClick={() => handleDeleteMember(member.id)} className="text-red-600 hover:text-red-800">
+                        <FaTrash />
+                      </button>
                     </div>
                   </td>
                   <td className="px-6 py-4">

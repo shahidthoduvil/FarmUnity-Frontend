@@ -5,7 +5,8 @@ import { getLocal } from '../../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminNotification = () => {
   const [notifications, setNotifications] = useState([]);
@@ -42,8 +43,11 @@ const AdminNotification = () => {
       
       setNewNotification("");
       fetchNotifications();
+      toast.success('Notification send successfully')
+
     } catch (error) {
       console.log('Error sending notification', error);
+      toast.error.log('Error sending notification');
     }
   };
 
@@ -52,9 +56,11 @@ const AdminNotification = () => {
     try{
       await axios.delete(`${BASE_URL}/message/delete-notification/${notificationId}/`);
       fetchNotifications();
+      toast.success('Notification deleted successfully')
 
     }catch  (error) {
       console.log('Error deleting notification',error);
+      toast.error('Error deleting notification');
 
     }
     

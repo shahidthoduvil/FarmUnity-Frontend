@@ -8,7 +8,8 @@ import jwtDecode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Rate2 = ({usernam}) => {
   const [reviews, setReviews] = useState([]);
@@ -24,11 +25,12 @@ const Rate2 = ({usernam}) => {
 const fetchReviews = () => {
   axios.get(`${BASE_URL}/home/${usernam}/singlereview/`)
     .then(response => {
-      console.log(response.data); // Debugging: Check the structure of the fetched data
+      console.log(response.data); 
       setReviews(response.data);
     })
     .catch(error => {
       console.error('Error fetching reviews:', error);
+      toast.error('Error fetching reviews')
     });
 };
 
@@ -56,14 +58,17 @@ const fetchReviews = () => {
       .then(response => {
         fetchReviews()
         console.log('Review added successfully:', response.data);
+        toast.success('Review added successfully')
       
         setRate(0);
         setMessage('');
+        
 
       })
       .catch(error => {
        
         console.error('Error adding review:', error);
+        toast.error('Error adding review:');
       });
 
   };
@@ -73,10 +78,13 @@ const fetchReviews = () => {
       axios.delete(`${BASE_URL}/home/${reviewId}/delete-review/`)      .then(response => {
         if (response.status === 204) {
           fetchReviews()
+          toast.success('Review deleted successfully')
         }
       })
       .catch(error => {
         console.error('Error deleting question:', error);
+        toast.error('Error deleting question:');
+
       });
   };
     
@@ -84,6 +92,7 @@ const fetchReviews = () => {
   return (
     <div>
       <div className="p-4 bg-white rounded-lg shadow-md">
+        <ToastContainer/>
         <h2 className="text-2xl font-bold mb-4">User Reviews</h2>
         {reviews.map((review, index) => (
           <div key={index} className="mb-6 border-b pb-4">

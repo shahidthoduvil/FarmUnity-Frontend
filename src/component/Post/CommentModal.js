@@ -3,6 +3,8 @@ import axios from 'axios';
 import { BASE_URL } from '../../utils/config';
 import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CommentModal = ({ postId, onClose }) => {
   const [commentText, setCommentText] = useState('');
@@ -55,8 +57,10 @@ const CommentModal = ({ postId, onClose }) => {
       );
       setCommentText("");
       fetchComments();
+      toast.success('You commented on this post')
     } catch (error) {
       console.error('Error adding comment:', error);
+      toast.error('Error adding comment')
     }
   };
 
@@ -78,6 +82,7 @@ const CommentModal = ({ postId, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white p-4 rounded-lg shadow-lg w-[480px] max-h-[80vh] overflow-y-auto">
+      <ToastContainer />
         <div className="px-2 mb-4 border-b border-gray-300">
           <h2 className="text-lg font-semibold">Comments</h2>
         </div>

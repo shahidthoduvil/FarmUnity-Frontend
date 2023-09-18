@@ -172,14 +172,14 @@ function Login() {
           </div>
 
           <div className="my-4 border-b border-gray-300"></div>
-
+{/* 
           <h2 className="text-2ml font-medium mb-4 text-center">Or</h2>
           <button
             onClick={() => handleGoogleAuth()}
             className="w-full bg-gray-300 text-black font-medium py-2 rounded-md mb-8"
           >
             Sign in with Google
-          </button>
+          </button> */}
 
         </div>
       </div >
