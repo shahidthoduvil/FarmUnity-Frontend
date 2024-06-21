@@ -43,6 +43,7 @@ const Chat = () => {
     }
   }, []);
 
+  
   const setUserProfileDetails = async () => {
     axios.get(`${BASE_URL}/api/getuserdetails/${usernam}`).then((response) => {
         if (response.status == 200) {
@@ -108,6 +109,7 @@ useEffect(()=>{
     setRecipientId(usernam)
   }, [])
 
+
   useEffect(() => {
     if (senderid != null && recipientid != null) {
       setUpChat()
@@ -146,7 +148,6 @@ useEffect(()=>{
         <div className="mb-2">
           {console.log('flajflafla',messages)}
           {
-            
             messages.map((message) => {
               console.log('recepedent,sender',recipientdetails,senderdetails);
 
@@ -192,10 +193,8 @@ useEffect(()=>{
               }
             })
           }
-
         </div>
       </div>
-
       <div className="bg-white p-4">
         <div className="flex">
           <input

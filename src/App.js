@@ -27,7 +27,6 @@ import AdminPostPage from './component/AdminPages/AdminPostPage';
 import AdminProfile from './component/Admin/AdminProfile/AdminProfileDetails';
 import UserRoutes from './utils/Routes/UserRoutes';
 import FarmersPage from './pages/FarmersPage';
-
 import News from './component/News/News';
 import ProfileSetup from './component/Profile/ProfileSetup';
 import UserProfile from './component/Profile/UserProfile';
@@ -36,8 +35,6 @@ import ProfilePage from './component/Profile/Profile';
 import Chat from './component/FARMER/Chat';
 import PostPage from './pages/PostPage';
 import LandingPage from './pages/LandingPage';
-
-
 
 
 function App() {
@@ -78,6 +75,7 @@ function App() {
           <Route Component={UserProfile} path='/home/user-profile/:usernam'></Route>
           <Route Component={Solution} path='/home/solution'/>
           <Route Component={ProfilePage} path='/home/profile'></Route>
+          
     
          
 
